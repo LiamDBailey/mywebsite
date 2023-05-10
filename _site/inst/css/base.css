@@ -1,7 +1,7 @@
 /* DEFAULT STYLING APPLIED TO EVERYTHING */
 
 /* IMPORT FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway&display=swap&family=Yeseva+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway&display=swap&family=Yeseva+One&display=swap&family=Arvo&display=swap');
 
 /* SET CSS VARIABLES (ACCESSIBLE EVERYWHERE) */
 :root {
@@ -16,7 +16,7 @@
   --code-background-colour: rgba(213, 36, 87, 0.2); /* Background colour of code chunks */
   /* Fonts */
   --main-font: 'Raleway'; /* This is the main body font */
-  --subheader-font: 'Nixie One'; /* Other headers */
+  --subheader-font: 'Arvo'; /* Other headers */
   --header-font: 'Yeseva One'; /* <h1> font */
 }
 

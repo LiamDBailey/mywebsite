@@ -133,7 +133,7 @@ margin-top: 10px;
   /* On very small screens, make title smaller and less wide*/
   h3.author-title {
     text-align: center;
-    width: 50%;
+    width: 40%;
     /* Specify auto-margins so it keeps it centred */
     margin: 0 auto;
     margin-bottom: 2rem;
@@ -214,7 +214,7 @@ margin-top: 10px;
   display: none;
 }
 
-/**** APPLIED ON SCREENS >992PX ****/
+/**** APPLIED ON SCREENS >900PX ****/
 /* This will apply to all larger screens */
 @media (min-width: 900px) {
 
@@ -231,7 +231,7 @@ margin-top: 10px;
   /* Title can be expanded a bit now... */
   h3.author-title {
     text-align: center;
-    width: 30%;
+    width:40%;
     /* Specify auto-margins so it keeps it centred */
     margin: 0 auto;
     margin-bottom: 2rem;
