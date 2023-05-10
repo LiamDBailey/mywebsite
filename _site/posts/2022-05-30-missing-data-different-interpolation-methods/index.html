@@ -70,7 +70,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
@@ -217,15 +216,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<h2 data-anchor-id="introduction">Introduction</h2>
 <hr>
 <p>A common problem we encounter when analysing data is the presence of missing data, NAs. How do we deal with NAs when we encounter them? In this blog post I’ll focus on different methods for dealing with NAs in R, with a particular focus on climatic time series.</p>
 </section>
 <section id="preparing-our-workspace" class="level2">
-<h2 class="anchored" data-anchor-id="preparing-our-workspace">Preparing our workspace</h2>
+<h2 data-anchor-id="preparing-our-workspace">Preparing our workspace</h2>
 <hr>
 <section id="packages" class="level3">
-<h3 class="anchored" data-anchor-id="packages">Packages</h3>
+<h3 data-anchor-id="packages">Packages</h3>
 <hr>
 <p>Below are all the packages that we’ll use in this example. Many of these are standard data science packages in R, but notice the inclusion of <code>{imputeTS}</code>, which is a tool specifically designed to deal with NAs in a time series.</p>
 <div class="cell">
@@ -236,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="our-example-data" class="level3">
-<h3 class="anchored" data-anchor-id="our-example-data">Our example data</h3>
+<h3 data-anchor-id="our-example-data">Our example data</h3>
 <hr>
 <p>We’ll focus on a time series of temperature data from Melbourne, Australia (Source: <a href="http://www.bom.gov.au/climate/data/">Australian Bureau of Meteorology</a>). This is actually a complete time series with no missing data, but we’ll generate 400 NAs in the time series at random.</p>
 <div class="cell">
@@ -252,7 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 <section id="step-1-visualize-the-missing-data" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-visualize-the-missing-data">Step 1: Visualize the missing data</h2>
+<h2 data-anchor-id="step-1-visualize-the-missing-data">Step 1: Visualize the missing data</h2>
 <hr>
 <p>The first step to any analysis should be to inspect and visualize your data. Dealing with NAs is no different. If we know there are NAs in our time series we want to see when they occur and how often. <code>{imputeTS}</code> includes a number of in-built plotting functions to visualize NAs (e.g.&nbsp;<code>?imputeTS::ggplot_na_distribution</code>) but here I’ve used <code>{ggplot2}</code> to make a set of custom plots.</p>
 <p>First, we can look at which year the NAs occur in.</p>
@@ -338,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="the-basic-method-deletion" class="level2">
-<h2 class="anchored" data-anchor-id="the-basic-method-deletion">The basic method: Deletion</h2>
+<h2 data-anchor-id="the-basic-method-deletion">The basic method: Deletion</h2>
 <hr>
 <p>NAs include no information and cannot be used in statistical models. Therefore, the most common solution when encountering NAs is to simply delete them. This method is perfectly appropraite in many cases, but it can raise 2 key issues in any analysis:</p>
 <ul>
@@ -348,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>So, what is the alternative? We can use imputation to fill in sampling periods where data are missing.</p>
 </section>
 <section id="method-1-mean-substitution" class="level2">
-<h2 class="anchored" data-anchor-id="method-1-mean-substitution">Method 1: Mean substitution</h2>
+<h2 data-anchor-id="method-1-mean-substitution">Method 1: Mean substitution</h2>
 <hr>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>full_data <span class="ot">&lt;-</span> full_data <span class="sc">%&gt;%</span> </span>
@@ -416,7 +415,7 @@ F-statistic: 168.4 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>We will often want to do more complex multi-variate analysis, so this mean imputation is generally not useful!!</p>
 </section>
 <section id="method-2-linear-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="method-2-linear-imputation">Method 2: Linear imputation</h2>
+<h2 data-anchor-id="method-2-linear-imputation">Method 2: Linear imputation</h2>
 <hr>
 <p>If we are focussing on multi-variate analysis we want a method that allows imputed values to vary. Linear imputation is one of the simplest methods to do this, especially when using time series data. We impute a missing value using a linear relationship between the points before and after the value itself.</p>
 <p>This can be done using the ‘approx’ function in {stats}; however, this does not fit nicely within a {tidyverse} pipe coding. As an alternative, we can use the package {imputeTS}, which is a wrapper around basic {stats} functions (e.g.&nbsp;<code>approx</code>, <code>spline</code>) as well as other more complex imputation functions from other packages.</p>
@@ -466,7 +465,7 @@ F-statistic: 168.4 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </section>
 <section id="method-2-weighted-mean" class="level2">
-<h2 class="anchored" data-anchor-id="method-2-weighted-mean">Method 2: Weighted mean</h2>
+<h2 data-anchor-id="method-2-weighted-mean">Method 2: Weighted mean</h2>
 <hr>
 <p>The approx function has an alternative where it interpolates gaps using a weighted mean of the left and right values. We define method as ‘constant’ and then weighting using ‘f’; where a value of 1 is fully right weighted (i.e.&nbsp;value will = the value on the right) and value of 0 is fully left weighted. Therefore, f = 0.5 is the same as taking the mean of the two nearest points.</p>
 <div class="cell">
@@ -507,7 +506,7 @@ F-statistic: 168.4 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </section>
 <section id="method-3-spline-interpolation" class="level2">
-<h2 class="anchored" data-anchor-id="method-3-spline-interpolation">Method 3: Spline interpolation</h2>
+<h2 data-anchor-id="method-3-spline-interpolation">Method 3: Spline interpolation</h2>
 <hr>
 <p>Another from {stats}. We can use different spline functions to fill in gaps. Unlike linear interpolation, spline interpolation uses more data either side of missing value. Makes sense! Would be impossible to fit spline to 2 data points that would be anything but linear! In fact, I guess we can recreate linear by using spline on data with only 1 value either side.</p>
 <div class="cell">
@@ -562,7 +561,7 @@ last y values differ - using y[1L] for both</code></pre>
 </div>
 </div>
 <section id="compare-the-different-splines" class="level3">
-<h3 class="anchored" data-anchor-id="compare-the-different-splines">Compare the different splines</h3>
+<h3 data-anchor-id="compare-the-different-splines">Compare the different splines</h3>
 <hr>
 <p>Fit all the different splines.</p>
 <div class="cell">
@@ -599,7 +598,7 @@ last y values differ - using y[1L] for both</code></pre>
 </section>
 </section>
 <section id="method-4-stineman-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="method-4-stineman-imputation">Method 4: Stineman imputation</h2>
+<h2 data-anchor-id="method-4-stineman-imputation">Method 4: Stineman imputation</h2>
 <hr>
 <p>Final option is na_interpolation. Uses algorithm in Stineman 1980.</p>
 <div class="cell">
@@ -641,7 +640,7 @@ last y values differ - using y[1L] for both</code></pre>
 </div>
 </section>
 <section id="method-5-weighted-moving-average" class="level2">
-<h2 class="anchored" data-anchor-id="method-5-weighted-moving-average">Method 5: Weighted moving average</h2>
+<h2 data-anchor-id="method-5-weighted-moving-average">Method 5: Weighted moving average</h2>
 <hr>
 <p>Linear imputation or ‘constant’ option (from {stats} <code>approx()</code>) use just the adjacent values, but we can often benefit from using information from more nearby values. We can do this with a weighted moving average.</p>
 <p>Key arguments:</p>
@@ -711,7 +710,7 @@ last y values differ - using y[1L] for both</code></pre>
 </div>
 </section>
 <section id="overview-use-loo-cv-to-look-at-effectiveness-of-different-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="overview-use-loo-cv-to-look-at-effectiveness-of-different-techniques">Overview: Use LOO-CV to look at effectiveness of different techniques</h2>
+<h2 data-anchor-id="overview-use-loo-cv-to-look-at-effectiveness-of-different-techniques">Overview: Use LOO-CV to look at effectiveness of different techniques</h2>
 <hr>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>LOO_impute <span class="ot">&lt;-</span> <span class="cf">function</span>(fn, x, i, ...){</span>
@@ -802,13 +801,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
