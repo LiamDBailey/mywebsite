@@ -11,3 +11,5 @@ title-block-banner: true
 css: [../../inst/css/blogpage.css]
 # Markdown should accept emojis as text (e.g. :shrug:)
 from: markdown+emoji
+highlight-style: github-dark
+code-block-border-left: "#3f51b5"

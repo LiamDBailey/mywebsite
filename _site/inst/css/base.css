@@ -13,9 +13,12 @@
   --navbar-background-colour: #fffff7; /* Colour of navbar */
   --navbar-text-colour: #808080; /* For everything in navbar other than title */
   --body-background-colour: #FFE7E7; /* Background of main body (below navbar) */
-  /* #fadadd */
   /* Code chunk palette */
-  --code-background-colour: rgba(213, 36, 87, 0.2); /* Background colour of code chunks */
+  /* Currently not used! We just rely on default theme in _metadata.yml */
+  --code-body-colour: white; /* Colour of main text */
+  --code-background-colour: #24292e; /* Background colour of code chunks */
+  --code-function-colour: #B392F0; /* Colour of code functions */
+  --code-comment-colour: #999999; /* Colour of code comments */ 
   /* Fonts */
   --main-font: 'Raleway'; /* This is the main body font */
   --subheader-font: 'Nixie One'; /* Other headers */
@@ -306,25 +309,22 @@ p > a:hover::before {
   transform: scaleX(1);
 }
 
-/* Code block colours */
-div.sourceCode {
+/* Change here if we want to make our own custom code chunk styling */
+
+/* Background and border of chunk */
+/* div.sourceCode {
     background-color: var(--code-background-colour);
-    border: 1px solid var(--code-background-colour);
+    border: 2px solid var(--code-background-colour);
     border-radius: 0.25rem;
-}
+    color: white;
+} */
 
-code span.fu {
-    color: var(--accent-colour);
-}
+/* Colour of functions */
+/* code span.fu {
+    color: var(--code-function-colour);
+} */
 
-code span.st {
-    color:white;
-}
-
-code span.at {
-    color: purple;
-}
-
-code span.cn {
-    color: var(--dark-accent-colour);
+/* Colour of comments (make slightly lighter) */
+code span.co {
+  color: var(--code-comment-colour);
 }
