@@ -1,0 +1,73 @@
+---
+listing:
+  template: templates/dataviz.ejs
+  contents:
+    - title: Data Viz
+      byline: Data visualizations portfolio, mostly in R.
+      visuals:
+        - name: "Ferris Wheels"
+          img: inst/img/dataviz/TidyTuesday_2022_Week32.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week32.png
+        - name: "Berlin"
+          img: inst/img/dataviz/30daychallenge_Day8.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day8/Day8_osm.png
+        - name: "TV Characters"
+          img: inst/img/dataviz/TidyTuesday_2022_Week33.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week33.png
+        - name: "The Portal Project"
+          img: inst/img/dataviz/TidyTuesday_2023_Week18.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2023/Week18.png
+        - name: "2 colours"
+          img: inst/img/dataviz/30daychallenge_Day25.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day25/Day25_2colour.png  
+        - name: "Great British Bake-Off"
+          img: inst/img/dataviz/TidyTuesday_2022_Week43.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week43.png
+        - name: "NYC Pizza"
+          img: inst/img/dataviz/TidyTuesday_2019_Oct1.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2019/01_10_19.png
+        - name: "Food"
+          img: inst/img/dataviz/30daychallenge_Day15.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day15/Day15_food.png
+        - name: "EU Energy Generation"
+          img: inst/img/dataviz/TidyTuesday_2022_Week29.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week29_dim4.png      
+        - name: "Blue"
+          img: inst/img/dataviz/30daychallenge_Day18.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day18/Day18_blue.png
+        - name: "Halloween Movies"
+          img: inst/img/dataviz/TidyTuesday_2019_Oct22.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2019/22_10_19.png
+        - name: "Population"
+          img: inst/img/dataviz/30daychallenge_Day21.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day21/Day21_pop.png
+        - name: "Movement"
+          img: inst/img/dataviz/30daychallenge_Day23.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day23/Day23_movement.png
+        - name: "Island"
+          img: inst/img/dataviz/30daychallenge_Day26.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day26/Day26_island.png
+        - name: "Amazon"
+          img: inst/img/dataviz/30daychallenge_Day4.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day4/Day4_green.png
+        - name: "NZ Bird of the Year"
+          img: inst/img/dataviz/TidyTuesday_2019_Week47.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2019/Week47_2019.png
+        - name: "Ukraine"
+          img: inst/img/dataviz/30daychallenge_Day5.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day5/Day5_Ukraine.png
+        - name: "US Drought"
+          img: inst/img/dataviz/TidyTuesday_2022_Week24.gif
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week24_map.gif
+        - name: "Network"
+          img: inst/img/dataviz/30daychallenge_Day6.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day6/Day6_network.png
+        - name: "Space"
+          img: inst/img/dataviz/30daychallenge_Day9.png
+          url: https://github.com/LiamDBailey/30DayMapChallenge_2022/blob/main/Day9/Day9_space.png
+format:
+  html:
+    css: inst/css/dataviz.css
+    include-in-header:
+      text: "<script src='inst/libs/isotope.js'></script>"
+---

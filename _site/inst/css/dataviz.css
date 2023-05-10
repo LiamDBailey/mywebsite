@@ -1,0 +1,155 @@
+/* STYLING FOR THE DATAVIZ PAGE */
+
+/* Import fonts */
+@import url(https://fonts.googleapis.com/css?family=Lato&family=Hammersmith+One&display=swap);
+
+/* Applies to all elements on page */
+* {
+  box-sizing: border-box;
+}
+
+/* Div that contains title and images */
+.dataviz-page {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 100px;
+  margin: 50px 80px;
+}
+
+/* ON SMALLER SCREENS */
+@media (max-width: 1199px) {
+
+  /* Flex will expand the items to fill the space */
+  /* grid will keep items to same size and leave blank space */
+  .dataviz-page {
+    display: flex;
+    /* Will fill out columns */
+    flex-direction: column;
+    gap: 100px;
+    margin: 50px 80px;
+  }
+
+/* Images take up the whole .dataviz-page div */
+/* make it closer to the title... */
+.gallery {
+  width: 100%;
+  margin-top: -10vh; 
+  align-items: center;
+  justify-content: center;
+}
+
+/* Adjust size of image thumbnails*/
+.thumbnails {
+  width: 100%;
+}
+
+/* Center title and text */
+.dataviz-title {
+  text-align: center;
+}
+
+}
+
+/* When not on smaller screens,
+   keep the dataviz title wider */
+.dataviz-title {
+  margin-right: -6vw;
+  margin-left: -2vw
+}
+
+/* Div with all content takes up full space */
+#quarto-content {
+    padding: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* When screen is >=1200px images will expand out into rows*/
+.gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* Size and margins of images */
+.thumbnails {
+  width: 300px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  /* Make image increase in size */
+  transition: transform .5s;
+}
+
+.thumbnails img {
+  width: 100%;
+  /* Make sure image doesn't clip or stretch */
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+
+/* dark cover over images */
+.black {
+  text-align: center;
+  background: #000;
+  background-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: .7;
+}
+
+/* Title over each image */
+.title {
+    color: #fff;
+    font-family: 'Hammersmith One', sans-serif;
+    font-size: 1.7em;
+    align-self: center;
+    position: absolute;
+    z-index: 10;
+    padding: 20px;
+    text-align: center;
+    /* color: var(--background-colour); */
+}
+
+/* Black cover and title will disappear on hover */
+.black, .title {
+  transition: opacity .5s;
+}
+
+/* Specify how much image will change size on hover */
+.thumbnails:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  z-index: 20;
+}
+
+/* Specify how much opacity will change on hover */
+.thumbnails:hover .black,
+.thumbnails:hover .title {
+  opacity: 0;
+}
+
+/* Don't think this is needed */
+/* body {
+  width: 100%;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+} */
+
+/* .content {
+  width: 100%;
+} */
+
+/* This class doesn't exist... */
+/* .photos {
+  width: 95%;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+} */

@@ -1,0 +1,175 @@
+---
+title: Advent of Code 2021
+author: Liam D. Bailey
+date: '2021-12-04'
+description: "Day 2"
+categories: [R]
+image: "feature.png"
+---
+
+```{r, include=FALSE, message=FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(extrafont)
+
+```
+
+See my solution for [Day 1 here](https://www.liamdbailey.com/post/advent-of-code-2021/).
+
+</br>
+
+## The Data
+
+---
+
+See the explanation for today's challenge [here](https://adventofcode.com/2021/day/2).
+
+For day 2, our data are a set of directions that we can use to explore the ocean floor that we mapped out on Day 1. Each row of data contains two pieces of information: the direction to move (e.g. 'forward', 'up') and the distance (an integer). We'll load the data in and then separate the direction and distance information.
+
+```{r}
+
+library(readr)
+
+#Load data
+day2_data <- readr::read_delim(file = "./data/Day2.txt", delim = " ",
+                               col_names = c("direction", "distance"), show_col_types = FALSE)
+
+head(day2_data)
+
+```
+
+</br>
+
+## The Challenges
+
+---
+
+</br>
+
+### Challenge 1
+
+---
+
+Starting from (0,0) we need to follow each of the directions included in the data and determine our final location. We *could* simply do this using a for loop (probably the simpler solution), but I wanted to take this opportunity to practice writing [recursive functions](https://en.wikipedia.org/wiki/Recursion_(computer_science)).
+
+Let's build a function that runs through the data row by row and recalls itself each time until there is not data left. Unlike in a for loop, we don't need to define the number of iterations at the beginning, we simply define the conditions under which the function will continue. Of course...we also need to be careful not to create an infinite loop.
+
+![](https://media.giphy.com/media/3ov9jQX2Ow4bM5xxuM/giphy.gif)
+
+Our function will take a data input, a vector of start coordinates c(0,0), and three functions that will be applied to the start coordinates (this will be important for challenge 2).
+
+```{r}
+
+move <- function(data, start,
+                 forward_func,
+                 up_func,
+                 down_func){
+
+  #Separate the first line of data and the remaining data
+  input  <- data[1, ]
+  remain <- data[-1, ]
+
+  #Depending on the directions, apply a difference function
+  new_coord <- switch(input$direction,
+                      forward = forward_func(start = start, distance = input$distance),
+                      down = down_func(start = start, distance = input$distance),
+                      up = up_func(start = start, distance = input$distance))
+
+  #If there are still rows of data remaining, recall the function
+  if (nrow(remain) > 0) {
+
+    Recall(data = remain, start = new_coord,
+           forward_func = forward_func,
+           up_func = up_func,
+           down_func = down_func)
+
+  } else {
+
+    #If we've gone through all rows of data, return the coordinate
+    return(new_coord)
+
+  }
+
+}
+
+```
+
+We'll create some very simply input functions that we can feed into our `move()` function.
+
+```{r}
+
+#Write funcs to do each process
+#Forward moves on the x axis
+forward <- function(start, distance){
+  start[1] <- start[1] + distance
+  return(start)
+}
+
+#Up will *decrease* depth
+up <- function(start, distance){
+  start[2] <- start[2] - distance
+  return(start)
+}
+
+#Down will *increase* depth
+down <- function(start, distance){
+  start[2] <- start[2] + distance
+  return(start)
+}
+
+```
+
+Now we can run our recursive function.
+
+```{r}
+
+final_position <- move(data = day2_data, start = c(0, 0),
+                       forward_func = forward,
+                       up_func = up,
+                       down_func = down)
+
+#Return the product, which is our answer
+prod(final_position[1], final_position[2])
+
+```
+
+</br>
+
+### Challenge 2
+
+---
+
+[For the second challenge](https://adventofcode.com/2021/day/2), the function used for each direction type has changed. We now also need to deal with an 'aim' value that affects our forward movement. This aim value can be the third value in our start vector. Luckily, we've already written our recursive function, so this is as simple as substituting in new functions for forward, up, and down.
+
+```{r}
+
+forward_new <- function(start, distance){
+  start[1] <- start[1] + distance
+  start[2] <- start[2] + distance*start[3]
+  return(start)
+}
+
+up_new <- function(start, distance){
+  start[3] <- start[3] - distance
+  return(start)
+}
+
+down_new <- function(start, distance){
+  start[3] <- start[3] + distance
+  return(start)
+}
+
+```
+
+```{r}
+
+final_position <- move(data = day2_data, start = c(0, 0, 0),
+                       forward_func = forward_new, up_func = up_new, down_func = down_new)
+
+#Return the product, which is our answer
+prod(final_position[1], final_position[2])
+
+```
+
+By putting in a bit of effort to make a robust function at the beginning we were able to solve both challenges. It's a good example of how writing good functions can save you a lot of time and effort later on.

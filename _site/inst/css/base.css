@@ -1,0 +1,315 @@
+/* DEFAULT STYLING APPLIED TO EVERYTHING */
+
+/* IMPORT FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway&display=swap&family=Yeseva+One&display=swap');
+
+/* SET CSS VARIABLES (ACCESSIBLE EVERYWHERE) */
+:root {
+  --background-colour: #000080; /* Default background colour */
+  --accent-colour: #3f51b5; /* Accenting e.g. on icons */
+  --text-colour: #0d0d0d; /* Text in navbar (and elsewhere?) */
+  --main-font: 'Raleway'; /* This is the main body font */
+  --subheader-font: 'Nixie One'; /* Other headers */
+  --header-font: 'Yeseva One'; /* <hx> font */
+}
+
+/* Defaults title */
+h1 {
+  font-family: var(--header-font);
+  font-size: 3rem;
+}
+
+/* Defaults subtitles */
+h2, h3, h4, h5, h6 {
+  font-family: var(--subheader-font);
+}
+
+/* Text inside header is flush to sides */
+#quarto-header nav {
+  padding-left: 0em;
+  padding-right: 0em;
+}
+
+/* Not sure what the quarto-category class is used for...*/
+.quarto-category {
+  background: var(--accent-colour) !important;
+    color: white !important;
+    border-radius: 45px !important;
+    padding: 3px 8px !important;
+    text-align: center !important;
+    width: max-content !important;
+    display: inline !important;
+    margin-right: 8px !important;
+    border: 0px solid white !important;
+}
+
+/* Also not sure... */
+.navbar-collapse {
+  background: #fffff7;
+}
+
+/* Also unsure... */
+#title-block-header {
+    margin-block-end: 1rem;
+    position: relative;
+    margin-top: 150px;
+}
+
+/* Also unsure... */
+.quarto-title-banner {
+    margin-bottom: 0.8em;
+    color: var(--text-colour);
+    background: transparent;
+}
+
+/* Also unsure... */
+.quarto-title-meta {
+  display: none !important;
+}
+
+/* Hide table of contents by default (may want to override this in blogs) */
+#TOC {
+  display: none;
+}
+
+/* Also unsure... */
+.quarto-margin-sidebar {
+  display: none !important;
+}
+
+/* Defaults for other headers */
+h2,h3,h4,h5,h6 {
+  font-family: var(--subheader-font);
+}
+
+h2, .h2 {
+  border-bottom: 0px solid #dee2e6;
+}
+
+h1, h2, h3 {
+  text-transform: uppercase;
+}
+
+/* Defaults for all p... (redundant because of body call below?) */
+p {
+  font-family: var(--main-font);
+}
+
+body {
+  font-family: var(--main-font);
+}
+
+/* Also unsure... */
+::-moz-selection {
+  background: #ffb7b7; /* Gecko Browsers */
+}
+
+/* Also unsure... */
+::selection {
+  background-color: #fffff7;
+}
+
+/**** navbar overrides *****/
+/* Make custom navbar... */
+/* Hers is really nice, we will keep it and tweak */
+
+/* My name on the navbar*/
+.navbar-title {
+    /* Can add e.g. underline */
+    text-decoration: none;
+    /* How quickly the background properties transition */
+    transition: background .75s;
+    /* Make a colour gradient from transparent to our background-colour variable */
+    /* currently we the gradient occurs from transparent to full colour at 90% */
+    /* this means that basically the box is transparent for the first 90% and then coloured */
+    /* if we adjust the 90% values, we can make a nice gradient */
+    background-image: linear-gradient(transparent 90%, var(--background-colour) 90%);
+    /* By default the background has 0% width (i.e. not visible)*/
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    /* All other colours on navbar are grey, overwrite this so title is our text colour */
+    color: var(--text-colour);
+}
+
+/* When we hover, the background above becomes full width */
+.navbar-title:hover {
+    background-size: 70% 100%;
+}
+
+/* Expand thickness of navbar */
+/* for now we just keep it normal size */
+header nav {
+    height: 0px;
+}
+
+/* Colour and contents navbar */
+.navbar {
+  background-color: #fffff7;
+  /* box-shadow: 0 0 50px rgba(252, 252, 252, 0.76); */
+  /* text-transform: lowercase; */
+  background-image: linear-gradient(to bottom,  #fffff7,  #fffff7,  #fffff7,  #fffff7ed,  #fffff7ba,  #fffff7);  
+  /* No matter how small screen gets navbar can't get less than 100px*/
+  min-height: 100px;
+  position: fixed;
+  width: 100%;
+}
+
+/* Space between navbar and content */
+.quarto-container {
+  margin-top: 100px;
+}
+
+/* All text in the navbar */
+/* navbar-brand is my name (the 'brand') */
+/* li and a are the menu lingers */
+.navbar-brand, .navbar-nav li.nav-item a.nav-link {
+  height: inherit;
+  line-height: 30px;
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+
+/* Style the title slightly different to others */
+.navbar-dark .navbar-brand {
+   height: inherit;
+   line-height: 30px;
+   padding-top: 7px;
+   padding-bottom: 5px;
+   margin-left: 50px;
+   font-weight: 500;
+   font-size: 1.7rem;
+}
+
+/* Everything on navbar is grey (except title which we overwrite above) with .navbar-title*/
+.navbar-dark .navbar-nav .nav-link {
+  color: gray;
+}
+
+/* Not sure what this does... */
+.navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
+  display: none;
+} 
+
+/* Menu items (not the title) */
+li.nav-item {
+  text-align: center;
+}
+
+/* Speed of change for menu items */
+a.nav-link,
+a.nav-link:after,
+a.nav-link:before {
+  transition: all .5s;
+}
+
+a.nav-link {
+  position: relative;
+}
+
+/* When we hover over links they change colour and get line beneath */
+a.nav-link:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 0%;
+  content: '.'; /* make invisible, dot beneath links */
+  color: transparent;
+  background: var(--accent-colour);
+  height: 2px;
+}
+
+a.nav-link:hover:after {
+  width: 70%;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--accent-colour);
+}
+
+/* When we are on one of the selected pages we fix it with the accent colour and underline */
+.nav-link.active span {
+  color: var(--accent-colour);
+}
+
+a.nav-link.active:after {
+  width: 70%;
+}
+
+/* Background under navbar */
+body {
+  background: #fadadd;
+}
+
+/* Toggle dark and light theme (currently not active) */
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='gray' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    margin-right: 50px;
+}
+
+/* Change colour of text inside links on hover */
+p > a:hover {
+  color: var(--accent-colour);
+  text-decoration: none;
+}
+
+p > a {
+  position: relative;
+  color: var(--accent-colour);
+  text-decoration: none;
+}
+
+ul.share li a {
+    background-color: var(--accent-colour);
+}
+
+p > a::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-colour);
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out 0s;
+}
+
+a {
+  color: var(--accent-colour);
+}
+
+a:hover {
+  color: var(--accent-colour);
+}
+
+p > a:hover::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+/* Code block colours */
+div.sourceCode {
+    background-color: rgba(213, 36, 87,0.2);
+    border: 1px solid rgba(213, 36, 87,0.25);
+    border-radius: 0.25rem;
+}
+
+code span.fu {
+    color: var(--accent-colour);
+}
+
+code span.st {
+    color:white;
+}
+
+code span.at {
+    color: purple;
+}
+
+code span.cn {
+    color: var(--background-colour);
+}

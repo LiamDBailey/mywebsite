@@ -1,0 +1,14 @@
+---
+listing:
+  contents: posts
+  sort: "date desc"
+  ## This .ejs file is a JS way of creating our HTML layout
+  ## it includes the title and everything already.
+  template: templates/bloghome.ejs
+page-layout: full
+format:
+  html:
+    css: inst/css/bloghome.css
+---
+
+

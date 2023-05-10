@@ -1,0 +1,243 @@
+---
+title: R 4.1.0
+author: Liam D. Bailey
+date: '2021-05-20'
+description: "All the newest features"
+categories: [R]
+image: "feature.png"
+---
+
+```{r, include=FALSE}
+
+library(dplyr)
+library(ggplot2)
+
+```
+
+It's been talked about for awhile, but the next big changes to R, v.4.1.0, are here! For many R users, new versions don't make a huge amount of difference to their day to day work. I often find people still happpily running R v3.x! This time around, however, v4.1.0 includes some major (and interesting) changes to the base R syntax, which might affect (improve?) people's workflow. We'll cover the most talked about changes below. Put on your party hat and lets get into it.
+
+![](https://media.giphy.com/media/kyLYXonQYYfwYDIeZl/giphy.gif)
+
+</br>
+
+## The native pipe
+
+---
+
+Ever since the rise of the `tidyverse` and `magrittr` I've noticed a worrying divergence in how people write R code. New users, or those that jumped on the `tidyverse` bandwagon, tended to write long piped code using `dplyr` functions. Older users, who learned R before the rise of the `tidyverse`, tended to use nested base functions to achieve the same result. Having a variety of tools to approach the same problem isn't *inherently* bad, but it seemed like we were heading towards a world where the two groups were almost using different, incomprehensible, programming languages. Enter the *native pipe*: `|>`. With v4.1.0 we now have an inbuilt pipe included in base R syntax. With `|>` you can build piped code without ever needing to load a `tidyverse` library!
+
+```{r}
+
+#The tidyverse way
+tidy <- iris %>% 
+  filter(Species == "setosa") %>% 
+  select(Species, Sepal.Length)
+
+#The base R way
+base <- iris[which(iris$Species == "setosa"), c("Species", "Sepal.Length")]
+
+#The hybrid way
+hybrid <- iris |>
+  subset(Species == "setosa", select = c("Species", "Sepal.Length"))
+
+#Same results...different inputs
+identical(tidy, base)
+identical(base, hybrid)
+
+```
+
+This is an awesome change for the base R syntax. I guess we can all forget about `magrittr` and move to using the native pipe, right? Well, not so fast. While the native pipe is a huge improvement, there are still a few features that might keep you using the more familiar `%>%` (at least for now).
+
+</br>
+
+### Flexible placement
+
+---
+
+`magrittr` pipe allows the left-hand side to be used at any point in the following function with the placement of the `.`. In comparison, native pipe requires the left-hand side to always fill the *first* argument on the right.
+
+```{r}
+
+names <- c("John_Doe", "Jeff_Jones", "Rachel_Black")
+
+names %>% 
+  gsub(pattern = "_", x = ., replacement = " ")
+
+```
+
+We can achieve the same thing in base R by writing a nested function, but it's definitely not as effective and defeats some of the benefits of writing piped code (though see the [changes to anonymous functions below](#anon).
+
+```{r}
+
+names |>
+  {function(x) gsub(pattern = "_", x = x, replacement = " ")}()
+
+```
+
+</br>
+
+### Short-hand pipe functions
+
+---
+
+A less well known, but sometimes useful, feature of the `magrittr` pipe is the ability to quickly turn a piece of piped code into a function. This functionality isn't available with the native pipe...although that might not be a deal breaker for many people.
+
+```{r}
+
+#Create a function to run same pipe
+replace_underscore <- . %>% 
+  gsub(pattern = "_", x = ., replacement = " ")
+
+replace_underscore(names)
+
+```
+
+```{r}
+
+#The slightly messier base approach
+replace_underscore <- function(x){
+  
+  x |>
+    {function(x) gsub(pattern = "_", x = x, replacement = " ")}()
+  
+}
+
+replace_underscore(names)
+
+```
+
+</br>
+
+### The rest of the magrittr package
+
+---
+
+Until now, we've comparing `%>%` and `|>`, but if you're actually loading the `magrittr` package there are a few other special pipes that are also powerful. One particularly useful one is the tee-pipe, `%T>%`, which allows you to create an output in the middle of your pipe (e.g. plot or view your data) without needing to stop the pipe.
+
+```{r}
+
+#Return the sum of two normally distributed variables
+col_sums <- data.frame(x = rnorm(10), y = rnorm(10)) %T>%
+  #View the data to make sure it all looks fine
+  print() %>%
+  #Return the column sums
+  colSums()
+
+```
+
+```{r}
+
+col_sums
+
+```
+
+</br>
+
+### Dependencies
+
+---
+
+Let's not pretend that `%>%` has things all its own way. One **major** benefit of the native pipe is that it means you can use pipe with **no dependencies**. Working with the `tidyverse` can often mean working with quite a few dependencies, and there's no guarantee that updates will be backward compatible. If you're building an R package, even just for personal use, having the option of writing piped code without needing additional package dependencies might be exactly what you're looking for.
+
+![](https://media.giphy.com/media/6901DbEbbm4o0/giphy.gif)
+
+</br>
+
+<a name="anon"/>
+
+## Anonymous functions
+
+---
+
+Another major syntax change that provides base R with capabilities previously available only in the `tidyverse` are changes to how anonymous functions are written. `tidyverse` gave the possibility to quickly write anonymous functions using `~`. With v4.1.0, we can now easily create anonymous functions with the `\(x)` syntax.
+
+```{r, eval = FALSE}
+
+#Tidy anon
+iris %>% 
+  group_by(Species) %>% 
+  summarise(across(.fns = ~mean(., na.rm = TRUE)))
+
+#New base anon
+iris %>%
+  group_by(Species) %>%
+  summarise(across(.fns = \(x) mean(x, na.rm = TRUE)))
+                   
+```
+
+Unlike our pipe comparison, the new base anonymous functions have a number of benefits over `tidyverse` equivalents.
+
+</br>
+
+### Use anywhere in R
+
+---
+
+The `~` syntax is useful within `tidyverse` but can't easily be used outside of this context. `\(x)`, on the other hand, can be used to write functions anywhere you want.
+
+```{r}
+
+#This won't work!
+#tidy_func <- {~mean(., na.rm = TRUE)}
+#tidy_func(c(1, 4, 7))
+
+#Works fine
+base_func <- \(x)mean(x, na.rm = TRUE)
+base_func(c(1, 4, 7))
+
+```
+
+</br>
+
+### Multiple arguments and argument names
+
+---
+
+Anonymous functions in tidyverse allow for a single argument, but `\(x)` allows for any number of arguments with any name you feel like!
+
+```{r}
+
+three_arguments <- \(a, b, c)a*b/c
+
+three_arguments(1.5, 4, 3)
+
+```
+
+So, while I might be holding off on using native pipe, I think the new base R anonymous functions will quickly become part of my coding workflow!
+
+</br>
+
+## Concatenating factors
+
+---
+
+One smaller change that might be useful to regular R users is the new ability to concatenate factors together. Previously, trying to concatenate different factors would coerce all levels into their underlying integers (how the data are actually stored within R). With v4.1.0, factors can be concatenated and stay as factors, combining together all the levels from the two original factors.
+
+```{r}
+
+factor1 <- factor(c("Apple", "Orange", "Apple"), levels = c("Apple", "Orange"))
+factor2 <- factor(c("Banana", "Strawberry"), levels = c("Banana", "Strawberry"))
+
+c(factor1, factor2)
+
+```
+
+Note that the order of the factor levels in the new factor are dependent on the order in which the two factors are concatenated together.
+
+```{r}
+
+#Levels start with Apple
+c(factor1, factor2)
+
+#Levels start with Banana
+c(factor2, factor1)
+
+```
+
+</br>
+
+## Wrap up
+
+---
+
+R v4.1.0 marks an exciting step in R development. The introduction of native pipe and easy anonymous functions will allow users to take advantage of these useful tools even if they're more comfortable in base R than the `tidyverse`. While I might not be switching over to using native pipe just yet, I'm really excited to see where this leads in future updates!

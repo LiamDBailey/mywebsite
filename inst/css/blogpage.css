@@ -1,0 +1,9 @@
+/* Reduce space between start of blog and title */
+.quarto-container {
+    margin-top: 20px;
+  }
+
+div.quarto-title-banner{
+    padding-top: 1em;
+    padding-bottom: 0;
+  }

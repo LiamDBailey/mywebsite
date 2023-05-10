@@ -1,0 +1,132 @@
+---
+title: Advent of Code 2021
+author: Liam D. Bailey
+date: '2021-12-05'
+description: "Day 3"
+categories: [R]
+image: "feature.png"
+---
+
+```{r, include=FALSE, message=FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(extrafont)
+
+```
+
+</br>
+
+## The Data
+
+---
+
+See the explanation for today's challenge [here](https://adventofcode.com/2021/day/3). This time we need to work with binary numbers.
+
+![](https://i.gifer.com/K99U.gif "Finally, robotic beings rule the world!")
+
+We're given a vector of numbers written in binary (e.g. 00100, 11110) and we need to use these to extract two values. It's not as simple as just converting binary to decimal, we need to first generate new binary numbers that represent the most and least frequent value in each column. Let's read the data in.
+
+```{r}
+
+library(readr)
+
+#Read in data where each binary number is a character string
+day3_data <- readr::read_delim(file = "./data/Day3.txt", delim = "/t",
+                               col_names = "binary", show_col_types = FALSE)
+
+head(day3_data)
+
+```
+
+</br>
+
+## The Challenges
+
+---
+
+### Challenge 1
+
+---
+
+To find the most and least common value in each column we first need to separate the character strings so that each binary bit is a separate column. We can do this using `separate()` in `tidyr` (and a bit of regex).
+
+My first thought was just to use `separate()` where the separator is an empty string (""), but when we try this we end up with an erroneous empty column at the start.
+
+```{r, warning=FALSE}
+
+library(tidyr)
+
+binary_length <- nchar(day3_data$binary[1])
+
+day3_data %>%
+  separate(col = binary, into = as.character(1:binary_length), sep = "") %>% 
+  head()
+
+```
+
+Instead, we can use regex to specify that we only want to separate by blank spaces that were preceded by a number. We can do this using the regex lookbehind operation `(?<=)`. In our example, by adding `(?<=[0-1])` we are specifying that a separator must have a number 0 or 1 preceding it.
+
+```{r}
+
+separated_binary <- day3_data %>%
+  #Use convert = TRUE to automatically coerce to numeric
+  tidyr::separate(col = binary, into = as.character(1:binary_length), sep = "(?<=[0-1])", convert = TRUE)
+
+head(separated_binary)
+
+```
+
+Now identifying the most or least common value is easy. If the sum of the column is greater than the number of rows, 1 is most common and visa-versa. Below we return TRUE if 1 is most common or FALSE when 0 is most common, which directly corresponds to 1 and 0 respectively when converted to an integer.
+
+```{r}
+
+#Is 1 most common?
+most_common <- separated_binary %>%
+  #Return sum of each col
+  #If it's greater than half nrow() then 1 is most common (and the inverse is true)
+  summarise(across(.cols = everything(), .fns = ~sum(.) > (n()/2)))
+
+as.integer(most_common)
+
+```
+
+As a final step, we can use the `strtoi()` function to convert from binary to decimal. This function requires a single string input, so we need to convert our vector of most/least common numbers to a single character string.
+
+```{r}
+
+(most_common_binary <- paste(as.integer(most_common), collapse = ""))
+(least_common_binary <- paste(as.integer(!most_common), collapse = ""))
+
+```
+
+```{r}
+
+#Convert each number to decimal
+(most_common_decimal    <- strtoi(most_common_binary, base = 2))
+(least_common_decimal  <- strtoi(least_common_binary, base = 2))
+
+```
+
+Our answer is the product of these two numbers.
+
+```{r}
+
+most_common_decimal * least_common_decimal
+
+```
+
+### Challenge 2
+
+---
+  
+The second challenge is just a slightly more complex version of challenge 1, so I'm going to skip the explanation for now. If you're interested, you can see the code [on GitHub](https://github.com/LiamDBailey/AdventOfCode2021/blob/main/script/Day3.R).
+
+---
+
+</br>
+
+See previous solutions here:
+
+- [Day 1](https://www.liamdbailey.com/post/advent-of-code-2021/)
+- [Day 2](https://www.liamdbailey.com/post/advent-of-code-day-2/)

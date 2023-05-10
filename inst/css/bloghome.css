@@ -1,0 +1,151 @@
+/* STYLING FOR THE PAGE SHOWING ALL BLOG POSTS */
+
+/* The blog synopses...make them cover the whole area */
+/* This can cause issues with headers! */
+#quarto-content {
+    padding: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  font-family: Raleway;
+}
+
+.all-posts {
+    width: 80%;
+}
+
+.blog-page {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 100px;
+  margin: 50px 80px;
+  width: 100vw;
+}
+
+@media (max-width: 1199px) {
+.blog-page {
+    display: block;
+    padding: 40px;
+    margin: 0px;
+  }
+}
+
+.postlink {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 20px 0;
+}
+
+.postinfo {
+  padding-right: 50px;
+}
+
+.postinfo h3 {
+  color: var(--text-colour);
+  padding: 0;
+  margin: 0;
+  font-size: 1.5rem;
+  margin-top: 5px;
+}
+
+.blogpost {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.middot-divider {
+    padding-right: 0.45em;
+    padding-left: 0.45em;
+    font-size: 15px;
+}
+
+.middot-divider::after {
+    content: '\00B7';
+}
+
+.post-img {
+  display: flex;
+  justify-content: center;
+}
+
+/* Images should be 200x150 */
+img {
+  max-height: 150px;
+  max-width: 200px;
+  height: auto;
+  object-fit: cover;
+}
+
+.categories {
+  background: var(--accent-colour);
+  color: white;
+  border-radius: 45px;
+  padding: 3px 8px;
+  text-align: center;
+  width: max-content;
+  display: inline;
+  margin-right: 8px;
+}
+
+.description, .meta {
+  color: var(--text-colour);
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+
+.date {
+  font-size: 0.65rem;
+}
+
+@media (max-width: 600px) {
+.blurb {
+    width: 90%;
+    margin-top: 100px;
+    margin: 100px 10px 20px 20px;
+}
+
+.blurb p {
+  width: 80%;
+}
+
+img {
+    max-height: 100px;
+    height: auto;
+    object-fit: cover;
+}
+
+.blogpost {
+    margin: 40px auto;
+    max-width: fit-content;
+    padding: 5px;
+}
+
+.postinfo {
+  margin-right: 0px;
+  padding-right: 0px;
+}
+
+.meta span {
+  display: block;
+}
+
+.all-posts {
+    margin: 20px;
+}
+
+.postlink h3 {
+  font-size: 1.3rem;
+}
+
+}

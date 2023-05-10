@@ -1,0 +1,98 @@
+---
+format:
+  html:
+    css: inst/css/home.css
+---
+
+<!-- For some reason, this needs to be here (even if commented) -->
+<!-- So that fontawesome can work... -->
+<!-- {{< fa graduation-cap size=xl >}} -->
+
+<!-- Load Academicons for Google Scholar -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+<!-- Manually include HTML for my landing page -->
+<!-- Adapted from https://maya.rbind.io/ -->
+<section>
+
+<!-- Start with my headshot, title and socials -->
+<div class="img-bio">
+  <!-- author-photo/name/title have custom styling in home.css -->
+  <img class="author-photo" src="assets/profile.jpg" alt="photo of Liam Bailey"/>
+  <h2 class="author-name">Dr. Liam D. Bailey</h2>
+  <h3 class="author-title">Freelance Data Scientist</h3>
+  <div class="social">
+  <div class="cell">
+  <!-- Twitter icon -->
+  <div class="cell-output-display">
+  <a href="https://twitter.com/ldbailey255">
+  <i class="icon link fa-brands fa-twitter fa-xl"></i>
+  </a>
+  </div>
+  <!-- Google scholar icon -->
+  <div class="cell-output-display">
+  <a href="https://scholar.google.de/citations?user=ys7AYRUAAAAJ&hl=en">
+  <i class="icon link ai ai-google-scholar fa-xl"></i>
+  </a>
+  </div>
+  <!-- GitHub icon -->
+  <div class="cell-output-display">
+  <a href="https://github.com/LiamDBailey">
+  <i class="icon link fa-brands fa-github fa-xl"></i>
+  </a>
+  </div>
+  <!-- Publon icon -->
+  <div class="cell-output-display">
+  <a href="https://publons.com/researcher/1193580/liam-d-bailey/">
+  <i class="icon link ai ai-publons fa-xl"></i>
+  </a>
+  </div>
+  </div>
+  <!-- Need to add in a contact section below -->
+  <!-- Add in LinkedIn -->
+  </div>
+</div>
+
+<div class="bio">
+<h1>Biography</h1>
+
+I am an ecologist and data scientist with an interest in using data science techniques for conservation outcomes.
+
+My scientific work has focussed on measuring and understanding the impacts of environmental change on natural systems, particularly the impacts of climate change. I completed my Ph.D. at the Australian National University with <a href = "https://research.jcu.edu.au/portfolio/martijn.vandepol/">Dr. Martijn van de Pol</a> and <a href = "https://biology.anu.edu.au/research/research-groups/langmore-group-avian-evolutionary-and-behavioural-ecology">Dr. Naomi Langmore</a>, focussing on the impacts of increased flooding on the Eurasian oystercatcher (Haematopus ostralegus). Since then my work has included analysis of extreme heat impacts in semi-arid environments and advancing reproductive timing in European passerines.
+
+My scientific work has always involved data science, including programming in R, Python and SQL, statistical analyses, and GIS. In 2019 I officially branched out into the world of data science, first as lead developer for the <a href = "https://spibirds.org/en">SPI-Birds Network and Database</a> and then in a corporate setting with the language learning app Babbel.
+
+I am now based in Berlin using my skills in data science and data visualization as a freelancer.
+
+  <div class="activities">
+    
+  <div class="interests">
+  <span class="activity">Interests</span>
+  <ul>
+   <li>Data for Good</li>
+   <li>Data Visualisation</li>
+   <li>Climate change ecology</li>
+   <li>Photography</li>
+  </ul>
+  </div>
+  
+<div class="education">
+  <span class="activity">Education</span>
+<div class="education-element">
+<!-- TO DO: FIX FONTAWESOME ICONS SO THEY WORK WITH ACADEMICONS -->
+<!-- <div class="icon"><i class="fa-solid fa-graduation-cap fa-lg"></i></div> -->
+<div class="degree">PhD in Ecology, 2017</div>
+<div class="school">Australian National Unveristy, Canberra</div>
+</div>
+
+<div class="education-element">
+<!-- <div class="icon"><i class="fa-solid fa-graduation-cap fa-lg"></i></div> -->
+<div class="degree">BEnvSc in Biology, First Class Honours, 2011</div>
+<div class="school">Monash University, Melbourne</div>
+</div>
+</div>
+  
+</div>
+</div>
+
+</section>

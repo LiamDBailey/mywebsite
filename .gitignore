@@ -1,0 +1,5 @@
+.Rproj.user
+/.quarto/
+.Rhistory
+.DS_Store
+.luarc.json

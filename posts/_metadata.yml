@@ -1,0 +1,13 @@
+# options specified here will apply to all posts in this folder
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+freeze: true
+
+# Enable banner style title blocks
+title-block-banner: true
+
+# Custom css for blog pages
+css: [../../inst/css/blogpage.css]
+# Markdown should accept emojis as text (e.g. :shrug:)
+from: markdown+emoji
