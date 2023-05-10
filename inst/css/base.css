@@ -345,8 +345,8 @@ code span.co {
 
 /*** REACTIVITY ***/
 
-/* Below 767px the hamburger menu is used 
-this is defined with collapse-below: md in _quarto.yml*/
+/* On small screens need to reduce title/navbar 
+so that it all fills */
 @media (max-width: 650px){
 
   .navbar {

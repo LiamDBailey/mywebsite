@@ -29,6 +29,7 @@ format:
     #   dark:  [inst/css/base.scss, inst/css/theme_dark.scss]
     css: inst/css/base.css
     toc: true
+    anchor-sections: false
     metadata:
       pagetitle: "Dr. Liam D. Bailey"
 link-external-newwindow: true
