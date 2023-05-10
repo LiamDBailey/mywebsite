@@ -159,3 +159,14 @@ h1{
   display: flex;
   justify-content: center;
 } */
+
+/*** REACTIVITY ***/
+
+/* Slight changes for mobile */
+@media (max-width: 650px){
+
+  .thumbnails{
+    width: 100%
+  }
+
+}
