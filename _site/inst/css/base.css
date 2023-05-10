@@ -1,4 +1,5 @@
 /* DEFAULT STYLING APPLIED TO EVERYTHING */
+/* HEAVILY INFLUENCED BY https://maya.rbind.io/*/
 
 /* IMPORT FONTS */
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway&display=swap&family=Yeseva+One&display=swap&family=Arvo&display=swap');
@@ -11,12 +12,13 @@
   --text-colour: #0d0d0d; /* Default colour of text (body and title) */
   --navbar-background-colour: #fffff7; /* Colour of navbar */
   --navbar-text-colour: #808080; /* For everything in navbar other than title */
-  --body-background-colour: #fadadd; /* Background of main body (below navbar) */
+  --body-background-colour: #FFE7E7; /* Background of main body (below navbar) */
+  /* #fadadd */
   /* Code chunk palette */
   --code-background-colour: rgba(213, 36, 87, 0.2); /* Background colour of code chunks */
   /* Fonts */
   --main-font: 'Raleway'; /* This is the main body font */
-  --subheader-font: 'Arvo'; /* Other headers */
+  --subheader-font: 'Nixie One'; /* Other headers */
   --header-font: 'Yeseva One'; /* <h1> font */
 }
 
@@ -41,6 +43,11 @@ p {
 #quarto-header nav {
   padding-left: 0em;
   padding-right: 0em;
+}
+
+/* Everything on navbar is grey (except title which we overwrite above) with .navbar-title*/
+.navbar * {
+  color: var(--navbar-text-colour);
 }
 
 /* Not sure what the quarto-category class is used for...*/
@@ -180,13 +187,13 @@ header nav {
 /* li and a are the menu lingers */
 .navbar-brand, .navbar-nav li.nav-item a.nav-link {
   height: inherit;
-  line-height: 30px;
+  /* line-height: 30px; */ /* This seems to make icons and text misaligned*/
   padding-top: 7px;
   padding-bottom: 5px;
 }
 
 /* Style the title slightly different to others */
-.navbar-dark .navbar-brand {
+.navbar-dark .navbar-brand{
    height: inherit;
    line-height: 30px;
    padding-top: 7px;
@@ -194,11 +201,6 @@ header nav {
    margin-left: 50px;
    font-weight: 500;
    font-size: 1.7rem;
-}
-
-/* Everything on navbar is grey (except title which we overwrite above) with .navbar-title*/
-.navbar-dark .navbar-nav .nav-link {
-  color: var(--navbar-text-colour);
 }
 
 /* Not sure what this does... */
@@ -240,7 +242,10 @@ a.nav-link:hover:after {
   width: 70%;
 }
 
-.navbar-dark .navbar-nav .nav-link:hover {
+/* Do this differently otherwise GH or Twitter logos disappear after click...*/
+/* NO IDEA WHY! */
+/* -dark .navbar-nav .nav-link */
+.nav-item *:hover {
     color: var(--accent-colour);
 }
 

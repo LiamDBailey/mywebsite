@@ -5,9 +5,6 @@ website:
   title: "Dr. Liam D. Bailey"
   site-url: "https://www.liamdbailey.com/"
   navbar:
-    # left:
-    #   - text: "CV"
-    #   - file: assets/LiamDBailey_CV.pdf
     right:
       - href: blog.qmd
         text: blog
@@ -17,8 +14,10 @@ website:
         text: resume
       - icon: github
         href: https://github.com/LiamDBailey
+        target: _blank
       - icon: twitter
         href: https://twitter.com/ldbailey255
+        target: _blank
 format:
   html:
     # theme:
@@ -29,6 +28,7 @@ format:
     toc: true
     metadata:
       pagetitle: "Dr. Liam D. Bailey"
+link-external-newwindow: true
 
 
 

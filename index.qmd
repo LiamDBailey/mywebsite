@@ -60,7 +60,7 @@ I am an ecologist and data scientist with an interest in using data science tech
 
 My scientific work has focussed on measuring and understanding the impacts of environmental change on natural systems, particularly the impacts of climate change. I completed my Ph.D. at the Australian National University with <a href = "https://research.jcu.edu.au/portfolio/martijn.vandepol/">Dr. Martijn van de Pol</a> and <a href = "https://biology.anu.edu.au/research/research-groups/langmore-group-avian-evolutionary-and-behavioural-ecology">Dr. Naomi Langmore</a>, focussing on the impacts of increased flooding on the Eurasian oystercatcher (Haematopus ostralegus). Since then my work has included analysis of extreme heat impacts in semi-arid environments and advancing reproductive timing in European passerines.
 
-My scientific work has always involved data science, including programming in R, Python and SQL, statistical analyses, and GIS. In 2019 I officially branched out into the world of data science, first as lead developer for the <a href = "https://spibirds.org/en">SPI-Birds Network and Database</a> and then in a corporate setting with the language learning app Babbel.
+My scientific work has always involved data science, including programming in R, Python and SQL, statistical analyses, and GIS. In 2019 I officially branched out into the world of data science, first as lead developer for the <a href = "https://spibirds.org/en" target="_blank">SPI-Birds Network and Database</a> and then in a corporate setting with the language learning app Babbel.
 
 I am now based in Berlin using my skills in data science and data visualization as a freelancer.
 

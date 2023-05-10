@@ -1,8 +1,5 @@
 /* STYLING FOR THE DATAVIZ PAGE */
 
-/* Import fonts */
-@import url(https://fonts.googleapis.com/css?family=Lato&family=Hammersmith+One&display=swap);
-
 /* Applies to all elements on page */
 * {
   box-sizing: border-box;
@@ -114,7 +111,7 @@ h1{
 /* Title over each image */
 .title {
     color: #fff;
-    font-family: 'Hammersmith One', sans-serif;
+    font-family: var(--subheader-font), sans-serif;
     font-size: 1.7em;
     align-self: center;
     position: absolute;
