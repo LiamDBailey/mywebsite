@@ -5,6 +5,7 @@ website:
   title: "Dr. Liam D. Bailey"
   site-url: "https://www.liamdbailey.com/"
   navbar:
+    search: false
     right:
       - href: blog.qmd
         text: blog
@@ -18,6 +19,8 @@ website:
       - icon: twitter
         href: https://twitter.com/ldbailey255
         target: _blank
+    collapse: false
+    collapse-below: md
 format:
   html:
     # theme:

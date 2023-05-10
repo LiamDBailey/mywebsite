@@ -195,6 +195,10 @@ header nav {
   padding-bottom: 5px;
 }
 
+.navbar-nav {
+  padding-right: 50px;
+}
+
 /* Style the title slightly different to others */
 .navbar-dark .navbar-brand{
    height: inherit;
@@ -206,11 +210,20 @@ header nav {
    font-size: 1.7rem;
 }
 
-/* Not sure what this does... */
-.navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
+/* Hide search icon (it shows up even when 'search: false' in metadata */
+#quarto-search {
   display: none;
+  width: 0;
+  height: 0;
 } 
 
+.navbar .quarto-navbar-tools {
+  display: none;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
 /* Menu items (not the title) */
 li.nav-item {
   text-align: center;
@@ -327,4 +340,40 @@ p > a:hover::before {
 /* Colour of comments (make slightly lighter) */
 code span.co {
   color: var(--code-comment-colour);
+}
+
+
+/*** REACTIVITY ***/
+
+/* Below 767px the hamburger menu is used 
+this is defined with collapse-below: md in _quarto.yml*/
+@media (max-width: 650px){
+
+  .navbar {
+    min-height: 60px;
+  }
+
+  .navbar-dark .navbar-brand {
+    width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item .nav-item.compact {
+    height: 50%;
+  }
+
+  .nav-item{
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+
 }
