@@ -16,6 +16,10 @@
   margin: 50px 80px;
 }
 
+h1{
+  margin-top: 10px; /* This matches the grid tiles, so it's aligned */
+}
+
 /* ON SMALLER SCREENS */
 @media (max-width: 1199px) {
 
@@ -46,6 +50,11 @@
 /* Center title and text */
 .dataviz-title {
   text-align: center;
+}
+
+/* On small screens we want more space */
+h1{
+  margin-top: 1em; /* This matches the grid tiles, so it's aligned */
 }
 
 }
@@ -112,7 +121,7 @@
     z-index: 10;
     padding: 20px;
     text-align: center;
-    /* color: var(--background-colour); */
+    /* color: var(--dark-accent-colour); */
 }
 
 /* Black cover and title will disappear on hover */

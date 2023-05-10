@@ -5,23 +5,36 @@
 
 /* SET CSS VARIABLES (ACCESSIBLE EVERYWHERE) */
 :root {
-  --background-colour: #000080; /* Default background colour */
-  --accent-colour: #3f51b5; /* Accenting e.g. on icons */
-  --text-colour: #0d0d0d; /* Text in navbar (and elsewhere?) */
+  /* Main palette */
+  --accent-colour: #3f51b5; /* Used for accenting on e.g. icons */
+  --dark-accent-colour: #000080; /* For darker accents e.g. hover icons and title */
+  --text-colour: #0d0d0d; /* Default colour of text (body and title) */
+  --navbar-background-colour: #fffff7; /* Colour of navbar */
+  --navbar-text-colour: #808080; /* For everything in navbar other than title */
+  --body-background-colour: #fadadd; /* Background of main body (below navbar) */
+  /* Code chunk palette */
+  --code-background-colour: rgba(213, 36, 87, 0.2); /* Background colour of code chunks */
+  /* Fonts */
   --main-font: 'Raleway'; /* This is the main body font */
   --subheader-font: 'Nixie One'; /* Other headers */
-  --header-font: 'Yeseva One'; /* <hx> font */
+  --header-font: 'Yeseva One'; /* <h1> font */
 }
 
 /* Defaults title */
 h1 {
   font-family: var(--header-font);
   font-size: 3rem;
+  color: var(--text-colour);
 }
 
 /* Defaults subtitles */
 h2, h3, h4, h5, h6 {
   font-family: var(--subheader-font);
+  color: var(--text-colour);
+}
+
+p {
+  color: var(--text-colour);
 }
 
 /* Text inside header is flush to sides */
@@ -32,20 +45,20 @@ h2, h3, h4, h5, h6 {
 
 /* Not sure what the quarto-category class is used for...*/
 .quarto-category {
-  background: var(--accent-colour) !important;
-    color: white !important;
-    border-radius: 45px !important;
-    padding: 3px 8px !important;
-    text-align: center !important;
-    width: max-content !important;
-    display: inline !important;
-    margin-right: 8px !important;
-    border: 0px solid white !important;
+  background: var(--accent-colour);
+    color: white;
+    border-radius: 45px;
+    padding: 3px 8px;
+    text-align: center;
+    width: max-content;
+    display: inline;
+    margin-right: 8px;
+    border: 0px solid white;
 }
 
 /* Also not sure... */
 .navbar-collapse {
-  background: #fffff7;
+  background: var(--navbar-background-colour);
 }
 
 /* Also unsure... */
@@ -64,7 +77,7 @@ h2, h3, h4, h5, h6 {
 
 /* Also unsure... */
 .quarto-title-meta {
-  display: none !important;
+  display: none;
 }
 
 /* Hide table of contents by default (may want to override this in blogs) */
@@ -74,7 +87,7 @@ h2, h3, h4, h5, h6 {
 
 /* Also unsure... */
 .quarto-margin-sidebar {
-  display: none !important;
+  display: none;
 }
 
 /* Defaults for other headers */
@@ -97,6 +110,7 @@ p {
 
 body {
   font-family: var(--main-font);
+  background: var(--body-background-colour);
 }
 
 /* Also unsure... */
@@ -106,7 +120,7 @@ body {
 
 /* Also unsure... */
 ::selection {
-  background-color: #fffff7;
+  background-color: var(--navbar-background-colour);
 }
 
 /**** navbar overrides *****/
@@ -123,7 +137,7 @@ body {
     /* currently we the gradient occurs from transparent to full colour at 90% */
     /* this means that basically the box is transparent for the first 90% and then coloured */
     /* if we adjust the 90% values, we can make a nice gradient */
-    background-image: linear-gradient(transparent 90%, var(--background-colour) 90%);
+    background-image: linear-gradient(transparent 90%, var(--dark-accent-colour) 90%);
     /* By default the background has 0% width (i.e. not visible)*/
     background-size: 0% 100%;
     background-repeat: no-repeat;
@@ -145,10 +159,11 @@ header nav {
 
 /* Colour and contents navbar */
 .navbar {
-  background-color: #fffff7;
-  /* box-shadow: 0 0 50px rgba(252, 252, 252, 0.76); */
+  background-color: var(--navbar-background-colour);
+  /* Have slight white shadow under navbar (create smooth transition) */
+  box-shadow: 0 0 50px rgba(252, 252, 252, 0.8);
   /* text-transform: lowercase; */
-  background-image: linear-gradient(to bottom,  #fffff7,  #fffff7,  #fffff7,  #fffff7ed,  #fffff7ba,  #fffff7);  
+  background-image: linear-gradient(to bottom,  var(--navbar-background-colour),  var(--navbar-background-colour),  var(--navbar-background-colour),  var(--navbar-background-colour),  var(--navbar-background-colour),  var(--navbar-background-colour));  
   /* No matter how small screen gets navbar can't get less than 100px*/
   min-height: 100px;
   position: fixed;
@@ -183,7 +198,7 @@ header nav {
 
 /* Everything on navbar is grey (except title which we overwrite above) with .navbar-title*/
 .navbar-dark .navbar-nav .nav-link {
-  color: gray;
+  color: var(--navbar-text-colour);
 }
 
 /* Not sure what this does... */
@@ -238,11 +253,6 @@ a.nav-link.active:after {
   width: 70%;
 }
 
-/* Background under navbar */
-body {
-  background: #fadadd;
-}
-
 /* Toggle dark and light theme (currently not active) */
 .navbar-dark .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='gray' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
@@ -293,8 +303,8 @@ p > a:hover::before {
 
 /* Code block colours */
 div.sourceCode {
-    background-color: rgba(213, 36, 87,0.2);
-    border: 1px solid rgba(213, 36, 87,0.25);
+    background-color: var(--code-background-colour);
+    border: 1px solid var(--code-background-colour);
     border-radius: 0.25rem;
 }
 
@@ -311,5 +321,5 @@ code span.at {
 }
 
 code span.cn {
-    color: var(--background-colour);
+    color: var(--dark-accent-colour);
 }

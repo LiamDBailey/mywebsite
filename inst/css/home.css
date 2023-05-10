@@ -80,13 +80,13 @@ i.icon{
 
 /* What colour to icons change on hover */
 i.link:hover {
-  color: var(--background-colour);
+  color: var(--dark-accent-colour);
 }
 
 /* If the box containing social icons (e.g. Twitter) extends past x limits */
 /* The overflow will be hidden */
 .social .cell-output-display:not(.no-overflow-x) {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 /* How does box containing socials behave? */
