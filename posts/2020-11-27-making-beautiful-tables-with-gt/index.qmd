@@ -49,7 +49,7 @@ packageVersion("gt")
 `gt` integrates well into the existing `tidyverse`, and creating a `gt` table is as simple as two lines of code.
 
 ::: {.callout-note}
-## Data note
+## Note
 
 For this example we're just showing the worst emitters.
 :::

@@ -390,6 +390,7 @@ so that it all fills */
 .callout-title-container {
   font-size: 12pt;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 .callout-body-container p{
