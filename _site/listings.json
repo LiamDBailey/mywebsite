@@ -1,11 +1,7 @@
 [
   {
-    "listing": "/index.html",
-    "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html",
-      "/posts/2020-11-27-making-beautiful-tables-with-gt/index.html"
-    ]
+    "listing": "/dataviz.html",
+    "items": []
   },
   {
     "listing": "/blog.html",
@@ -25,9 +21,5 @@
       "/posts/2020-12-02-building-maps-with-openstreetmap-content/index.html",
       "/posts/2020-11-27-making-beautiful-tables-with-gt/index.html"
     ]
-  },
-  {
-    "listing": "/dataviz.html",
-    "items": []
   }
 ]

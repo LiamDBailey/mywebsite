@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -99,7 +70,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
@@ -134,43 +104,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Dr.&nbsp;Liam D. Bailey</span>
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
  <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../dataviz.html">
+    <a class="nav-link" href="../../dataviz.html" rel="" target="">
  <span class="menu-text">dataviz</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../assets/LiamDBailey_CV.pdf">
+    <a class="nav-link" href="../../assets/LiamDBailey_CV.pdf" rel="" target="">
  <span class="menu-text">resume</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/LiamDBailey"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/LiamDBailey" rel="" target="_blank"><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/ldbailey255"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/ldbailey255" rel="" target="_blank"><i class="bi bi-twitter" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
-          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -241,13 +208,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This will hopefully be the first in many <a href="https://github.com/rfordatascience/tidytuesday">TidyTuesday</a> data visualization posts! This week I joined the TidyTuesday group at <a href="https://correlaid.org/">CorrelAid</a> to brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups <a href="https://tidytuesday.correlaid.org/">here</a>.</p>
 <p><br></p>
 <section id="introduction-analysing-income-inequality" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-analysing-income-inequality">Introduction: Analysing income inequality</h2>
+<h2 data-anchor-id="introduction-analysing-income-inequality">Introduction: Analysing income inequality</h2>
 <hr>
 <p>Income and wealth inequality in the world’s major economies has become an increasing concern over the past decade [<a href="https://www.pewresearch.org/social-trends/2020/01/09/trends-in-income-and-wealth-inequality">1</a>, <a href="http://www.oecd.org/social/inequality.htm">2</a>, <a href="https://www.imf.org/en/Topics/Inequality#:~:text=Global%20inequality%20has%20fallen%20in,for%20sustained%20long%2Dterm%20growth.">3</a>]. We often see income inequality quantified using tools such as the <a href="https://data.oecd.org/inequality/income-inequality.htm">Gini Coeffient</a> or other <a href="https://doi.org/10.1086/316995">more complex metrics</a>, which compare the income of all individuals across society. Unfortunately, broad societal metrics often fail to highlight other inequalities between subgroups, such as <a href="https://ec.europa.eu/info/policies/justice-and-fundamental-rights/gender-equality/equal-pay/gender-pay-gap-situation-eu_en">gender</a> and <a href="https://www.federalreserve.gov/econres/notes/feds-notes/disparities-in-wealth-by-race-and-ethnicity-in-the-2019-survey-of-consumer-finances-20200928.htm">race</a>. In this week’s TidyTuesday, I visualise a rough metric of racial inequality in the US since 2010, and demonstrate how things have become more unequal over time.</p>
 <p><br></p>
 </section>
 <section id="setup-data-and-packages" class="level2">
-<h2 class="anchored" data-anchor-id="setup-data-and-packages">Setup: Data and packages</h2>
+<h2 data-anchor-id="setup-data-and-packages">Setup: Data and packages</h2>
 <hr>
 <p>TidyTuesday Week 9 (2021) used employment and earning data from the US Bureau of Labor Statistics collected since 2010. There are a number of interesting ways we can wrangle and visualise this data, I’ll focus on racial inequality in income. We won’t need many advanced packages for this:</p>
 <div class="cell">
@@ -285,7 +252,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 </section>
 <section id="exploration-how-does-the-data-look" class="level2">
-<h2 class="anchored" data-anchor-id="exploration-how-does-the-data-look">Exploration: How does the data look?</h2>
+<h2 data-anchor-id="exploration-how-does-the-data-look">Exploration: How does the data look?</h2>
 <hr>
 <p>My idea was to look at racial differences in income, so we’ll focus on the <code>earn</code> data frame. Before we go any further, we need to have a quick look at the data and see how it’s structured.</p>
 <div class="cell">
@@ -314,7 +281,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 </section>
 <section id="initial-plots-what-can-we-see-when-we-start-plotting" class="level2">
-<h2 class="anchored" data-anchor-id="initial-plots-what-can-we-see-when-we-start-plotting">Initial plots: What can we see when we start plotting?</h2>
+<h2 data-anchor-id="initial-plots-what-can-we-see-when-we-start-plotting">Initial plots: What can we see when we start plotting?</h2>
 <hr>
 <p>Now we’ve got our data we can start plotting. I find it’s always best to visualise the data in as simple a format as possible before we try to achieve anything more complex and I always like the violin/boxplot combination as a first step.</p>
 <div class="cell">
@@ -350,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 </section>
 <section id="digging-deeper-quantifying-inequality" class="level2">
-<h2 class="anchored" data-anchor-id="digging-deeper-quantifying-inequality">Digging deeper: Quantifying inequality</h2>
+<h2 data-anchor-id="digging-deeper-quantifying-inequality">Digging deeper: Quantifying inequality</h2>
 <hr>
 <p>It looks like inequality has worsened over time, with earnings for those who identify as Asian appearing to increase more rapidly than Black or White. If we’re really interested in visualising this trend, we need some way to quantify the level of racial income inequality at any time point.</p>
 <p>A crude (but easy!) way we can do this is just to look at the proportional difference between the lowest and highest income group. If racial income inequality is small, we should get a value close to 1. When inequality is large, this number will be below 1 as the income from the lowest earning group will be only a fraction of the higher earning group.</p>
@@ -404,7 +371,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 </section>
 <section id="the-finishing-touches-making-things-look-pretty" class="level2">
-<h2 class="anchored" data-anchor-id="the-finishing-touches-making-things-look-pretty">The finishing touches: Making things look pretty</h2>
+<h2 data-anchor-id="the-finishing-touches-making-things-look-pretty">The finishing touches: Making things look pretty</h2>
 <hr>
 <p>This a really interesting result, and a good foundation for a TidyTuesday submission. Now we just need to make it prettier. One issue for somebody viewing this data is the large quarter to quarter variation in our inequality measure. We can perhaps visualise the trends a little better by creating a rolling mean of inequality over 3 quarters. We can also add custom fonts and more informative titles/subtitles to make the plot easier to read.</p>
 <div class="cell">
@@ -460,7 +427,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 </section>
 <section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion:</h2>
+<h2 data-anchor-id="conclusion">Conclusion:</h2>
 <hr>
 <p>This plot isn’t the most technically difficult, we’re just using basic <code>geom_xxx()</code> functions, but we used a bit of data wrangling to extract more information from some messy original data and present an interesting (and troubling) story.</p>
 
@@ -488,16 +455,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -562,6 +536,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -599,6 +659,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp("https:\/\/gorgeous-moxie-94ff8b\.netlify\.app\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
