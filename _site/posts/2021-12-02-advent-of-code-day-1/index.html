@@ -8,6 +8,7 @@
 
 <meta name="author" content="Liam D. Bailey">
 <meta name="dcterms.date" content="2021-12-02">
+<meta name="description" content="Day 1">
 
 <title>Dr.&nbsp;Liam D. Bailey</title>
 <style>
@@ -145,7 +146,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Advent of Code 2021</h1>
-                                <div class="quarto-categories">
+                  <div>
+        <div class="description">
+          Day 1
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">R</div>
               </div>
                   </div>
@@ -180,15 +186,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#day-1-let-the-advent-of-code-challenge-begin" id="toc-day-1-let-the-advent-of-code-challenge-begin" class="nav-link active" data-scroll-target="#day-1-let-the-advent-of-code-challenge-begin">Day 1: Let the (Advent of Code) challenge begin!</a>
-  <ul class="collapse">
+  <li><a href="#day-1-let-the-advent-of-code-challenge-begin" id="toc-day-1-let-the-advent-of-code-challenge-begin" class="nav-link active" data-scroll-target="#day-1-let-the-advent-of-code-challenge-begin">Day 1: Let the (Advent of Code) challenge begin!</a></li>
   <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a></li>
   <li><a href="#the-challenges" id="toc-the-challenges" class="nav-link" data-scroll-target="#the-challenges">The Challenges</a>
   <ul class="collapse">
   <li><a href="#challenge-1" id="toc-challenge-1" class="nav-link" data-scroll-target="#challenge-1">Challenge 1</a></li>
   <li><a href="#challenge-2" id="toc-challenge-2" class="nav-link" data-scroll-target="#challenge-2">Challenge 2</a></li>
   <li><a href="#bonus-round" id="toc-bonus-round" class="nav-link" data-scroll-target="#bonus-round">BONUS ROUND!</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -201,10 +205,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>It’s that time of year again. Houses are lit up, presents are being bought, and Michael Bublé has emerged from his hibernation to create another album of Christmas songs. This year, in the spirit of giving, I will share my code for the 2021 <a href="https://adventofcode.com/2021/about">Advent of Code challenges</a>. Each day is a new small coding challenge and I’ll attempt to upload and explain all my solutions! If I miss posting on any days (or you just want to look at the code in more detail) check out <a href="https://github.com/LiamDBailey/AdventOfCode2021">my GitHub repo</a>.</p>
 <p><img src="https://media.giphy.com/media/cnhih1AM9M7z9oEQva/giphy.gif" class="img-fluid"></p>
-<section id="day-1-let-the-advent-of-code-challenge-begin" class="level1">
-<h1>Day 1: Let the (Advent of Code) challenge begin!</h1>
-<hr>
-<p><br></p>
+<section id="day-1-let-the-advent-of-code-challenge-begin" class="level2">
+<h2 data-anchor-id="day-1-let-the-advent-of-code-challenge-begin">Day 1: Let the (Advent of Code) challenge begin!</h2>
+</section>
 <section id="the-data" class="level2">
 <h2 data-anchor-id="the-data">The Data</h2>
 <hr>
@@ -384,10 +387,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><img src="fig1.png" class="img-fluid"></p>
 <p>As expected, base R is more efficient, especially if we only need to work with short windows; however, this advantage decreases rapidly as we start to work with larger windows. Although it is slower, I think the tidyverse method I’ve used here is also very versatile, particularly if you want to return a data frame and not just a vector. Either way…they both get the correct result!</p>
-<p><em>Stay tuned for days 2 - 25</em></p>
 
 
-</section>
 </section>
 </section>
 

@@ -19,11 +19,7 @@ It's that time of year again. Houses are lit up, presents are being bought, and 
 
 ![](https://media.giphy.com/media/cnhih1AM9M7z9oEQva/giphy.gif)
 
-# Day 1: Let the (Advent of Code) challenge begin!
-
----
-
-</br>
+## Day 1: Let the (Advent of Code) challenge begin!
 
 ## The Data
 
@@ -252,5 +248,3 @@ ggsave(filename = "fig1.png", height = 6.75, width = 6.75, dpi = 600)
 ![](fig1.png)
 
 As expected, base R is more efficient, especially if we only need to work with short windows; however, this advantage decreases rapidly as we start to work with larger windows. Although it is slower, I think the tidyverse method I've used here is also very versatile, particularly if you want to return a data frame and not just a vector. Either way...they both get the correct result!
-
-*Stay tuned for days 2 - 25*

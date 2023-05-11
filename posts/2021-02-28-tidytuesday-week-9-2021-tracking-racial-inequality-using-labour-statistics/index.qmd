@@ -111,7 +111,7 @@ plot_data <- earn %>%
   
 Now we've got our data we can start plotting. I find it's always best to visualise the data in as simple a format as possible before we try to achieve anything more complex and I always like the violin/boxplot combination as a first step.
 
-```{r, eval = FALSE}
+```{r}
 
 ggplot(data = plot_data) +
   geom_violin(aes(x = race, y = median_weekly_earn, fill = race),
@@ -126,31 +126,10 @@ ggplot(data = plot_data) +
   my_theme()
 
 ```
-
-```{r, include = FALSE}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = plot_data) +
-  geom_violin(aes(x = race, y = median_weekly_earn, fill = race),
-              colour = "black", width = 0.75) +
-  geom_boxplot(aes(x = race, y = median_weekly_earn),
-               colour = "black", width = 0.15, alpha = 0.25) +
-  scale_fill_manual(values = c("#DD5844", "#67B689", "#4383B4")) +
-  labs(x = "", y = "Median weekly income (USD$)",
-       title = "Comparison of earnings between racial groups",
-       subtitle = "",
-       caption = "Data: www.bls.gov | Plot: @ldbailey255") +
-  my_theme()
-
-ggsave(filename = "fig1.png", height = 7, width = 9, dpi = 600, scale = 0.75)
-
-```
-
-![](fig1.png)
 
 We can already clearly see a difference in income between racial groups at this very broad aggregation. Has this improved or worsened over the past decade? We can break our plot down into individual quarters to show how income in the three racial groups has changed.
 
-```{r, eval = FALSE}
+```{r}
 
 ggplot(data = plot_data) +
   geom_col(aes(x = time, y = median_weekly_earn, fill = race),
@@ -166,28 +145,6 @@ ggplot(data = plot_data) +
   theme(legend.position = "bottom")
 
 ```
-
-```{r, include = FALSE}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = plot_data) +
-  geom_col(aes(x = time, y = median_weekly_earn, fill = race),
-           colour = "black") +
-  scale_fill_manual(values = c("#DD5844", "#67B689", "#4383B4"), name = "Race:") +
-  scale_x_continuous(breaks = seq(2010, 2021, 1)) +
-  labs(x = "", y = "Median weekly income (USD$)",
-       title = "Change in income over time",
-       subtitle = "",
-       caption = "Data: www.bls.gov | Plot: @ldbailey255") +
-  my_theme() +
-  #Legend would be useful here
-  theme(legend.position = "bottom")
-
-ggsave(filename = "fig2.png", height = 7, width = 9, dpi = 600, scale = 0.75)
-
-```
-
-![](fig2.png)
 
 </br>
   
@@ -214,7 +171,7 @@ plot_data_inequality <- plot_data %>%
 
 ```
 
-```{r, eval = FALSE}
+```{r}
 
 ggplot(data = plot_data_inequality) +
   geom_line(aes(x = time, y = income_ratio), colour = "#193D58", size = 1) +
@@ -228,26 +185,6 @@ ggplot(data = plot_data_inequality) +
   my_theme()
 
 ```
-
-```{r, include = FALSE}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = plot_data_inequality) +
-  geom_line(aes(x = time, y = income_ratio), colour = "#193D58", size = 1) +
-  geom_hline(aes(yintercept = 1), lty = 2) +
-  geom_text(aes(x = mean(plot_data_inequality$time), y = 0.99, label = "Income parity"), size = 5) +
-  scale_x_continuous(breaks = seq(2010, 2021, 1)) +
-  labs(x = "", y = "Racial income inequality",
-       title = "Change in racial inequality over time",
-       subtitle = "",
-       caption = "Data: www.bls.gov | Plot: @ldbailey255") +
-  my_theme()
-
-ggsave(filename = "fig3.png", height = 7, width = 9, dpi = 600, scale = 0.75)
-
-```
-
-![](fig3.png)
 
 In 2010, our measure of racial inequality gives a value around 0.75, meaning that the lowest earning group (Black) earned on average only 75% of the highest earning group (Asian). By 2020, this number was closer to 65%, a change of 10 percentage points! It seems that racial inequality is getting worse, but is this the same for both sexes? To answer this we'll have to go back to the original data and include separate male and female data rather than 'Both Sexes'. 
 
@@ -263,7 +200,7 @@ inequality_by_sex <- earn %>%
 
 ```
 
-```{r, eval = FALSE}
+```{r}
 
 ggplot() +
   geom_line(data = inequality_by_sex, aes(x = time, y = income_ratio, colour = sex), size = 0.75) +
@@ -280,29 +217,6 @@ ggplot() +
   theme(legend.position = "right")
 
 ```
-
-```{r, include = FALSE}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot() +
-  geom_line(data = inequality_by_sex, aes(x = time, y = income_ratio, colour = sex), size = 0.75) +
-  labs(x = "", y = "Racial income inequality",
-       title = "Change in racial inequality for men and women",
-       subtitle = "",
-       caption = "Data: www.bls.gov | Plot: @ldbailey255") +
-  geom_hline(aes(yintercept = 1), lty = 2) +
-  geom_text(aes(x = mean(inequality_by_sex$time), y = 0.99, label = "Income parity"), size = 5) +
-  scale_colour_manual(name = "Sex", values = c("#266742", "#3255A2")) +
-  scale_x_continuous(breaks = seq(2010, 2021, 1)) +
-  scale_y_continuous(limits = c(NA, 1)) +
-  my_theme() +
-  theme(legend.position = "right")
-
-ggsave(filename = "fig4.png", height = 7, width = 9, dpi = 600, scale = 0.75)
-
-```
-
-![](fig4.png)
 
 Interestingly, we see that racial income inequality is less severe in women (although it has also become worse over time).
 
@@ -340,7 +254,7 @@ inequality_by_sex %>%
 
 ```
 
-```{r, eval=FALSE}
+```{r, fig.height = 8.75, fig.width = 12.25, warning=FALSE}
 
 #Load a font from Google Fonts
 sysfonts::font_add_google("Oswald", "Oswald", regular.wt = 300)
@@ -375,7 +289,7 @@ ggplot() +
   
 ```
 
-![](featured.png)
+<!-- ![](featured.png) -->
 
 </br>
 
