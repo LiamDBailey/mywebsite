@@ -222,7 +222,11 @@ c(factor1, factor2)
 
 ```
 
-Note that the order of the factor levels in the new factor are dependent on the order in which the two factors are concatenated together.
+::: {.callout-note}
+## Note
+
+The order of the factor levels in the new factor are dependent on the order in which the two factors are concatenated together.
+:::
 
 ```{r}
 

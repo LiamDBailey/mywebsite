@@ -186,8 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#r-4.1.0" id="toc-r-4.1.0" class="nav-link active" data-scroll-target="#r-4.1.0">R 4.1.0</a></li>
-  <li><a href="#the-native-pipe" id="toc-the-native-pipe" class="nav-link" data-scroll-target="#the-native-pipe">The native pipe</a>
+  <li><a href="#the-native-pipe" id="toc-the-native-pipe" class="nav-link active" data-scroll-target="#the-native-pipe">The native pipe</a>
   <ul class="collapse">
   <li><a href="#flexible-placement" id="toc-flexible-placement" class="nav-link" data-scroll-target="#flexible-placement">Flexible placement</a></li>
   <li><a href="#short-hand-pipe-functions" id="toc-short-hand-pipe-functions" class="nav-link" data-scroll-target="#short-hand-pipe-functions">Short-hand pipe functions</a></li>
@@ -210,14 +209,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="r-4.1.0" class="level1">
-<h1>R 4.1.0</h1>
 <p>It’s been talked about for awhile, but the next big changes to R, v.4.1.0, are here! For many R users, new versions don’t make a huge amount of difference to their day to day work. I often find people still happpily running R v3.x! This time around, however, v4.1.0 includes some major (and interesting) changes to the base R syntax, which might affect (improve?) people’s workflow. We’ll cover the most talked about changes below. Put on your party hat and lets get into it.</p>
 <p><img src="https://media.giphy.com/media/kyLYXonQYYfwYDIeZl/giphy.gif" class="img-fluid"></p>
 <p><br></p>
-</section>
-<section id="the-native-pipe" class="level1">
-<h1>The native pipe</h1>
+<section id="the-native-pipe" class="level2">
+<h2 data-anchor-id="the-native-pipe">The native pipe</h2>
 <hr>
 <p>Ever since the rise of the <code>tidyverse</code> and <code>magrittr</code> I’ve noticed a worrying divergence in how people write R code. New users, or those that jumped on the <code>tidyverse</code> bandwagon, tended to write long piped code using <code>dplyr</code> functions. Older users, who learned R before the rise of the <code>tidyverse</code>, tended to use nested base functions to achieve the same result. Having a variety of tools to approach the same problem isn’t <em>inherently</em> bad, but it seemed like we were heading towards a world where the two groups were almost using different, incomprehensible, programming languages. Enter the <em>native pipe</em>: <code>|&gt;</code>. With v4.1.0 we now have an inbuilt pipe included in base R syntax. With <code>|&gt;</code> you can build piped code without ever needing to load a <code>tidyverse</code> library!</p>
 <div class="cell">
@@ -310,24 +306,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Return the column sums</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colSums</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            x          y
-1   0.8896869 -0.2138701
-2  -2.2067168  0.1609721
-3   1.7916267 -1.5109801
-4   0.5172365  0.2260602
-5  -0.6368221  0.3274581
-6   0.3188282 -0.3949109
-7  -0.3346745 -2.1968587
-8   1.1183246 -0.8555464
-9   0.4817347  2.1802146
-10  0.4370767  0.3922608</code></pre>
+<pre><code>             x           y
+1   0.04811190 -0.84983356
+2   1.35444231  1.54621507
+3  -0.75320282 -0.86260501
+4  -0.44112554 -0.04582107
+5  -2.03471998  1.86775786
+6   0.01582647 -0.68371930
+7  -1.23930685  0.44333518
+8  -0.80611855  1.35381695
+9   1.38903792  1.18707152
+10  1.10818559  2.08657176</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>col_sums</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        x         y 
- 2.376301 -1.885200 </code></pre>
+-1.358870  6.042789 </code></pre>
 </div>
 </div>
 <p><br></p>
@@ -341,8 +337,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a name="anon"></a></p><a name="anon">
 </a></section><a name="anon">
 </a></section><a name="anon">
-</a><section id="anonymous-functions" class="level1"><a name="anon">
-<h1>Anonymous functions</h1>
+</a><section id="anonymous-functions" class="level2"><a name="anon">
+<h2 data-anchor-id="anonymous-functions">Anonymous functions</h2>
 <hr>
 <p>Another major syntax change that provides base R with capabilities previously available only in the <code>tidyverse</code> are changes to how anonymous functions are written. <code>tidyverse</code> gave the possibility to quickly write anonymous functions using <code>~</code>. With v4.1.0, we can now easily create anonymous functions with the <code>\(x)</code> syntax.</p>
 </a><div class="cell"><a name="anon">
@@ -392,8 +388,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 </section>
 </section>
-<section id="concatenating-factors" class="level1">
-<h1>Concatenating factors</h1>
+<section id="concatenating-factors" class="level2">
+<h2 data-anchor-id="concatenating-factors">Concatenating factors</h2>
 <hr>
 <p>One smaller change that might be useful to regular R users is the new ability to concatenate factors together. Previously, trying to concatenate different factors would coerce all levels into their underlying integers (how the data are actually stored within R). With v4.1.0, factors can be concatenated and stay as factors, combining together all the levels from the two original factors.</p>
 <div class="cell">
@@ -406,7 +402,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Levels: Apple Orange Banana Strawberry</code></pre>
 </div>
 </div>
-<p>Note that the order of the factor levels in the new factor are dependent on the order in which the two factors are concatenated together.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The order of the factor levels in the new factor are dependent on the order in which the two factors are concatenated together.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Levels start with Apple</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(factor1, factor2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -423,8 +431,8 @@ Levels: Banana Strawberry Apple Orange</code></pre>
 </div>
 <p><br></p>
 </section>
-<section id="wrap-up" class="level1">
-<h1>Wrap up</h1>
+<section id="wrap-up" class="level2">
+<h2 data-anchor-id="wrap-up">Wrap up</h2>
 <hr>
 <p>R v4.1.0 marks an exciting step in R development. The introduction of native pipe and easy anonymous functions will allow users to take advantage of these useful tools even if they’re more comfortable in base R than the <code>tidyverse</code>. While I might not be switching over to using native pipe just yet, I’m really excited to see where this leads in future updates!</p>
 

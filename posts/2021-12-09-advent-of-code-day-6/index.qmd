@@ -163,7 +163,11 @@ $$N_{t+1} = RN_{t}$$
 
 Where the population at time t ($N_{t}$) will grow by a constant reproduction factor ($R$). This parameter $R$ will be different for every animal and population, but we can estimate it by looking at the relationship between $N_{t}$ and $N_{t+1}$ in the data we have already. Let's imagine we only have population size data from the first 100 days. We can use a linear model (`lm()`) to estimate the relationship between $N_{t}$ and $N_{t+1}$ in this subset of data.
 
-**Note: We fix the intercept of the model below to be 0 by including `~ 0 + ...` in the model formula. This normally wouldn't be advised, but in this case we know _a priori_ that when $N_{t}$ is 0, $N_{t+1}$ must also be 0. An extinct population can't grow!!**
+::: {.callout-note}
+## Note
+
+We fix the intercept of the model below to be 0 by including `~ 0 + ...` in the model formula. This normally wouldn't be advised, but in this case we know _a priori_ that when $N_{t}$ is 0, $N_{t+1}$ must also be 0. An extinct population can't grow!!
+:::
 
 ```{r}
 

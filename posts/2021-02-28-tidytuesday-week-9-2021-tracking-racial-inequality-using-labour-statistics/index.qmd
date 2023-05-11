@@ -87,7 +87,11 @@ head(earn)
 
 I can already see a few difficulties! Firstly, the columns sex, race, and age include aggregate categories like 'Both Sexes' and 'All Races'. We need to be careful how we deal with these columns so we don't double count individuals. To start with, we'll group all ages and sexes and just look at racial differences. Secondly, out measure of 'time' is separated into two columns 'year' and 'quarter'. If we want to analyse trends over time we'll need to combine these two pieces of information. We can create an aggregate 'time' column where each financial quarter is added to year as a fraction (e.g. 2010 quarter 1 = 2010.0, 2010 quarter 2 = 2010.25).
 
-*Note:* 'Hispanic' does not fit neatly within the 'race' categories and is instead included under 'ethnic_origin'. For simplicity we'll be ignoring this column, but we are likely missing some nuance by doing so!
+::: {.callout-note}
+## Note
+
+'Hispanic' does not fit neatly within the 'race' categories and is instead included under 'ethnic_origin'. For simplicity we'll be ignoring this column, but we are likely missing some nuance by doing so!
+:::
   
 ```{r}
 
@@ -195,7 +199,11 @@ It looks like inequality has worsened over time, with earnings for those who ide
 
 A crude (but easy!) way we can do this is just to look at the proportional difference between the lowest and highest income group. If racial income inequality is small, we should get a value close to 1. When inequality is large, this number will be below 1 as the income from the lowest earning group will be only a fraction of the higher earning group.
 
-*Note:* Our measure seeks to identify racial income inequality regardless of who the lowest and highest earning racial group is in any quarter. Although it doesn't occur in this data, it's possible that the lowest and/or highest earning group could change over time!
+::: {.callout-note}
+## Note
+
+Our measure seeks to identify racial income inequality regardless of who the lowest and highest earning racial group is in any quarter. Although it doesn't occur in this data, it's possible that the lowest and/or highest earning group could change over time!
+:::
 
 ```{r}
 
@@ -296,7 +304,13 @@ ggsave(filename = "fig4.png", height = 7, width = 9, dpi = 600, scale = 0.75)
 
 ![](fig4.png)
 
-Interestingly, we see that racial income inequality is less severe in women (although it has also become worse over time). *Note:* This doesn't show that women earn *more*, just that the difference in income due to race is less for women!
+Interestingly, we see that racial income inequality is less severe in women (although it has also become worse over time).
+
+::: {.callout-note}
+## Note
+
+This doesn't show that women earn *more*, just that the difference in income due to race is less for women!
+:::
 
 </br>
 

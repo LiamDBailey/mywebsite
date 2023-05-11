@@ -507,7 +507,7 @@ showtext::showtext_auto()
 
 ```
 
-```{r, eval=FALSE, fig.showtext=TRUE}
+```{r, eval = FALSE, fig.showtext=TRUE}
 
 main_plot <- ggplot(data = bond_era_ratings_png) +
   geom_rect(aes(xmin = first_nr, xmax = last_nr, ymin = -Inf, ymax = Inf, fill = surname),

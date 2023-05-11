@@ -256,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>}})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.026   0.010   0.037 </code></pre>
+  0.020   0.007   0.028 </code></pre>
 </div>
 </div>
 <p>This ran in no time and we can quickly get our answer! It seems that the brute force approach works fine.</p>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Timeout after 60 seconds</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">timeout =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>[2023-05-08 18:20:28] TimeoutException: reached elapsed time limit [cpu=60s,
+<pre><code>[2023-05-11 18:06:46] TimeoutException: reached elapsed time limit [cpu=60s,
 elapsed=60s]</code></pre>
 </div>
 </div>
@@ -328,7 +328,7 @@ elapsed=60s]</code></pre>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>}})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.005   0.000   0.004 </code></pre>
+  0.004   0.000   0.003 </code></pre>
 </div>
 </div>
 <p>As you can see, our final population size is very large…no wonder we couldn’t use the brute force approach.</p>
@@ -346,7 +346,19 @@ elapsed=60s]</code></pre>
 <p>In this example, we are given information that the population is growing <em>exponentially</em> and this can be modelled using the exponential growth model:</p>
 <p><span class="math display">\[N_{t+1} = RN_{t}\]</span></p>
 <p>Where the population at time t (<span class="math inline">\(N_{t}\)</span>) will grow by a constant reproduction factor (<span class="math inline">\(R\)</span>). This parameter <span class="math inline">\(R\)</span> will be different for every animal and population, but we can estimate it by looking at the relationship between <span class="math inline">\(N_{t}\)</span> and <span class="math inline">\(N_{t+1}\)</span> in the data we have already. Let’s imagine we only have population size data from the first 100 days. We can use a linear model (<code>lm()</code>) to estimate the relationship between <span class="math inline">\(N_{t}\)</span> and <span class="math inline">\(N_{t+1}\)</span> in this subset of data.</p>
-<p><strong>Note: We fix the intercept of the model below to be 0 by including <code>~ 0 + ...</code> in the model formula. This normally wouldn’t be advised, but in this case we know <em>a priori</em> that when <span class="math inline">\(N_{t}\)</span> is 0, <span class="math inline">\(N_{t+1}\)</span> must also be 0. An extinct population can’t grow!!</strong></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We fix the intercept of the model below to be 0 by including <code>~ 0 + ...</code> in the model formula. This normally wouldn’t be advised, but in this case we know <em>a priori</em> that when <span class="math inline">\(N_{t}\)</span> is 0, <span class="math inline">\(N_{t+1}\)</span> must also be 0. An extinct population can’t grow!!</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>input_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">nt =</span> pop_size[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nt_1 =</span> <span class="fu">lead</span>(nt))</span>
