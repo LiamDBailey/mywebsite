@@ -48,7 +48,11 @@ packageVersion("gt")
 
 `gt` integrates well into the existing `tidyverse`, and creating a `gt` table is as simple as two lines of code.
 
-**NOTE:** For this example we're just showing the worst emitters.
+::: {.callout-note}
+## Data note
+
+For this example we're just showing the worst emitters.
+:::
 
 ```{r}
 
@@ -64,7 +68,11 @@ head(emissions_data) %>%
 
 A table, yes, but not one you're likely to publish! To take our first steps towards table perfection we need to tidy up the data and add a title and data source. The reader needs to understand what's going on. While much of the tidying could be completed using `dplyr` before converting to a table I'll demonstrate how this could be achieved exclusively inside `gt`.
 
-**TIP:** Notice how we select columns using the generic `c()`. For larger, more complex data tidy-select functions like `starts_with()` or `contains()` may come in handy.
+::: {.callout-tip}
+## Coding tip
+
+Notice how we select columns using the generic `c()`. For larger, more complex data tidy-select functions like `starts_with()` or `contains()` may come in handy.
+:::
 
 ```{r}
 
@@ -85,7 +93,11 @@ A table, yes, but not one you're likely to publish! To take our first steps towa
 
 A few lines of code and the table is already much better. To me there is still one issues that needs to be fixed before we've finished the basics. While it's technically correct to report emissions in tonnes I feel the data would be much more suitable in kilograms. For this we'll use `fmt_number()`.
 
-**TIP:** There are `fmt_xxx()` functions for many different data types, including `fmt_currency()` and `fmt_date()`.
+::: {.callout-tip}
+## Coding tip
+
+There are `fmt_xxx()` functions for many different data types, including `fmt_currency()` and `fmt_date()`.
+:::
 
 ```{r}
 

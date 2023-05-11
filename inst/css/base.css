@@ -2,7 +2,7 @@
 /* HEAVILY INFLUENCED BY https://maya.rbind.io/*/
 
 /* IMPORT FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway&display=swap&family=Yeseva+One&display=swap&family=Arvo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito+Sans:wght@200&family=Roboto+Mono:wght@300&family=Sanchez&display=swap&family=Quicksand&display=swap&family=Nixie+One&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Yeseva+One&display=swap&family=Arvo&display=swap');
 
 /* SET CSS VARIABLES (ACCESSIBLE EVERYWHERE) */
 :root {
@@ -376,4 +376,22 @@ so that it all fills */
     padding-right: 2vw;
   }
 
+}
+
+/**** CALLOUT STYLING ****/
+/* Change how callouts look */
+
+/* Make background dark with light text */
+/* .callout {
+ background: #24292e;
+} */
+
+/* Make title bigger and bold */
+.callout-title-container {
+  font-size: 12pt;
+  font-weight: 700;
+}
+
+.callout-body-container p{
+  color: #24292e;
 }
