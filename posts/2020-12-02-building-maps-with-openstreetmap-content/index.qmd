@@ -59,7 +59,11 @@ Then we can use the `opq()` function to start querying the OpenStreetMap API. Yo
 
 The first thing we'll want to add to the query is the type of feature we want to return with `add_osm_feature()`. There are *a lot* of possible objects we could extract from OpenStreetMap. In this case we want to find train lines and stations. The key-value pair to use is not always obvious (e.g. a cycle path is under the 'highway' key), so you may want to explore different key-value pairs [here](https://taginfo.openstreetmap.org/keys) or search for specific features on [Nominatim](https://nominatim.openstreetmap.org/ui/search.html).
 
-**TIP:** If you're querying over a large area it can be good to increase the `timeout` argument from the default 25.
+::: {.callout-tip}
+## Coding tip
+
+If you're querying over a large area it can be good to increase the `timeout` argument from the default 25.
+:::
 
 ```{r}
 
@@ -145,7 +149,11 @@ ggplot() +
 
 Using OpenStreetMap gives us access to a huge source of spatial information, but because the data is created by a community of volunteers it can often require some cleaning. In our case, we can see there are a few stations that do not have corresponding train lines. This may occur because the train lines have been stored with a different key-value combination or are stored as a different object type, such as a polygon. For now, we will only include stations that are close (less than 1km) from a train line.
 
-**Note**: We do not use overlap because this will require points to sit exactly on the lines, which will often not occur due to things such as measurement error in the point locations.
+::: {.callout-note}
+## Note
+
+We do not use overlap because this will require points to sit exactly on the lines, which will often not occur due to things such as measurement error in the point locations.
+:::
 
 ```{r}
 

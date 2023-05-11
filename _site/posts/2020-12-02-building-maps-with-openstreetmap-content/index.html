@@ -240,7 +240,19 @@ y -38.49937 -37.40175</code></pre>
 </div>
 <p>Then we can use the <code>opq()</code> function to start querying the OpenStreetMap API. You can build the query using pipes.</p>
 <p>The first thing we’ll want to add to the query is the type of feature we want to return with <code>add_osm_feature()</code>. There are <em>a lot</em> of possible objects we could extract from OpenStreetMap. In this case we want to find train lines and stations. The key-value pair to use is not always obvious (e.g.&nbsp;a cycle path is under the ‘highway’ key), so you may want to explore different key-value pairs <a href="https://taginfo.openstreetmap.org/keys">here</a> or search for specific features on <a href="https://nominatim.openstreetmap.org/ui/search.html">Nominatim</a>.</p>
-<p><strong>TIP:</strong> If you’re querying over a large area it can be good to increase the <code>timeout</code> argument from the default 25.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Coding tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re querying over a large area it can be good to increase the <code>timeout</code> argument from the default 25.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Query railway lines</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>melb_query_line <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> melb_bb, <span class="at">timeout =</span> <span class="dv">120</span>) <span class="sc">%&gt;%</span> </span>
@@ -345,7 +357,19 @@ attr(,"nodes_only")
 </div>
 </div>
 <p>Using OpenStreetMap gives us access to a huge source of spatial information, but because the data is created by a community of volunteers it can often require some cleaning. In our case, we can see there are a few stations that do not have corresponding train lines. This may occur because the train lines have been stored with a different key-value combination or are stored as a different object type, such as a polygon. For now, we will only include stations that are close (less than 1km) from a train line.</p>
-<p><strong>Note</strong>: We do not use overlap because this will require points to sit exactly on the lines, which will often not occur due to things such as measurement error in the point locations.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We do not use overlap because this will require points to sit exactly on the lines, which will often not occur due to things such as measurement error in the point locations.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#For each station, determine the distance to all train lines</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>min_dist <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_distance</span>(melbourne_station_points,</span>
