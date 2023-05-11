@@ -285,7 +285,8 @@ ggplot() +
         axis.text = element_text(colour = "black", size = 12, family = "Oswald"),
         plot.title = element_text(face = "bold", size = 32, family = "Oswald"),
         plot.subtitle = element_text(size = 20, family = "Oswald"),
-        plot.caption = element_text(size = 10, family = "Ubuntu Mono"))
+        plot.caption = element_text(size = 10, family = "Ubuntu Mono"),
+        plot.margin = margin(30, 30, 30, 30))
   
 ```
 
