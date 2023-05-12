@@ -5,6 +5,8 @@ date: '2020-11-27'
 description: "OR: How I learnt to stop worrying and love the table"
 categories: [R]
 image: "featured.png"
+highlight-style: github-dark
+code-block-border-left: "#3f51b5"
 ---
 
 ```{r, echo = FALSE}
