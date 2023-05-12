@@ -174,7 +174,7 @@ tidy_windowfunc(data = day1_data, window_size = 3) == base_windowfunc(data = day
 
 So which one is faster? I would assume that by working exclusively with vectors our base R function will be faster than our tidy function that spends some time manipulating a data frame. Is this actually the case? And if so, how much faster do we get? Let's look at the number of iterations/sec for each function and different window sizes using the `mark()` function in the `bench` package.
 
-```{r, eval = FALSE}
+```{r, fig.height=6.75, fig.width=6.75}
 
 library(bench)
 
@@ -207,44 +207,5 @@ ggplot(bench_df) +
         legend.title = element_blank())
 
 ```
-
-```{r, include = FALSE, fig.height=6.75, fig.width=6.75}
-
-library(bench)
-
-bench_df <- map_df(.x = 1:20,
-                   .f = function(i){
-                     
-                     times <- mark(tidy_windowfunc(data = day1_data, window_size = i),
-                                   base_windowfunc(data = day1_data, window_size = i))
-                     
-                     data.frame(method = c("tidy", "base"),
-                                size = i,
-                                number_per_sec = times$`itr/sec`,
-                                speed_sec = 1/times$`itr/sec`)
-                     
-                   })
-
-ggplot(bench_df) +
-  geom_line(aes(x = size, y = number_per_sec, colour = method), size = 1) +
-  geom_point(aes(x = size, y = number_per_sec, colour = method), stroke = 1.5, shape = 21, fill = "white") +
-  scale_y_continuous(name = "Iterations/sec",
-                     breaks = seq(0, 15000, 5000), limits = c(0, 15000)) +
-  scale_x_continuous(name = "Window size") +
-  scale_colour_discrete(name = "") +
-  labs(title = "Advent of Code Day 1",
-       subtitle = "base v. tidyverse approach") +
-  theme_classic(base_family = "Courier New") +
-  theme(axis.text = element_text(colour = "black"),
-        legend.position = c(0.8, 0.8),
-        legend.background = element_rect(colour = "black"),
-        legend.title = element_blank())
-
-ggsave(filename = "fig1.png", height = 6.75, width = 6.75, dpi = 600)
-# ggsave(filename = "fig1.svg", height = 6.75, width = 6.75, device = "svg")
-
-```
-
-![](fig1.png)
 
 As expected, base R is more efficient, especially if we only need to work with short windows; however, this advantage decreases rapidly as we start to work with larger windows. Although it is slower, I think the tidyverse method I've used here is also very versatile, particularly if you want to return a data frame and not just a vector. Either way...they both get the correct result!

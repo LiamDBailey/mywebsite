@@ -127,7 +127,7 @@ head(bond_movies)
   
 We now have Bechdel scores of all (but one) of the Bond movies. To start exploring we can create a very rough plot to look at the average Bechdel score of each James Bond actor.
 
-```{r, eval = FALSE}
+```{r, fig.height=6.75, fig.width=6.75}
 
 ggplot(data = bond_movies) +
   geom_boxplot(aes(x = actor, y = bond_rating, fill = actor),
@@ -143,29 +143,6 @@ ggplot(data = bond_movies) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
 ```
-
-```{r, include = FALSE, fig.height=6.75, fig.width=6.75}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = bond_movies) +
-  geom_boxplot(aes(x = actor, y = bond_rating, fill = actor),
-               colour = "black", width = 0.15, alpha = 0.25) +
-  #Just use viridis fill for now
-  scale_fill_viridis_d() +
-  scale_y_continuous(breaks = c(1, 2, 3)) +
-  labs(x = "", y = "Bechdel score",
-       title = "Bechdel score of each Bond",
-       subtitle = "",
-       caption = "Data: FiveThirtyEight | Plot: @ldbailey255") +
-  my_theme() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
-
-# ggsave(filename = "fig1.png", height = 6.75, width = 6.75, dpi = 600)
-ggsave(filename = "fig1.svg", height = 6.75, width = 6.75, device = "svg")
-
-```
-
-![](fig1.svg)
 
 We can see there are differences in the median Bechdel score of each James Bond actor, but this initial plot is a bit lacking. Are the differences we see related to the number of movies each actor starred in? Or are we seeing a cultural shift over time as more movies pass the Bechdel test? We need to disentangle these possibilities.
 
@@ -212,7 +189,7 @@ bond_eras
 ```
 Now we can plot the mean Bechdel scores over time and compare it to the mean Bechdel score of each Bond actor!
 
-```{r, eval = FALSE}
+```{r}
 
 ggplot() +
   #Adjust the location so that movies fall in the middle of a year rather than at the start
@@ -231,31 +208,6 @@ ggplot() +
   theme(legend.position = "right")
 
 ```
-
-```{r, include = FALSE}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot() +
-  #Adjust the location so that movies fall in the middle of a year rather than at the start
-  geom_rect(data = bond_eras, aes(xmin = start, xmax = end + 1, ymin = -Inf, ymax = Inf, fill =  actor),
-            colour = NA) +
-  geom_path(data = rollingmean, aes(x = year + 0.5, y = rollingmean_allmovies), size = 1, colour = "blue") +
-  geom_point(data = bond_eras, aes(x = midyear, y = mean_score), size = 3, shape = 21, fill = "grey50") +
-  scale_fill_viridis_d(name = "") +
-  scale_x_continuous(breaks = seq(1960, 2020, 5), name = "") +
-  scale_y_continuous(breaks = c(1, 2, 3)) +
-  labs(x = "", y = "Bechdel score",
-       title = "Bechdel score of each Bond",
-       subtitle = "",
-       caption = "Data: FiveThirtyEight | Plot: @ldbailey255") +
-  my_theme() +
-  theme(legend.position = "right")
-
-ggsave(filename = "fig2.svg", height = 5.25, width = 10.5, device = "svg")
-
-```
-
-![](fig2.svg)
 
 </br>
   
@@ -316,7 +268,7 @@ x_labels <- bond_movies %>%
 
 ```
 
-```{r, eval = FALSE}
+```{r, fig.height = 14, fig.width = 14}
 
 ggplot(data = bond_era_ratings) +
   geom_rect(aes(xmin = first_nr, xmax = last_nr, ymin = -Inf, ymax = Inf, fill = surname),
@@ -350,47 +302,6 @@ ggplot(data = bond_era_ratings) +
         plot.subtitle = element_text(size = 17))
 
 ```
-
-```{r, include = FALSE, fig.height = 14, fig.width = 14}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = bond_era_ratings) +
-  geom_rect(aes(xmin = first_nr, xmax = last_nr, ymin = -Inf, ymax = Inf, fill = surname),
-            colour = "black", alpha = 0.5) +
-  geom_segment(aes(x = first_nr + 0.25, xend = last_nr - 0.25, y = mean_movie_rating, yend = mean_movie_rating), size = 1.5) +
-  geom_text(aes(x = middle_point, y = 2.9, label = year_text),
-            size = 5) +
-  geom_point(aes(x = middle_point, y = mean_bond_rating),
-             size = 6, shape = 21, stroke = 2, fill = "grey50") + 
-  geom_text(aes(x = middle_point, y = mean_bond_rating - 0.1,
-                label = surname), size = 7) +
-  geom_text(aes(x = middle_point, y = mean_bond_rating - 0.2,
-                label = round(mean_bond_rating, 2)), size = 7) +
-  scale_x_continuous(breaks = x_labels$movie_nr, labels = x_labels$movie) +
-  scale_y_continuous(limits = c(1, 3), breaks = 1:3) +
-  scale_fill_manual(values = c("grey50", "grey50", "white", "white", "white", "grey50"), name = "") +
-  scale_colour_viridis_d(name = "") +
-  labs(x = "", y = "Bechdel score",
-       title = "How problematic is James Bond?",
-       subtitle = "Bechdel test score of Bond movies compared to movies from the same period",
-       caption = "Data: FiveThirtyEight | Plot: @ldbailey255") +
-  coord_cartesian(expand = FALSE) +
-  theme_classic() +
-  theme(legend.position = "none", 
-        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, colour = "black", size = 15),
-        axis.ticks.x = element_blank(),
-        axis.line.x = element_blank(),
-        axis.text.y = element_text(size = 15, colour = "black"),
-        axis.title = element_text(size = 20),
-        plot.title = element_text(size = 25, face = "bold"),
-        plot.subtitle = element_text(size = 17))
-
-ggsave(filename = "fig3.png", height = 12, width = 14, dpi = 600)
-# ggsave(filename = "fig3.svg", height = 12, width = 14, device = "svg")
-
-```
-
-![](fig3.png)
 
 Using points to show the ratings of different actors works well enough, but perhaps headshots of the different actors would be more effective. For this, we use the `png` and `grid` packages to create a grob, or 'graphical object'. grobs come from the `grid` package and also underlie `ggplot2` and  grobs can be inserted directly into our plot using the `geom_custom` function from the `egg` package.
 
@@ -415,7 +326,7 @@ bond_era_ratings_png <- bond_era_ratings %>%
 
 Then we can add these png derived grobs into the plot in place of points.
 
-```{r, eval = FALSE}
+```{r, fig.height = 14, fig.width = 14}
 
 ggplot(data = bond_era_ratings_png) +
   geom_rect(aes(xmin = first_nr, xmax = last_nr, ymin = -Inf, ymax = Inf, fill = surname),
@@ -447,45 +358,6 @@ ggplot(data = bond_era_ratings_png) +
         plot.caption = element_text(size = 20))
 
 ```
-
-```{r, include = FALSE, fig.height = 14, fig.width = 14}
-
-#blogdown is failing to display images. We need to create a crap work around
-ggplot(data = bond_era_ratings_png) +
-  geom_rect(aes(xmin = first_nr, xmax = last_nr, ymin = -Inf, ymax = Inf, fill = surname),
-            colour = "black", alpha = 0.5) +
-  geom_segment(aes(x = first_nr + 0.25, xend = last_nr - 0.25, y = mean_movie_rating, yend = mean_movie_rating), size = 1.5) +
-  geom_text(aes(x = middle_point, y = 2.9, label = year_text),
-            size = 5) +
-  geom_text(aes(x = middle_point, y = mean_bond_rating - 0.2,
-                label = round(mean_bond_rating, 2)), size = 7) +
-  egg::geom_custom(aes(x = middle_point, y = mean_bond_rating, data = grob), grob_fun = "identity") +
-  scale_x_continuous(breaks = seq(1, 24, 1), labels = x_labels$movie) +
-  scale_y_continuous(limits = c(1, 3), breaks = 1:3) +
-  scale_fill_manual(values = c("grey50", "grey50", "white", "white", "white", "grey50"), name = "") +
-  scale_colour_viridis_d(name = "") +
-  labs(x = "", y = "Bechdel score",
-       title = "How problematic is James Bond?",
-       subtitle = "Bechdel test score of Bond movies compared to movies from the same period",
-       caption = "Data: FiveThirtyEight | Plot: @ldbailey255") +
-  coord_cartesian(expand = FALSE) +
-  theme_classic() +
-  theme(legend.position = "none", 
-        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, colour = "black", size = 15),
-        axis.ticks.x = element_blank(),
-        axis.line.x = element_blank(),
-        axis.text.y = element_text(size = 15, colour = "black"),
-        axis.title = element_text(size = 20),
-        plot.title = element_text(size = 25, face = "bold"),
-        plot.subtitle = element_text(size = 17),
-        plot.caption = element_text(size = 20))
-
-ggsave(filename = "fig4.png", height = 12, width = 14, dpi = 600)
-#ggsave(filename = "fig4.svg", height = 12, width = 14, device = "svg")
-
-```
-
-![](fig4.png)
 
 </br>
 

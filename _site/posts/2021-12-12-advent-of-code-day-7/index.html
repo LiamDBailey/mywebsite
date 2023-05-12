@@ -302,8 +302,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">which</span>(energy_use2 <span class="sc">==</span> <span class="fu">min</span>(energy_use2)) <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Position"</span>, <span class="at">y =</span> <span class="st">"Energy use"</span>) <span class="sc">+</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="648"></p>
 </div>
-<p><img src="fig1.png" class="img-fluid"></p>
+</div>
 <p>Because we are only optimizing a single variable, we only need to use a one-dimensional optimizer. To use an optimizer, we first need to create a function that will return the value we want to minimize. This is simply a re-work of the for loop we used above.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create function to optimize</span></span>
@@ -392,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#How many more iterations per second does our optimizer achieve?</span></span>
 <span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>times<span class="sc">$</span><span class="st">`</span><span class="at">itr/sec</span><span class="st">`</span>[<span class="dv">2</span>]<span class="sc">/</span>times<span class="sc">$</span><span class="st">`</span><span class="at">itr/sec</span><span class="st">`</span>[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1649.668</code></pre>
+<pre><code>[1] 1380.357</code></pre>
 </div>
 </div>
 <hr>

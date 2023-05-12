@@ -119,7 +119,7 @@ min(energy_use2)
 
 So this was all fairly easy it seems, but was this the most efficient method we could use? If we look at the energy use values we've calculated we can see that there is a clear 'trough' where minimum energy use is found. This is exactly the type of problem that we could solve with an optimization algorithm!
 
-```{r, eval = FALSE}
+```{r, fig.height=6.75, fig.width=6.75}
 
 library(ggplot2)
 
@@ -131,23 +131,6 @@ ggplot()+
   theme_classic()
 
 ```
-
-```{r, include = FALSE, fig.height=6.75, fig.width=6.75}
-
-library(ggplot2)
-
-ggplot()+
-  geom_line(aes(x = 0:1991, y = energy_use2)) +
-  #Need to subtract one to index of min energy use because R starts index at 1
-  geom_vline(xintercept = which(energy_use2 == min(energy_use2)) - 1, lty = 2) +
-  labs(x = "Position", y = "Energy use") +
-  theme_classic()
-
-ggsave(filename = "fig1.png", height = 4.75, width = 5.75, dpi = 600)
-
-```
-
-![](fig1.png)
 
 Because we are only optimizing a single variable, we only need to use a one-dimensional optimizer. To use an optimizer, we first need to create a function that will return the value we want to minimize. This is simply a re-work of the for loop we used above.
 
