@@ -39,7 +39,7 @@
     "href": "posts/2021-03-24-tidytuesday-week-11-2021-james-bond-s-bechdel-score-and-adding-images-in-ggplot/index.html",
     "title": "TidyTuesday - Week 11 (2021)",
     "section": "",
-    "text": "Another week, another TidyTuesday! As before, this figure was created during the CorrelAid TidyTuesday meetup where we brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups here."
+    "text": "👴 Old post\n\n\n\nThis post was created before the release of R v4.1.0. Some code might be outdated.\nAnother week, another TidyTuesday! As before, this figure was created during the CorrelAid TidyTuesday meetup where we brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups here."
   },
   {
     "objectID": "posts/2021-03-24-tidytuesday-week-11-2021-james-bond-s-bechdel-score-and-adding-images-in-ggplot/index.html#introduction-the-bechdel-test-and-james-bond",
@@ -116,14 +116,14 @@
     "href": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html",
     "title": "Building maps using OpenStreetMap",
     "section": "",
-    "text": "When I first started making maps and doing spatial analyses in R I often encountered a problem finding the data I needed. Where could I find a line showing state borders or a polygon of a nearby river? There are of course a huge number of ways to source this type of information, but for a beginner (and even sometimes as somebody more experienced) it can be difficult to keep track of all the different data sources. That’s why I was so excited to find out about the osmdata package that allows you to query OpenStreetMap data directly in R. Access to an almost unlimited amount of spatial information from across the globe, what’s not to like?!\nTo show off the power of OpenStreetMap data I’ll build a train map of Melbourne (my home town). Here’s what we’ll need:\n\nosmdata: For querying OpenStreetMap\nggplot2: For plotting the information we extract\nsf: For working with spatial data in R\ndplyr: For data wrangling\n\n\nlibrary(osmdata)\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(ggplot2)"
+    "text": "👴 Old post\n\n\n\nThis post was created before the release of R v4.1.0. Some code might be outdated."
   },
   {
     "objectID": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html#where-are-the-shapefiles",
     "href": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html#where-are-the-shapefiles",
     "title": "Building maps using OpenStreetMap",
-    "section": "",
-    "text": "When I first started making maps and doing spatial analyses in R I often encountered a problem finding the data I needed. Where could I find a line showing state borders or a polygon of a nearby river? There are of course a huge number of ways to source this type of information, but for a beginner (and even sometimes as somebody more experienced) it can be difficult to keep track of all the different data sources. That’s why I was so excited to find out about the osmdata package that allows you to query OpenStreetMap data directly in R. Access to an almost unlimited amount of spatial information from across the globe, what’s not to like?!\nTo show off the power of OpenStreetMap data I’ll build a train map of Melbourne (my home town). Here’s what we’ll need:\n\nosmdata: For querying OpenStreetMap\nggplot2: For plotting the information we extract\nsf: For working with spatial data in R\ndplyr: For data wrangling\n\n\nlibrary(osmdata)\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(ggplot2)"
+    "section": "Where are the shapefiles?!",
+    "text": "Where are the shapefiles?!\n\nWhen I first started making maps and doing spatial analyses in R I often encountered a problem finding the data I needed. Where could I find a line showing state borders or a polygon of a nearby river? There are of course a huge number of ways to source this type of information, but for a beginner (and even sometimes as somebody more experienced) it can be difficult to keep track of all the different data sources. That’s why I was so excited to find out about the osmdata package that allows you to query OpenStreetMap data directly in R. Access to an almost unlimited amount of spatial information from across the globe, what’s not to like?!\nTo show off the power of OpenStreetMap data I’ll build a train map of Melbourne (my home town). Here’s what we’ll need:\n\nosmdata: For querying OpenStreetMap\nggplot2: For plotting the information we extract\nsf: For working with spatial data in R\ndplyr: For data wrangling\n\n\nlibrary(osmdata)\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(ggplot2)"
   },
   {
     "objectID": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html#creating-a-query",
@@ -137,7 +137,7 @@
     "href": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html#extracting-some-data",
     "title": "Building maps using OpenStreetMap",
     "section": "Extracting some data",
-    "text": "Extracting some data\n\nWe now have a query for the OpenStreetMap Overpass API…but we still need to run the query and return the spatial data! For this we can use osmdata_sf() to return information as sf objects (or osmdata_sp() if you’re working with the sp package).\n\nmelbourne_trainline &lt;- melb_query_line %&gt;% \n  osmdata_sf()\n\nmelbourne_station &lt;- melb_query_station %&gt;% \n  osmdata_sf()\n\nmelbourne_trainline\n\nObject of class 'osmdata' with:\n                 $bbox : -38.49937,144.44405,-37.40175,146.1925\n        $overpass_call : The call submitted to the overpass API\n                 $meta : metadata including timestamp and version numbers\n           $osm_points : 'sf' Simple Features Collection with 50231 points\n            $osm_lines : 'sf' Simple Features Collection with 4258 linestrings\n         $osm_polygons : 'sf' Simple Features Collection with 338 polygons\n       $osm_multilines : 'sf' Simple Features Collection with 158 multilinestrings\n    $osm_multipolygons : NULL\n\n\nWe now have a whole range of objects (lines, points, and polygons), that fit our specific key-value pairs. We can already use these data to create a basic map with train lines and stations!\n\nmelbourne_trainline_lines &lt;- melbourne_trainline$osm_lines\nmelbourne_station_points  &lt;- melbourne_station$osm_points\n\nggplot() +\n  geom_sf(data = melbourne_trainline_lines, size = 1, colour = \"black\") +\n  geom_sf(data = melbourne_station_points, size = 1, shape = 21, colour = \"black\", fill = \"dark grey\") +\n  theme_void()"
+    "text": "Extracting some data\n\nWe now have a query for the OpenStreetMap Overpass API…but we still need to run the query and return the spatial data! For this we can use osmdata_sf() to return information as sf objects (or osmdata_sp() if you’re working with the sp package).\n\nmelbourne_trainline &lt;- melb_query_line %&gt;% \n  osmdata_sf()\n\nmelbourne_station &lt;- melb_query_station %&gt;% \n  osmdata_sf()\n\nmelbourne_trainline\n\nObject of class 'osmdata' with:\n                 $bbox : -38.49937,144.44405,-37.40175,146.1925\n        $overpass_call : The call submitted to the overpass API\n                 $meta : metadata including timestamp and version numbers\n           $osm_points : 'sf' Simple Features Collection with 50232 points\n            $osm_lines : 'sf' Simple Features Collection with 4258 linestrings\n         $osm_polygons : 'sf' Simple Features Collection with 338 polygons\n       $osm_multilines : 'sf' Simple Features Collection with 158 multilinestrings\n    $osm_multipolygons : NULL\n\n\nWe now have a whole range of objects (lines, points, and polygons), that fit our specific key-value pairs. We can already use these data to create a basic map with train lines and stations!\n\nmelbourne_trainline_lines &lt;- melbourne_trainline$osm_lines\nmelbourne_station_points  &lt;- melbourne_station$osm_points\n\nggplot() +\n  geom_sf(data = melbourne_trainline_lines, size = 1, colour = \"black\") +\n  geom_sf(data = melbourne_station_points, size = 1, shape = 21, colour = \"black\", fill = \"dark grey\") +\n  theme_void()"
   },
   {
     "objectID": "posts/2020-12-02-building-maps-with-openstreetmap-content/index.html#tidying-up-osm-data",
@@ -165,14 +165,14 @@
     "href": "posts/2020-11-27-making-beautiful-tables-with-gt/index.html",
     "title": "Making beautiful tables with the gt package",
     "section": "",
-    "text": "I dread encountering a data table in an academic paper. A jumble of numbers, column sub-headers, and confusing footnotes, seemingly bereft of purpose. Why, I cry, is this not in the supplementary material?! Surely, I think, they could’ve created a graph! Despite my prejudice, the fact is that we often do need to use tables to present data. While a plot is a beautiful way to show trends or patterns, it falls short if your goal is to compare individual values. This year saw the release of the gt package, a new addition to the growing number of packages that can produce publication quality tables in R. It seemed like as good a time as any to overcome my dread of tables. Here is my attempt."
+    "text": "👴 Old post\n\n\n\nThis post was created before the release of R v4.1.0. Some code might be outdated."
   },
   {
     "objectID": "posts/2020-11-27-making-beautiful-tables-with-gt/index.html#the-dreaded-table",
     "href": "posts/2020-11-27-making-beautiful-tables-with-gt/index.html#the-dreaded-table",
     "title": "Making beautiful tables with the gt package",
-    "section": "",
-    "text": "I dread encountering a data table in an academic paper. A jumble of numbers, column sub-headers, and confusing footnotes, seemingly bereft of purpose. Why, I cry, is this not in the supplementary material?! Surely, I think, they could’ve created a graph! Despite my prejudice, the fact is that we often do need to use tables to present data. While a plot is a beautiful way to show trends or patterns, it falls short if your goal is to compare individual values. This year saw the release of the gt package, a new addition to the growing number of packages that can produce publication quality tables in R. It seemed like as good a time as any to overcome my dread of tables. Here is my attempt."
+    "section": "The dreaded table",
+    "text": "The dreaded table\n\nI dread encountering a data table in an academic paper. A jumble of numbers, column sub-headers, and confusing footnotes, seemingly bereft of purpose. Why, I cry, is this not in the supplementary material?! Surely, I think, they could’ve created a graph! Despite my prejudice, the fact is that we often do need to use tables to present data. While a plot is a beautiful way to show trends or patterns, it falls short if your goal is to compare individual values. This year saw the release of the gt package, a new addition to the growing number of packages that can produce publication quality tables in R. It seemed like as good a time as any to overcome my dread of tables. Here is my attempt."
   },
   {
     "objectID": "posts/2020-11-27-making-beautiful-tables-with-gt/index.html#the-data",
@@ -228,7 +228,7 @@
     "href": "posts/2021-02-28-tidytuesday-week-9-2021-tracking-racial-inequality-using-labour-statistics/index.html",
     "title": "TidyTuesday - Week 9 (2021)",
     "section": "",
-    "text": "This will hopefully be the first in many TidyTuesday data visualization posts! This week I joined the TidyTuesday group at CorrelAid to brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups here."
+    "text": "👴 Old post\n\n\n\nThis post was created before the release of R v4.1.0. Some code might be outdated.\nThis will hopefully be the first in many TidyTuesday data visualization posts! This week I joined the TidyTuesday group at CorrelAid to brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups here."
   },
   {
     "objectID": "posts/2021-02-28-tidytuesday-week-9-2021-tracking-racial-inequality-using-labour-statistics/index.html#introduction-analysing-income-inequality",

@@ -13,6 +13,17 @@ options(scipen = 200)
 
 ```
 
+::: {.callout-important}
+# :older_man: Old post
+
+This post was created before the release of R v4.1.0. Some code might be outdated.
+
+:::
+
+</br>
+
+---
+
 ## Where are the shapefiles?!
 
 ---

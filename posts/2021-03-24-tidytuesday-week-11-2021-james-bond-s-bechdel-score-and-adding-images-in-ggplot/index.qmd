@@ -12,11 +12,18 @@ image: "featured.jpg"
 options(scipen = 200)
 ```
 
+::: {.callout-important}
+# :older_man: Old post
+
+This post was created before the release of R v4.1.0. Some code might be outdated.
+
+:::
+
+</br>
+
 ---
 
 Another week, another [TidyTuesday](https://github.com/rfordatascience/tidytuesday)! As before, this figure was created during the [CorrelAid](https://correlaid.org/) TidyTuesday meetup where we brainstorm and troubleshoot ideas. You can see the plots from all the CorrelAid TidyTuesday meetups [here](https://tidytuesday.correlaid.org/).
-
-</br>
 
 ## Introduction: The Bechdel test and James Bond
 
