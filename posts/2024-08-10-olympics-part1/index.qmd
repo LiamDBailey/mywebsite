@@ -88,6 +88,7 @@ For simplicity, let's just focus on summer Olympics and stick with post-War Olym
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
+#| warning: false
 
 athletes_clean <- athletes |> 
   ## Focus only on Summer Olympics since London (1948)
