@@ -1,0 +1,855 @@
+---
+title: Who really wins the Olympics?
+output:
+  html_document:
+    code_folding: show
+author: Liam D. Bailey
+date: '2024-08-10'
+description: "The top countries might not be who you think"
+categories: [R, Data viz]
+image: "feature.png"
+---
+
+```{r}
+#| echo: false
+#| message: false
+
+options(scipen = 200)
+
+library(showtext)
+#Load a font from Google Fonts
+sysfonts::font_add_google("Chivo", "Chivo")
+
+#Specify that the showtext package should be used
+#for rendering text
+showtext::showtext_auto()
+
+```
+
+## Introduction: Is there an easy answer?
+
+---
+
+These type of record breaking headlines are a mainstay of Olympic coverage, but does the medal tally actually give us a true picture of a nation's Olympic achievements? Is this data suitable to compare countries over time? Although I don't have the physical prowess to actually *participate* in the Olympics, maybe I can still analyse it. Let's dig into the Olympic data bank and search for answers...
+
+[![Australia's best medal tally (Guardian)](./data/Aus_medals.png)](https://www.theguardian.com/sport/article/2024/aug/08/paris-olympics-2024-australia-gold-medal-tally-record-matt-wearn-keegan-palmer-nina-kennedy)
+
+</br>
+
+## The data
+
+---
+
+For our source of Olympic knowledge we use the Kaggle dataset ["120 years of Olympic history: athletes and results"](https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results) scraped by rgriffin from http://www.sports-reference.com/. This data provides us with a wealth of knowledge on the athletes participating in the Olympics from Athens 1896 until Rio 2016.
+
+</br>
+
+## The basics: Clean the data and add some context
+
+---
+
+Let's load all the required packages. For data wrangling we have a bunch of packages from the `tidyverse`: `tidyr`, `stringr`, `readr`, and `dplyr`. We also bring in the packages `lay`, and `janitor` which help with wrangling. Next we bring in `countrycode`, which allows us to more easily switch between IOC country codes and the ISO3c standard (yes they are different!). Finally, for data visualisation, we have `ggplot2`, `shadowtext`, `scales` and `gt` (for tables).
+
+That's quite a few packages and I'll try to make it clear where each package is needed in the code.
+
+```{r, message=FALSE, error=FALSE, warning=FALSE}
+#| message: false
+#| warning: false
+
+## Data wrangling
+library(tidyr)
+library(dplyr)
+library(readr)
+library(lay)
+library(janitor)
+library(stringr)
+## Dealing with country codes
+library(countrycode)
+## Plotting
+library(ggplot2)
+library(shadowtext)
+library(gt)
+library(scales)
+```
+
+Let's get started on our Olympic investigation. The first thing to note is that we have data on *all* athletes, even those that did not win a medal. We also have data on each individual athlete within a team sport (e.g. basketball). This is super interesting data, but if we want to know the best performing countries, we'll need to adapt this data a bit to show *national* medal tallies.
+
+```{r}
+## Load data
+athletes <- readr::read_csv("./data/athlete_events.csv", show_col_type = FALSE)
+
+athletes
+```
+
+For simplicity, let's just focus on summer Olympics and stick with post-War Olympics (1948 onwards). In our first step of data wrangling, we adjust the data so that we count the number of each medal type for each country at each games. At this stage, data are still in long format.
+
+**NOTE:** Because most other datasets will use ISO3c codes as country identifiers, I already substitute IOC codes to ISO3c at this early stage.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+athletes_clean <- athletes |> 
+  ## Focus only on Summer Olympics since London (1948)
+  filter(Season == "Summer" & Year >= 1948) |> 
+  ## For simplicity, let's classify NA as medal "None"
+  ## Keeping None ensures we don't exclude countries that participated in the Olympics 
+  ## but didn't win any medals
+  mutate(Medal = replace_na(Medal, "None"),
+         ## NOTE: There are some country names that have "-1" in the name
+         ## We fix these typos
+         Team = stringr::str_remove_all(Team, pattern = "-[0-9]*"),
+         ## Some other known typos
+         Team = case_when(Team == "Nadine" ~ "Netherlands",
+                          Team == "Don Schufro" ~ "Denmark",
+                          Team == "Rush VII" ~ "Sweden",
+                          Team %in% c("Gem", "Gem IV", "Yeoman") ~ "Bahamas",
+                          Team == "Tango" ~ "Argentina",
+                          Team == "Nirefs" ~ "Greece",
+                          Team %in% c("Pan", "Sirene", "Encore") ~ "Norway",
+                          Team %in% c("Symphony", "Espadarte", "Ma'Lindo") ~ "Portugal",
+                          Team == "June Climene" ~ "Singapore",
+                          Team == "Kurush II" ~ "Cuba",
+                          Team %in% c("Pam", "Bermudes") ~ "Bermuda",
+                          Team == "Hirondelle" ~ "Monaco",
+                          TRUE ~ Team)) |> 
+  ## We're much more familiar with ISO codes (and need them to join other data below)
+  ## So we'll take this opportunity to switch to ISO3c codes
+  ## Convert IOC country codes to ISO3C
+  mutate(
+    ## In most cases, we can convert straight from IOC codes to ISO3c
+    ISO3c_NOC = countrycode::countrycode(NOC, origin = "ioc", destination = "iso3c"),
+    ## In some cases, the IOC codes are not recognised so we try using country names     
+    ISO3c_name = countrycode(Team, origin = "country.name", destination = "iso3c"),
+    ## There are a few cases where the countrycode package struggles and we add codes manually
+    ISO3c = case_when(
+      ## countrycode treats Soviet Union and Russia as the same
+      ## We want to keep these separate
+      NOC == "URS" ~ "SUN",
+      ## Use direct translation from IOC codes where available
+      !is.na(ISO3c_NOC) ~ ISO3c_NOC,
+      ## Otherwise, use estimates based on the English name (less reliable)
+      is.na(ISO3c_NOC) & !is.na(ISO3c_name) ~ ISO3c_name,
+      ## In a few specific cases (Cold War era states), we manually specify the country code
+      grepl(x = Team, pattern = "Czechoslovakia") ~ "CSK",
+      grepl(x = Team, pattern = "East Germany") ~ "DDR",
+      ## Rhodesia converted to Zimbabwe
+      NOC == "RHO" ~ "ZWE",
+      grepl(x = Team, pattern = "Netherlands Antilles") ~ "ANT",
+      grepl(x = Team, pattern = "Serbia and Montenegro") ~ "SCG",
+      grepl(x = Team, pattern = "Kosovo") ~ "XKX", ## Based on WorldBank
+      ## If we can't find a ISO3c match we revert back to the IOC codes
+      ## This includes athletes competing as refugees or individuals
+      TRUE ~ NOC)) |> 
+  ## When medals are won by a *team* in an event we only want to count the medal once
+  group_by(Year, Season, ISO3c, Event, Medal) |> 
+  slice(1) |> 
+  ungroup()
+
+medals_long <- athletes_clean |> 
+  ## Count the number of each medal won by each country at each olympics
+  group_by(Year, Season, ISO3c, Medal) |> 
+  summarise(n = n(),
+            country = first(Team),
+            .groups = "drop")
+
+medals_long
+```
+
+This is a good start, but we would be better served by data in wide format with one column for each medal type. This is how we're more accustomed to seeing Olympic data.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+medals_wide <- medals_long |> 
+  ## Pivot wider to have column for number of medals won for each type
+  tidyr::pivot_wider(names_from = Medal, values_from = n) |> 
+  ## Some countries won't have any data for a medal type (i.e. they won none).
+  ## Replace these NAs with 0
+  mutate(across(c(None, Gold, Silver, Bronze), \(x) replace_na(x, 0))) |> 
+  ## Order columns more logically
+  select(Year, Season, ISO3c, country, Gold, Silver, Bronze) |> 
+  ## Arrange to show best performing country at each games using traditional ranking
+  arrange(desc(Year), Season, desc(Gold), desc(Silver), desc(Bronze)) |> 
+  ## Count the total number of medals
+  mutate(total_medals = lay(pick(c(Gold, Silver, Bronze)), \(x) sum(x)))
+
+medals_wide
+```
+
+With this data we can now look at the best Olympic performances since 1948. The table below is generated by `gt`. See [my previous blog post](https://liamdbailey.com/posts/2020-11-27-making-beautiful-tables-with-gt/) for more detail to understand how such tables are created.
+
+**NOTE:** Find out the interesting story of the Unified Team at the 1992 Olympics [here](https://en.wikipedia.org/wiki/Unified_Team_at_the_Olympics)
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+flag_db <- readr::read_csv("data/Country_Flags.csv", show_col_type = FALSE) %>% 
+  #Convert country names into 3-letter country codes
+  mutate(Code_raw = countrycode(sourcevar = Country, origin = "country.name", destination = "iso3c", warn = FALSE),
+         ## There are a few cases that need to be specified manually
+         Code = case_when(Country == "Soviet Union" ~ "SUN",
+                          Country == "East Germany" ~ "DDR",
+                          Country == "Yugoslavia" ~ "YUG",
+                          Country == "Olympics" ~ "EUN",
+                          TRUE ~ Code_raw)) %>% 
+  select(Code, flag_URL = ImageURL)
+
+## Data to convert Years into a convenient games name (e.g. Rio 2016)
+games_names <- readr::read_csv("data/games_names.csv", show_col_type = FALSE)
+
+## Find the top 10 medal tallies of all time
+plot_data <- medals_wide |> 
+  arrange(desc(Gold), desc(Silver), desc(Bronze)) |> 
+  slice(1:10) |>
+  mutate(rank = 1:n()) |>
+  ## Join in info on the name of each game and the flag image URLS
+  left_join(games_names, by = "Year") |> 
+  left_join(flag_db, by = c("ISO3c" = "Code")) |> 
+  select(rank, Game, flag_URL, country, Gold, Silver, Bronze) |> 
+  mutate(total_medals = lay(pick(c(Gold, Silver, Bronze)), sum))
+
+## Create dynamic palettes to colour Gold, Silver, and Bronze columns
+perc_palette_Gold <- col_numeric(c("grey99", "#fcc861"), domain = c(0, max(plot_data$Gold)), alpha = 0.75)
+perc_palette_Silver <- col_numeric(c("grey99", "#e5e5e5"), domain = c(0, max(plot_data$Silver)), alpha = 0.75)
+perc_palette_Bronze <- col_numeric(c("grey99", "#dcb386"), domain = c(0, max(plot_data$Bronze)), alpha = 0.75)
+
+## Create the gt table
+plot_data |> 
+  gt() |> 
+  cols_label(rank = "",
+             Game = "Games",
+             country = "Country",
+             Gold = "Gold",
+             Silver = "Silver",
+             Bronze = "Bronze",
+             total_medals = "Total") %>% 
+  tab_header(title = md("Olympic medal tally"),
+             subtitle = "Best ever national performances (1948 - 2016)") %>% 
+  tab_source_note(source_note = "Data: www.sports-reference.com") %>% 
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) %>% 
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) %>% 
+  data_color(columns = c(Gold),
+             fn = perc_palette_Gold) %>%
+  data_color(columns = c(Silver),
+             fn = perc_palette_Silver) %>%
+  data_color(columns = c(Bronze),
+             fn = perc_palette_Bronze) %>%
+  opt_all_caps() %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_width(rank ~ px(40),
+             c(country) ~ px(150),
+             c(Gold,
+               Silver,
+               Bronze) ~ px(100)) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left") |> 
+  gt::text_transform(
+    #Apply a function to a column
+    locations = cells_body(c(flag_URL)),
+    fn = function(x) {
+      #Return an image of set dimensions
+      web_image(
+        url = x,
+        height = 12
+      )
+    }
+  ) %>% 
+  #Hide column header flag_URL and reduce width
+  cols_width(c(flag_URL) ~ px(30)) %>% 
+  cols_label(flag_URL = "")
+```
+
+## Problem 1: The Problem of (medal) Inflation
+
+At first the topic of Olympic success seems pretty straight forward. More medals equals more success. But if we want to compare medal tallies between years we necessarily expect that the number of *possible* medals stays the same. Otherwise a country might do 'better' just because they participated in a particularly lucrative Olympics. Does this assumption of a fixed medal pool hold up?
+
+Let's go back to our data and look at the *total number* of Gold, Silver, and Bronze medals awarded each year.
+
+```{r}
+
+number_medals <- medals_wide |> 
+  group_by(Year) |> 
+  summarise(across(c(Gold, Silver, Bronze), sum)) |> 
+  ## Convert to long format for plotting
+  tidyr::pivot_longer(Gold:Bronze, names_to = "Medal", values_to = "n_medals")
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| fig-width: 9
+#| fig.height: 5.25
+
+plot_data <- number_medals |>
+  mutate(Medal = factor(Medal, levels = c("Gold", "Silver", "Bronze")))
+
+text_data <- plot_data |> 
+  group_by(Year) |> 
+  summarise(total_medals = sum(n_medals))
+
+ggplot() +
+  geom_bar(data = plot_data,
+           aes(x = as.factor(Year), y = n_medals, fill = Medal),
+           position = "stack", stat = "identity", colour = "grey20") +
+  geom_text(data = text_data,
+            aes(x = as.factor(Year), y = total_medals,
+                label = Year), angle = 90,
+            hjust = 1.3, fontface = "bold", colour = "grey10",
+            size = 4, family = "Chivo") +
+  shadowtext::geom_shadowtext(data = plot_data |> 
+                                slice(1:3) |> 
+                                arrange(desc(Medal)) |> 
+                                mutate(y = cumsum(n_medals)),
+                              aes(x = as.factor(Year),
+                                  y = y, label = Medal,
+                                  colour = Medal),
+                              bg.colour="grey10",
+                              size = 4,
+                              angle = 90, hjust = 1, vjust = -1.75,
+                              fontface = "bold", family = "Chivo") +
+labs(title = "The Problem of (medal) Inflation",
+subtitle = "Number of medals available at the Olympics has more than doubles since 1948") +
+  scale_fill_manual(values = c("#fcc861", "#e5e5e5", "#dcb386")) +
+  scale_colour_manual(values = c("#fcc861", "#e5e5e5", "#dcb386")) +
+  scale_y_continuous(expand = c(0, 0, 0, 0),
+                     name = "Number of medals", limits = c(NA, 1000)) +
+  scale_x_discrete(expand = c(0.075, 0.075, 0.075, 0.075)) +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_text(size = 15, colour = "grey10",
+                                    face = "bold", family = "Chivo"),
+        axis.text.y = element_text(size = 10, colour = "grey10",
+                                   face = "bold", family = "Chivo"),
+        plot.title = element_text(size = 20, face = "bold", family = "Chivo"),
+        plot.subtitle = element_text(size = 15, family = "Chivo"))
+```
+
+There were a total of 973 medals available in Rio 2016 (the most recent Olympics available in the data), which is 132 extra medals compared to Atlanta 1996 (841 medals) and more than *double* that available at London 1948 (439 medals).
+
+Simply looking at medal *counts* is therefore misleading. Instead, let's consider the *percentage* of medals claimed at a given Olympics.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+medals_wide_prop <- medals_long |> 
+  ## Join in total number of medals
+  left_join(number_medals, by = c("Year", "Medal")) |>
+  ## Determine % of each medal type that a country won at those games
+  ## We keep 'None' but don't calculate a proportion
+  ## None is kept to keep countries that didn't manage to win a medal
+  mutate(perc_medal = case_when(Medal != "None" ~ (n/n_medals)*100,
+                                TRUE ~ NA)) |> 
+  select(Year, Season, ISO3c, country, Medal, perc_medal) |> 
+  ## Pivot wider to have column for number of medals won for each type
+  tidyr::pivot_wider(names_from = Medal, values_from = perc_medal, names_prefix = "perc_") |> 
+  ## Some countries won't have any data for a medal type. Replace this with 0
+  mutate(across(c(perc_None, perc_Bronze, perc_Silver, perc_Gold), \(x) replace_na(x, 0))) |> 
+  ## Order columns more logically
+  select(Year, Season, ISO3c, country, perc_Gold, perc_Silver, perc_Bronze) |> 
+  ## Arrange to show best performing country at each games using percentage ranking
+  arrange(desc(Year), Season, desc(perc_Gold), desc(perc_Silver), desc(perc_Bronze))
+
+## Also join in data on % on total medals won
+total_prop <- medals_wide |> 
+  left_join(number_medals |> 
+              group_by(Year) |> 
+              summarise(total = sum(n_medals)), by = "Year") |> 
+  mutate(perc_Total = (total_medals/total)*100) |> 
+  select(Year, ISO3c, perc_Total)
+
+medals_wide_prop <- medals_wide_prop |> 
+  left_join(total_prop, by = c("Year", "ISO3c"))
+
+medals_wide_prop
+```
+
+We can now adapt our previous table to look at the 10 greatest national performances based on medal *percentage*.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+flag_db <- readr::read_csv("data/Country_Flags.csv", show_col_type = FALSE) %>% 
+  #Convert country names into 3-letter country codes
+  mutate(Code_raw = countrycode(sourcevar = Country, origin = "country.name", destination = "iso3c", warn = FALSE),
+         ## There are a few cases that need to be specified manually
+         Code = case_when(Country == "Soviet Union" ~ "SUN",
+                          Country == "East Germany" ~ "DDR",
+                          Country == "Yugoslavia" ~ "YUG",
+                          TRUE ~ Code_raw)) %>% 
+  select(Code, flag_URL = ImageURL)
+
+games_names <- readr::read_csv("data/games_names.csv", show_col_type = FALSE)
+
+plot_data <- medals_wide_prop |> 
+  arrange(desc(perc_Gold), desc(perc_Silver), desc(perc_Bronze)) |> 
+  slice(1:10) |>
+  mutate(rank = 1:n()) |>
+  left_join(games_names, by = "Year") |> 
+  left_join(flag_db, by = c("ISO3c" = "Code")) |> 
+  select(rank, Game, flag_URL, country, perc_Gold, perc_Silver, perc_Bronze, perc_Total)
+
+perc_palette_Gold <- col_numeric(c("grey99", "#fcc861"), domain = c(0, max(plot_data$perc_Gold)), alpha = 0.75)
+perc_palette_Silver <- col_numeric(c("grey99", "#e5e5e5"), domain = c(0, max(plot_data$perc_Silver)), alpha = 0.75)
+perc_palette_Bronze <- col_numeric(c("grey99", "#dcb386"), domain = c(0, max(plot_data$perc_Bronze)), alpha = 0.75)
+
+plot_data |> 
+  gt() |> 
+  cols_label(rank = "",
+             Game = "Games",
+             country = "Country",
+             perc_Gold = "Gold (%)",
+             perc_Silver = "Silver (%)",
+             perc_Bronze = "Bronze (%)",
+             perc_Total = "Total (%)") %>% 
+  tab_header(title = md("Olympic medal tally (%)"),
+             subtitle = "Best ever national performances (1948 - 2016)") %>% 
+  tab_source_note(source_note = "Data: www.sports-reference.com") %>% 
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) %>% 
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) %>% 
+  data_color(columns = c(perc_Gold),
+             fn = perc_palette_Gold) %>%
+  data_color(columns = c(perc_Silver),
+             fn = perc_palette_Silver) %>%
+  data_color(columns = c(perc_Bronze),
+             fn = perc_palette_Bronze) %>%
+  fmt_number(columns = c(perc_Gold, perc_Silver, perc_Bronze, perc_Total),
+             decimals = 2) %>%
+  opt_all_caps() %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_width(rank ~ px(40),
+             Game ~ px(150),
+             c(country) ~ px(125),
+             c(perc_Gold,
+               perc_Silver,
+               perc_Bronze,
+               perc_Total) ~ px(85)) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left") |> 
+  gt::text_transform(
+    #Apply a function to a column
+    locations = cells_body(c(flag_URL)),
+    fn = function(x) {
+      #Return an image of set dimensions
+      web_image(
+        url = x,
+        height = 12
+      )
+    }
+  ) %>% 
+  #Hide column header flag_URL and reduce width
+  cols_width(c(flag_URL) ~ px(30)) %>% 
+  cols_label(flag_URL = "")
+```
+
+## Problem 2: The Problem of Politics (and Pandemics)
+
+We start to see performances from older Olympics (e.g. Melbourne 1956) making the cut once we account for the smaller number of medals available in those earlier years. Unfortunately, looking at the top two national performances we see another problem in our quest to calculate Olympic success. 4 of the top 10 national performances in our table come from Olympics marred by boycotts. The impressive display of the [Soviet Union in 1980](https://en.wikipedia.org/wiki/1980_Summer_Olympics_boycott) and [USA in 1984](https://en.wikipedia.org/wiki/1984_Summer_Olympics_boycott) is a bit less impressive when you remember that their major sporting rivals boycotted these games. It's hard to compare performances from boycotted games to those with full participation.
+
+Olympics is never devoid of politics, but to make things easier let's drill down on Olympics from Atlanta 1996 onwards. This avoids major issues of Olympic boycotts and it covers a period where country borders have been a bit more stable. Because our data only goes up to Rio 2016, we also avoid the Covid disrupted event of 2020/2021.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+flag_db <- readr::read_csv("data/Country_Flags.csv", show_col_type = FALSE) %>% 
+  #Convert country names into 3-letter country codes
+  mutate(Code_raw = countrycode(sourcevar = Country, origin = "country.name", destination = "iso3c", warn = FALSE),
+         ## There are a few cases that need to be specified manually
+         Code = case_when(Country == "Soviet Union" ~ "SUN",
+                          Country == "East Germany" ~ "DDR",
+                          Country == "Yugoslavia" ~ "YUG",
+                          TRUE ~ Code_raw)) %>% 
+  select(Code, flag_URL = ImageURL)
+
+games_names <- readr::read_csv("data/games_names.csv", show_col_type = FALSE)
+
+plot_data <- medals_wide_prop |> 
+  filter(Year >= 1996) |> 
+  arrange(desc(perc_Gold), desc(perc_Silver), desc(perc_Bronze)) |> 
+  slice(1:10) |>
+  mutate(rank = 1:n()) |>
+  left_join(games_names, by = "Year") |> 
+  left_join(flag_db, by = c("ISO3c" = "Code")) |> 
+  select(rank, Game, flag_URL, country, perc_Gold, perc_Silver, perc_Bronze, perc_Total)
+
+perc_palette_Gold <- col_numeric(c("grey99", "#fcc861"), domain = c(0, max(plot_data$perc_Gold)), alpha = 0.75)
+perc_palette_Silver <- col_numeric(c("grey99", "#e5e5e5"), domain = c(0, max(plot_data$perc_Silver)), alpha = 0.75)
+perc_palette_Bronze <- col_numeric(c("grey99", "#dcb386"), domain = c(0, max(plot_data$perc_Bronze)), alpha = 0.75)
+
+plot_data |> 
+  gt() |> 
+  cols_label(rank = "",
+             Game = "Games",
+             country = "Country",
+             perc_Gold = "Gold (%)",
+             perc_Silver = "Silver (%)",
+             perc_Bronze = "Bronze (%)",
+             perc_Total = "Total (%)") %>% 
+  tab_header(title = md("Olympic medal tally (%)"),
+             subtitle = "Best national performances (1996 - 2016)") %>% 
+  tab_source_note(source_note = "Data: www.sports-reference.com") %>% 
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) %>% 
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) %>% 
+  data_color(columns = c(perc_Gold),
+             fn = perc_palette_Gold) %>%
+  data_color(columns = c(perc_Silver),
+             fn = perc_palette_Silver) %>%
+  data_color(columns = c(perc_Bronze),
+             fn = perc_palette_Bronze) %>%
+  fmt_number(columns = c(perc_Gold, perc_Silver, perc_Bronze, perc_Total),
+             decimals = 2) %>%
+  opt_all_caps() %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_width(rank ~ px(40),
+             c(country, Game) ~ px(125),
+             c(perc_Gold,
+               perc_Silver,
+               perc_Bronze,
+               perc_Total) ~ px(85)) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left") |> 
+  gt::text_transform(
+    #Apply a function to a column
+    locations = cells_body(c(flag_URL)),
+    fn = function(x) {
+      #Return an image of set dimensions
+      web_image(
+        url = x,
+        height = 12
+      )
+    }
+  ) %>% 
+  #Hide column header flag_URL and reduce width
+  cols_width(c(flag_URL) ~ px(30)) %>% 
+  cols_label(flag_URL = "")
+```
+
+## Problem 3: The Problem of Money
+
+We now see the top national performances from the past 20 years (6 Olympics) with the issue of medal inflation removed and political boycotts avoided. China and the US dominate the standings, with 9 of the top 10 performances on record. But is this really surprising considering these are the world's two largest economies with countless amounts of money to throw at sport (and the prestige it can bring)? If we really want to measure *sporting* achievement, maybe we should remove the clear advantage available to wealthy countries. Instead of just showing medal percentage, we can instead show medal percentage *per $GDP* to account for economic opportunity.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+## Load GDP data
+## From World Bank https://databank.worldbank.org/source/world-development-indicators
+GDP <- readr::read_csv("./data/GDP_data.csv", skip = 4, show_col_types = FALSE) |> 
+  ## Pivot longer to allow us to left join
+  tidyr::pivot_longer(cols = `1960`:`2023`, names_to = "year", values_to = "gdp") |> 
+  mutate(year = as.numeric(year)) |> 
+  janitor::clean_names() |> 
+  select(country_code:indicator_name, year, gdp) |> 
+  ## Remove countries with no GDP data
+  filter(!is.na(gdp))
+
+medals_gdp <- medals_wide_prop |>
+  ## Join in GDP data
+  left_join(GDP, by = c("ISO3c" = "country_code", "Year" = "year")) |> 
+  ## Calculate medal % per billion$ GDP
+  mutate(gdp_bil = gdp/1e9,
+         perc_Gold_gdp = perc_Gold/gdp_bil,
+         perc_Silver_gdp = perc_Silver/gdp_bil,
+         perc_Bronze_gdp = perc_Bronze/gdp_bil)
+
+medals_gdp
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+flag_db <- readr::read_csv("data/Country_Flags.csv", show_col_type = FALSE) %>% 
+  #Convert country names into 3-letter country codes
+  mutate(Code_raw = countrycode(sourcevar = Country, origin = "country.name", destination = "iso3c", warn = FALSE),
+         ## There are a few cases that need to be specified manually
+         Code = case_when(Country == "Soviet Union" ~ "SUN",
+                          Country == "East Germany" ~ "DDR",
+                          Country == "Yugoslavia" ~ "YUG",
+                          TRUE ~ Code_raw)) %>% 
+  select(Code, flag_URL = ImageURL)
+
+games_names <- readr::read_csv("data/games_names.csv", show_col_type = FALSE)
+
+plot_data <- medals_gdp |>
+  left_join(medals_wide |> select(Year, ISO3c, total_medals),
+            by = c("Year", "ISO3c")) |> 
+  filter(Year >= 1996 & total_medals >= 5) |> 
+  arrange(desc(perc_Gold_gdp), desc(perc_Silver_gdp), desc(perc_Bronze_gdp)) |> 
+  mutate(rank = 1:n()) |>
+  filter(rank <= 10 | (Year == 2008 & ISO3c == "CHN") | (Year == 1996 & ISO3c == "USA")) |> 
+  left_join(games_names, by = "Year") |> 
+  left_join(flag_db, by = c("ISO3c" = "Code")) |> 
+  select(rank, Game, flag_URL, country, perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp, gdp_bil)
+
+## Create dynamic palettes to colour Gold, Silver, and Bronze columns
+perc_palette_Gold <- col_numeric(c("grey99", "#fcc861"), domain = c(0, max(plot_data$perc_Gold_gdp)), alpha = 0.75)
+perc_palette_Silver <- col_numeric(c("grey99", "#e5e5e5"), domain = c(0, max(plot_data$perc_Silver_gdp)), alpha = 0.75)
+perc_palette_Bronze <- col_numeric(c("grey99", "#dcb386"), domain = c(0, max(plot_data$perc_Bronze_gdp)), alpha = 0.75)
+
+plot_data |> 
+  gt() |> 
+  cols_label(rank = "",
+             Game = "Games",
+             country = "Country",
+             perc_Gold_gdp = md("Gold<br>(%/$GDP)"),
+             perc_Silver_gdp = md("Silver<br>(%/$GDP)"),
+             perc_Bronze_gdp = md("Bronze<br>(%/$GDP)"),
+             gdp_bil = md("GDP<br>(Billion $USD)")) %>% 
+  tab_header(title = md("Olympic performance (% relative to GDP)"),
+             subtitle = md("Best national performances (1996 - 2016)<br>Considering countries that won at least 5 medals")) %>% 
+  tab_source_note(source_note = md("Olympic data: www.sports-reference.com<br>GDP data: World Bank Group")) %>% 
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) %>% 
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) %>% 
+  data_color(columns = c(perc_Gold_gdp),
+             fn = perc_palette_Gold) %>%
+  data_color(columns = c(perc_Silver_gdp),
+             fn = perc_palette_Silver) %>%
+  data_color(columns = c(perc_Bronze_gdp),
+             fn = perc_palette_Bronze) %>%
+  fmt_number(columns = c(perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp, gdp_bil),
+             decimals = 3) %>%
+  fmt_number(columns = c(gdp_bil), pattern = "${x}") %>%
+  opt_all_caps() %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_width(rank ~ px(40),
+             c(country, Game) ~ px(125),
+             c(perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp) ~ px(80),
+             gdp_bil ~ px(110)) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left") |> 
+  gt::text_transform(
+    #Apply a function to a column
+    locations = cells_body(c(flag_URL)),
+    fn = function(x) {
+      #Return an image of set dimensions
+      web_image(
+        url = x,
+        height = 12
+      )
+    }
+  ) %>% 
+  #Hide column header flag_URL and reduce width
+  cols_width(c(flag_URL) ~ px(30)) %>% 
+  cols_label(flag_URL = "")
+```
+
+Finally get a picture of the real Olympic winners! Countries that have been able to achieve sporting success despite having orders of magnitude less money to invest into expensive sporting facilities or training regimes.
+
+*NOTE:* This table shows the top 10 countries using our new % medal/$GDP metric, but I've filtered it down to show only countries that won 5 or more medals. This hopefully focuses on countries with a quality Olympic *team* rather than just one individual star. You can see the full (unfiltered) table below.
+
+</br>
+
+## The Conclusion: Always think twice about statistics
+
+---
+
+Catchy headlines about record breaking medal tallies may seem catchy, but this is often just a consequence of the increasing number of sports and events being added to the Olympics (e.g. skateboarding, climbing). Even when countries do break new medal records (accounting for medal inflation!) a lot of these wins are only possible with hefty government investment which isn't available in most places. Next time you're looking at the Olympic medal tally, maybe scroll down a bit to spot those countries that are really punching above their weight.
+
+Next week, we can see what our Olympic assessment method can tell us about the results of Paris 2024.
+
+</br>
+
+## Appendix: Top ranked countries without filtering
+
+---
+
+This table shows the top ranking countries based on % medals/$GDP, but including countries with small medals hauls (<5). We see a few new appearances but Jamaica, Ethiopia, Cuba, and Bulgaria still feature in the top 10.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+flag_db <- readr::read_csv("data/Country_Flags.csv", show_col_type = FALSE) %>% 
+  #Convert country names into 3-letter country codes
+  mutate(Code_raw = countrycode(sourcevar = Country, origin = "country.name", destination = "iso3c", warn = FALSE),
+         ## There are a few cases that need to be specified manually
+         Code = case_when(Country == "Soviet Union" ~ "SUN",
+                          Country == "East Germany" ~ "DDR",
+                          Country == "Yugoslavia" ~ "YUG",
+                          TRUE ~ Code_raw)) %>% 
+  select(Code, flag_URL = ImageURL)
+
+games_names <- readr::read_csv("data/games_names.csv", show_col_type = FALSE)
+
+plot_data <- medals_gdp |>
+  left_join(medals_wide |> select(Year, ISO3c, total_medals),
+            by = c("Year", "ISO3c")) |> 
+  filter(Year >= 1996) |> 
+  arrange(desc(perc_Gold_gdp), desc(perc_Silver_gdp), desc(perc_Bronze_gdp)) |> 
+  mutate(rank = 1:n()) |>
+  filter(rank <= 10 | (Year == 2008 & ISO3c == "CHN") | (Year == 1996 & ISO3c == "USA")) |> 
+  left_join(games_names, by = "Year") |> 
+  left_join(flag_db, by = c("ISO3c" = "Code")) |> 
+  select(rank, Game, flag_URL, country, perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp, gdp_bil)
+
+## Create dynamic palettes to colour Gold, Silver, and Bronze columns
+perc_palette_Gold <- col_numeric(c("grey99", "#fcc861"), domain = c(0, max(plot_data$perc_Gold_gdp)), alpha = 0.75)
+perc_palette_Silver <- col_numeric(c("grey99", "#e5e5e5"), domain = c(0, max(plot_data$perc_Silver_gdp)), alpha = 0.75)
+perc_palette_Bronze <- col_numeric(c("grey99", "#dcb386"), domain = c(0, max(plot_data$perc_Bronze_gdp)), alpha = 0.75)
+
+plot_data |> 
+  gt() |> 
+  cols_label(rank = "",
+             Game = "Games",
+             country = "Country",
+             perc_Gold_gdp = md("Gold<br>(%/$GDP)"),
+             perc_Silver_gdp = md("Silver<br>(%/$GDP)"),
+             perc_Bronze_gdp = md("Bronze<br>(%/$GDP)"),
+             gdp_bil = md("GDP<br>(Billion $USD)")) %>% 
+  tab_header(title = md("Olympic performance (% relative to GDP)"),
+             subtitle = md("Best national performances (1996 - 2016)")) %>% 
+  tab_source_note(source_note = md("Olympic data: www.sports-reference.com<br>GDP data: World Bank Group")) %>% 
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) %>% 
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) %>% 
+  data_color(columns = c(perc_Gold_gdp),
+             fn = perc_palette_Gold) %>%
+  data_color(columns = c(perc_Silver_gdp),
+             fn = perc_palette_Silver) %>%
+  data_color(columns = c(perc_Bronze_gdp),
+             fn = perc_palette_Bronze) %>%
+  fmt_number(columns = c(perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp, gdp_bil),
+             decimals = 3) %>%
+  fmt_number(columns = c(gdp_bil), pattern = "${x}") %>%
+  opt_all_caps() %>% 
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_width(rank ~ px(40),
+             c(country, Game) ~ px(125),
+             c(perc_Gold_gdp, perc_Silver_gdp, perc_Bronze_gdp) ~ px(80),
+             gdp_bil ~ px(110)) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left") |> 
+  gt::text_transform(
+    #Apply a function to a column
+    locations = cells_body(c(flag_URL)),
+    fn = function(x) {
+      #Return an image of set dimensions
+      web_image(
+        url = x,
+        height = 12
+      )
+    }
+  ) %>% 
+  #Hide column header flag_URL and reduce width
+  cols_width(c(flag_URL) ~ px(30)) %>% 
+  cols_label(flag_URL = "")
+```
