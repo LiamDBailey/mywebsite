@@ -85,6 +85,12 @@ p {
     background: transparent;
 }
 
+h1.quarto-title-banner {
+    margin-bottom: 0.8em;
+    color: var(--text-colour);
+    background: transparent;
+}
+
 /* Also unsure... */
 .quarto-title-meta {
   display: none;

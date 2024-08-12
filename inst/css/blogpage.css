@@ -6,4 +6,5 @@
 div.quarto-title-banner{
     padding-top: 1em;
     padding-bottom: 0;
+    color: var(--text-colour);
   }

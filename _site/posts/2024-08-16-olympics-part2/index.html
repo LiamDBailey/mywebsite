@@ -8,7 +8,7 @@
 
 <meta name="author" content="Liam D. Bailey">
 <meta name="dcterms.date" content="2024-08-16">
-<meta name="description" content="XXX">
+<meta name="description" content="Who had the best performance?">
 
 <title>Dr.&nbsp;Liam D. Bailey</title>
 <style>
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">Paris 2024: Olympic debrief</h1>
                   <div>
         <div class="description">
-          XXX
+          Who had the best performance?
         </div>
       </div>
                           <div class="quarto-categories">
@@ -229,21 +229,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-basics-clean-the-data-and-add-some-context" class="level2">
 <h2 data-anchor-id="the-basics-clean-the-data-and-add-some-context">The basics: Clean the data and add some context</h2>
 <hr>
-<p>Packages are a bit more minimal this time. <code>dplyr</code>, <code>readr</code>, and <code>lay</code> to work with data and <code>ggplot2</code> and <code>shadowtext</code> to create plots and <code>scales</code> and <code>gt</code> when building tables. This time we’ll also include <code>spaMM</code>, which we’ll use for some basic statistical modelling. Again, <code>countrycode</code> is needed to convert NOC to ISO3c.</p>
+<p>Packages this time are: <code>dplyr</code>, <code>tidyr</code>, <code>readr</code>, and <code>lay</code> to work with data and <code>ggplot2</code> and <code>shadowtext</code> to create plots and <code>scales</code> and <code>gt</code> when building tables. This time we’ll also include <code>spaMM</code>, which we’ll use for some basic statistical modelling. Again, <code>countrycode</code> is needed to convert NOC to ISO3c.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Data wrangling</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lay)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Plots and tables</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shadowtext)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geomtextpath)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Stats</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaMM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lay)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Plots and tables</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shadowtext)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geomtextpath)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Stats</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaMM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, let’s read in the data we finished with last time and the new data from Paris.</p>
 <div class="cell">
@@ -335,13 +336,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="predicted-performance" class="level2">
 <h2 data-anchor-id="predicted-performance">Predicted performance</h2>
 <hr>
-<p>We also know that medal performance is strongly correlated to a countries GDP. To assess current performance, we can model the relationship between GDP and Olympic performance using data from previous years (1996 - 2016) and use it to predict outcomes for 2024. The difference between predicted and actual scores allows us to identify those countries that performed better (or worse) than expected.</p>
+<p>We also know that medal performance is strongly correlated to a countries GDP. To assess current performance, we can model the relationship between GDP and Olympic results using data from previous years (1996 - 2016) and use it to predict outcomes for 2024. The difference between predicted and actual scores allows us to identify those countries that performed better (or worse) than expected.</p>
 <p>The first sticking point we encounter is that Olympic performance is actually <em>three</em> variables: Gold, Silver, and Bronze medals. To model things more easily, we want to convert these into a single score. To make sure this single score reflects the difference in importance between different medal types we can use a weighted mean. Here we’ll consider gold medals to be 3x more valuable than silver, and silver as 3x more valuable than bronze.</p>
 <p><span class="math inline">\((Gold*\frac{9}{13} + Silver*\frac{3}{13} + Bronze*\frac{1}{13})\)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>historical_data_score <span class="ot">&lt;-</span> historical_data <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">1996</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_prop =</span> lay<span class="sc">::</span><span class="fu">lay</span>(<span class="fu">pick</span>(<span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze)), \(x) <span class="fu">sum</span>(x <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">3</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">13</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score =</span> lay<span class="sc">::</span><span class="fu">lay</span>(<span class="fu">pick</span>(<span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze)),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                               \(x) <span class="fu">sum</span>(x <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">3</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">13</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ranking countries using this single Olympic Score™ returns similar results to using traditional medal rankings (see Appendix), and gives us a good metric to work with moving forward.</p>
 <p>Now that we have a single response variable for our model, we then need to add GDP as a predictor. In the previous blog we considered GDP <em>in the current Olympic year</em>. Because we don’t have official GDP statistics for 2024, let’s adjust this a bit to use GDP of the year preceding the Olympics. I expect GDP to be very strongly temporally auto-correlated (i.e.&nbsp;data from one year is related to data in the previous year) so this shouldn’t cause too many problems.</p>
@@ -365,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(GDP, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ISO3c"</span> <span class="ot">=</span> <span class="st">"country_code"</span>, <span class="st">"Year"</span> <span class="ot">=</span> <span class="st">"year"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gdp_bil))</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation Olympic score and GDP:"</span>, <span class="fu">round</span>(<span class="fu">cor</span>(historical_data_gdp<span class="sc">$</span>score_prop, historical_data_gdp<span class="sc">$</span>gdp_bil), <span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation Olympic score and GDP:"</span>, <span class="fu">round</span>(<span class="fu">cor</span>(historical_data_gdp<span class="sc">$</span>score, historical_data_gdp<span class="sc">$</span>gdp_bil), <span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Correlation Olympic score and GDP: 0.76"</code></pre>
@@ -374,19 +376,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Unsurprisingly, our single Olympic Score™ is strongly correlated with GDP (0.76), with countries that have higher GDP tending to have a higher Olympic Score™.</p>
 <p>Now we can use the package <code>spaMM</code> to fit a linear mixed-effects model. We don’t need to go into the statistical details here, but basically this model allows us to estimate the effect of GDP on Olympic score but taking into account that each Olympic games has its own idiosyncrasies that will affect results. This model will be the basis for our Paris assessment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> spaMM<span class="sc">::</span><span class="fu">fitme</span>(score_prop <span class="sc">~</span> gdp_bil <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Year), <span class="at">data =</span> historical_data_gdp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> spaMM<span class="sc">::</span><span class="fu">fitme</span>(score <span class="sc">~</span> gdp_bil <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Year), <span class="at">data =</span> historical_data_gdp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 </section>
 <section id="actual-results" class="level2">
 <h2 data-anchor-id="actual-results">Actual results</h2>
 <hr>
-<p>Let’s convert our Paris data into a comparable format to our historical data by calculating the single Olympic score and adding GDP from the previous year. Then we can use our model from above to include <em>expected</em> medal score given known GDP.</p>
+<p>Let’s convert our Paris data into a comparable format to our historical data by calculating the single Olympic Score™ and adding GDP from the previous year. Then we can use our model from above to include <em>expected</em> medal score given known GDP.</p>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>paris_perc_gdp <span class="ot">&lt;-</span> paris_perc <span class="sc">|&gt;</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_prop =</span> lay<span class="sc">::</span><span class="fu">lay</span>(<span class="fu">pick</span>(<span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze)), \(x) <span class="fu">sum</span>(x <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">3</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">13</span>)))) <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score =</span> lay<span class="sc">::</span><span class="fu">lay</span>(<span class="fu">pick</span>(<span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze)), \(x) <span class="fu">sum</span>(x <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">3</span><span class="sc">/</span><span class="dv">13</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">13</span>)))) <span class="sc">|&gt;</span> </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(GDP <span class="sc">|&gt;</span> </span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(<span class="sc">-</span>year), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ISO3c"</span> <span class="ot">=</span> <span class="st">"country_code"</span>)) <span class="sc">|&gt;</span> </span>
@@ -397,34 +399,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>paris_predicted <span class="ot">&lt;-</span> paris_predicted <span class="sc">|&gt;</span> </span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Calculate absolute and relative difference between expected and actual score</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_diff_abs =</span> score_prop <span class="sc">-</span> exp_score,</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">score_diff_rel =</span> score_prop<span class="sc">/</span>exp_score)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_diff_abs =</span> score <span class="sc">-</span> exp_score,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">score_diff_rel =</span> score<span class="sc">/</span>exp_score)</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>paris_predicted <span class="sc">|&gt;</span> </span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_bil, score_prop, exp_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_bil, score, exp_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 87 × 4
-   country        gdp_bil score_prop exp_score
-   &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
- 1 United States   25744.      12.3      26.2 
- 2 China           17882.      10.8      18.3 
- 3 Japan            4256.       5.31      4.53
- 4 Australia        1693.       5.44      1.95
- 5 France           2779.       5.62      3.05
- 6 Netherlands      1009.       3.89      1.26
- 7 United Kingdom   3089.       5.06      3.36
- 8 South Korea      1674.       3.56      1.93
- 9 Italy            2067.       3.73      2.33
-10 Germany          4082.       3.59      4.36
-# ℹ 77 more rows</code></pre>
+<pre><code># A tibble: 88 × 4
+   country        gdp_bil score exp_score
+   &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+ 1 United States    25700 12.3      26.1 
+ 2 China            17900 10.8      18.3 
+ 3 Japan             4260  5.31      4.53
+ 4 Australia         1690  5.44      1.95
+ 5 France            2780  5.62      3.04
+ 6 Netherlands       1010  3.89      1.26
+ 7 United Kingdom    3090  5.06      3.36
+ 8 South Korea       1670  3.56      1.93
+ 9 Italy             2070  3.73      2.33
+10 Germany           4080  3.59      4.35
+# ℹ 78 more rows</code></pre>
 </div>
 </div>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gdp_bil =</span> <span class="fu">seq</span>(<span class="fu">min</span>(historical_data_gdp<span class="sc">$</span>gdp_bil), <span class="fu">max</span>(historical_data_gdp<span class="sc">$</span>gdp_bil) <span class="sc">+</span> <span class="dv">15000</span>, <span class="at">length.out =</span> <span class="dv">500</span>))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>score_prop <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(model, <span class="at">newdata =</span> pred_data, <span class="at">re.form =</span> <span class="cn">NA</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(model, <span class="at">newdata =</span> pred_data, <span class="at">re.form =</span> <span class="cn">NA</span>))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>image_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ISO3c =</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"CHN"</span>),</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">imgURL =</span> <span class="fu">c</span>(<span class="st">"./data/USAflag.png"</span>,</span>
@@ -437,16 +439,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  geomtextpath<span class="sc">::</span><span class="fu">geom_textpath</span>(<span class="at">data =</span> pred_data <span class="sc">|&gt;</span> </span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">filter</span>(gdp_bil <span class="sc">&gt;</span> <span class="dv">6500</span>),</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop, <span class="at">label =</span> <span class="st">"Predicted Olympic score"</span>),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score, <span class="at">label =</span> <span class="st">"Predicted Olympic score"</span>),</span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                              <span class="at">text_only =</span> <span class="cn">TRUE</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_data,</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop)) <span class="sc">+</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score)) <span class="sc">+</span></span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> pred_data,</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score_prop, <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score, <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> pred_data <span class="sc">|&gt;</span> <span class="fu">bind_rows</span>(<span class="fu">data.frame</span>(<span class="at">gdp_bil =</span> <span class="cn">Inf</span>,</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">score_prop =</span> <span class="fu">max</span>(pred_data<span class="sc">$</span>score_prop))),</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score_prop, <span class="at">ymax =</span> <span class="sc">-</span><span class="cn">Inf</span>),</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">score =</span> <span class="fu">max</span>(pred_data<span class="sc">$</span>score))),</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score, <span class="at">ymax =</span> <span class="sc">-</span><span class="cn">Inf</span>),</span>
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"darkred"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  shadowtext<span class="sc">::</span><span class="fu">geom_shadowtext</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">500</span>, <span class="dv">40000</span>),</span>
 <span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>),</span>
@@ -455,13 +457,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"darkred"</span>),</span>
 <span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>                              <span class="at">bg.colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> paris_perc_gdp,</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop),</span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">stroke =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score),</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="fl">1.25</span>, <span class="at">stroke =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>  ggimage<span class="sc">::</span><span class="fu">geom_image</span>(<span class="at">data =</span> paris_perc_gdp_png,</span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop, <span class="at">image =</span> imgURL), <span class="at">size =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score, <span class="at">image =</span> imgURL), <span class="at">size =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> paris_perc_gdp_png,</span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil<span class="sc">*</span><span class="fl">1.5</span>, <span class="at">y =</span> score_prop, <span class="at">label =</span> country),</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil<span class="sc">*</span><span class="fl">1.5</span>, <span class="at">y =</span> score, <span class="at">label =</span> country),</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
 <span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Paris 2024: Expectation v. Reality"</span>,</span>
 <span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"China and the US performed below expectations given their economic dominance"</span>,</span>
 <span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Olympic score (weighted mean of medal %)"</span>, <span class="at">x =</span> <span class="st">"GDP (Billion $USD)"</span>) <span class="sc">+</span></span>
@@ -471,15 +473,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
 <span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>, <span class="at">b =</span> <span class="dv">10</span>, <span class="at">l =</span> <span class="dv">15</span>, <span class="at">r =</span> <span class="dv">15</span>),</span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">8</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>)),</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">10</span>)),</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"white"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>In the above plot, the solid black line shows the predicted Olympic score from our model based on country GDP. Each point shows the <em>actual</em> Olympic score of a country at Paris 2024. Points above the line (green area) show countries that scored higher than expected, given their GDP. Point below the line (red area) are countries that had lower scores than our model predicted.</p>
+<p>In the above plot, the solid black line shows the predicted Olympic score from our model based on country GDP. Each point shows the <em>actual</em> Olympic score of a country at Paris 2024. Points above the line (green area) show countries that scored higher than expected, given their GDP. Points below the line (red area) are countries that had lower scores than our model predicted.</p>
 <p>The first thing we can see is that both China and the US underperformed at this years Olympics, given their economic clout. With only ~12% of Gold medals each, they fell well below the previous records they set as host nations in Beijing 2008 (China: 16.9%) and Atlanta 1996 (USA: 16.2%).</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Make sure to notice the <em>log scale</em> on the x-axis of the plots. Using a log scale is invaluable to show massive economies like the US on the same plot as much smaller economies; however, remember this means the x-axis does not increase linearly. We actually model a <em>linear</em> relationship between GDP and Olympic score (i.e.&nbsp;one $USD change in GDP always has the same effect), but this looks non-linear in the plots due to the log scale.</p>
+</div>
+</div>
 <p>Below this headline, we can see other countries that greatly diverged from our modelled expectations. To look for the biggest over and under-performers at Paris 2024 we calculate the proportional difference between a countries actual score and the expected score from our GDP model.</p>
 <div class="cell">
 <details>
@@ -487,14 +506,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>best_and_worst <span class="ot">&lt;-</span> paris_predicted <span class="sc">|&gt;</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(score_diff_rel) <span class="sc">|&gt;</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, (<span class="fu">n</span>()<span class="sc">-</span><span class="dv">4</span>)<span class="sc">:</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country<span class="sc">:</span>perc_Total, score_prop, exp_score, score_diff_rel, score_diff_abs)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country<span class="sc">:</span>perc_Total, score, exp_score, score_diff_rel, score_diff_abs)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>ylim <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">5</span>)</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>xlim <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">7500</span>)</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>pred_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gdp_bil =</span> <span class="fu">seq</span>(<span class="fu">min</span>(xlim), <span class="fu">max</span>(xlim) <span class="sc">+</span> <span class="dv">15000</span>, <span class="at">length.out =</span> <span class="dv">500</span>))</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>score_prop <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(model, <span class="at">newdata =</span> pred_data, <span class="at">re.form =</span> <span class="cn">NA</span>))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>pred_data<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(model, <span class="at">newdata =</span> pred_data, <span class="at">re.form =</span> <span class="cn">NA</span>))</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>image_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ISO3c =</span> best_and_worst<span class="sc">$</span>ISO3c,</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">imgURL =</span> <span class="fu">paste0</span>(<span class="st">"./data/"</span>, best_and_worst<span class="sc">$</span>ISO3c, <span class="st">"flag.png"</span>))</span>
@@ -504,22 +523,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(imgURL)) <span class="sc">|&gt;</span> </span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">case_when</span>(ISO3c <span class="sc">==</span> <span class="st">"QAT"</span> <span class="sc">~</span> gdp_bil<span class="sc">*</span><span class="fl">0.675</span>,</span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>                       <span class="cn">TRUE</span> <span class="sc">~</span> gdp_bil <span class="sc">*</span> <span class="fl">1.1</span>),</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="fu">case_when</span>(ISO3c <span class="sc">==</span> <span class="st">"QAT"</span> <span class="sc">~</span> score_prop <span class="sc">-</span> <span class="fl">0.2</span>,</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>                       <span class="cn">TRUE</span> <span class="sc">~</span> score_prop <span class="sc">+</span> <span class="fl">0.2</span>))</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="fu">case_when</span>(ISO3c <span class="sc">==</span> <span class="st">"QAT"</span> <span class="sc">~</span> score <span class="sc">-</span> <span class="fl">0.2</span>,</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>                       <span class="cn">TRUE</span> <span class="sc">~</span> score <span class="sc">+</span> <span class="fl">0.2</span>))</span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  geomtextpath<span class="sc">::</span><span class="fu">geom_textpath</span>(<span class="at">data =</span> pred_data <span class="sc">|&gt;</span> </span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">filter</span>(gdp_bil <span class="sc">&gt;</span> <span class="dv">1000</span> <span class="sc">&amp;</span> gdp_bil <span class="sc">&lt;</span> <span class="dv">7500</span>),</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop, <span class="at">label =</span> <span class="st">"Predicted Olympic score"</span>),</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score, <span class="at">label =</span> <span class="st">"Predicted Olympic score"</span>),</span>
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>                              <span class="at">text_only =</span> <span class="cn">TRUE</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_data,</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop)) <span class="sc">+</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score)) <span class="sc">+</span></span>
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> pred_data,</span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score_prop, <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score, <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
 <span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"darkgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> pred_data <span class="sc">|&gt;</span> <span class="fu">bind_rows</span>(<span class="fu">data.frame</span>(<span class="at">gdp_bil =</span> <span class="cn">Inf</span>,</span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">score_prop =</span> <span class="fu">max</span>(pred_data<span class="sc">$</span>score_prop))),</span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score_prop, <span class="at">ymax =</span> <span class="sc">-</span><span class="cn">Inf</span>),</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">score =</span> <span class="fu">max</span>(pred_data<span class="sc">$</span>score))),</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">ymin =</span> score, <span class="at">ymax =</span> <span class="sc">-</span><span class="cn">Inf</span>),</span>
 <span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"darkred"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>  shadowtext<span class="sc">::</span><span class="fu">geom_shadowtext</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">500</span>, <span class="dv">40000</span>),</span>
 <span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>),</span>
@@ -527,15 +546,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>                              <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>,</span>
 <span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"darkred"</span>)) <span class="sc">+</span></span>
 <span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> paris_perc_gdp,</span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop),</span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">stroke =</span> <span class="fl">0.75</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score),</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="fl">1.25</span>, <span class="at">stroke =</span> <span class="fl">0.75</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>  ggimage<span class="sc">::</span><span class="fu">geom_image</span>(<span class="at">data =</span> paris_perc_gdp_png,</span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score_prop, <span class="at">image =</span> imgURL), <span class="at">size =</span> <span class="fl">0.075</span>) <span class="sc">+</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">aes</span>(<span class="at">x =</span> gdp_bil, <span class="at">y =</span> score, <span class="at">image =</span> imgURL), <span class="at">size =</span> <span class="fl">0.075</span>) <span class="sc">+</span></span>
 <span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> paris_perc_gdp_png,</span>
 <span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> country),</span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
 <span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Paris 2024: Expectation v. Reality"</span>,</span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Uzbekistan scored 5x higher than expected, while India</span><span class="sc">\n</span><span class="st">only matched 5% of expectations."</span>,</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Uzbekistan scored 5x higher than expected, while India only achieved</span><span class="sc">\n</span><span class="st">5% of their expected Olympic score."</span>,</span>
 <span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Olympic score (weighted mean of medal %)"</span>, <span class="at">x =</span> <span class="st">"GDP (Billion $USD)"</span>) <span class="sc">+</span></span>
 <span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
 <span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> ylim,</span>
@@ -543,16 +562,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
 <span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>, <span class="at">b =</span> <span class="dv">10</span>, <span class="at">l =</span> <span class="dv">15</span>, <span class="at">r =</span> <span class="dv">15</span>),</span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">8</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>)),</span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">10</span>)),</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">family =</span> <span class="st">"Chivo"</span>),</span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <section id="the-over-and-underperformers" class="level3">
 <h3 data-anchor-id="the-over-and-underperformers">The over and underperformers</h3>
-<p>We can now see those countries that most exceeded or fell short of their Olympic expectations. The outcome of the New Zealand campaign is a direct comparison to that of Qatar and Peru. In 2023, all three countries had a GDP around 250 billion $USD, yet New Zealand went home with 10 Gold medals and Qatar and Peru failed to win a single Gold or Silver medal.</p>
+<p>We can now see those countries that most exceeded or fell short of their Olympic expectations. The outcome of the New Zealand campaign is a direct comparison to that of Qatar and Peru. In 2023, all three countries had a GDP around 250 billion $USD, yet New Zealand went home with 10 Gold medals while Qatar and Peru failed to win a single Gold or Silver medal.</p>
 <p>India stands out as a particularly poor performer. The world’s 5th largest economy and most populous nation failed to win a single Gold medal. The <a href="https://olympics.com/en/news/cricket-olympics-los-angeles-2028-inclusion-reactions-india">return of cricket</a> to the Olympic stage for LA28 might present team India with an opportunity to improve their Olympic fortunes. In contrast, Uzbekistan had a particularly impressive performance, snagging 8 gold medals for boxing and martial arts and scoring almost 100x higher than Slovakia despite having a smaller economy.</p>
 <div class="cell">
 <details>
@@ -570,9 +592,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> best_and_worst <span class="sc">|&gt;</span> </span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_diff_rel =</span> score_diff_rel<span class="sc">*</span><span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, ISO3c, score_prop, exp_score, score_diff_rel) <span class="sc">|&gt;</span> </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, ISO3c, score, exp_score, score_diff_rel) <span class="sc">|&gt;</span> </span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(flag_db, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"ISO3c"</span> <span class="ot">=</span> <span class="st">"Code"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(flag_URL, country, score_prop<span class="sc">:</span>score_diff_rel) <span class="sc">|&gt;</span> </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(flag_URL, country, score<span class="sc">:</span>score_diff_rel) <span class="sc">|&gt;</span> </span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score_diff_rel))</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>rel_score_palette <span class="ot">&lt;-</span> <span class="fu">col_numeric</span>(<span class="fu">c</span>(<span class="st">"darkred"</span>, <span class="st">"darkgreen"</span>), <span class="at">domain =</span> <span class="fu">c</span>(<span class="fu">min</span>(plot_data<span class="sc">$</span>score_diff_rel),</span>
@@ -582,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">"Country"</span>,</span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">exp_score =</span> <span class="st">"Expected score"</span>,</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">score_prop =</span> <span class="st">"Actual score"</span>,</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">score =</span> <span class="st">"Actual score"</span>,</span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">score_diff_rel =</span> <span class="st">"% difference"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="fu">md</span>(<span class="st">"Paris 2024: Expectation v. Reality"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="at">source_note =</span> <span class="fu">md</span>(<span class="st">"Olympic data: www.sports-reference.com&lt;br&gt;GDP data: World Bank Group"</span>)) <span class="sc">%&gt;%</span> </span>
@@ -601,7 +623,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">c</span>(score_diff_rel),</span>
 <span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> rel_score_palette) <span class="sc">%&gt;%</span></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(score_prop, exp_score),</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(score, exp_score),</span>
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(score_diff_rel),</span>
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">1</span>, <span class="at">suffixing =</span> <span class="st">"%"</span>) <span class="sc">%&gt;%</span></span>
@@ -613,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_width</span>(<span class="fu">c</span>(country) <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">125</span>),</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(score_prop, exp_score, score_diff_rel) <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(score, exp_score, score_diff_rel) <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
 <span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.border.top.width =</span> <span class="fu">px</span>(<span class="dv">3</span>),</span>
 <span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.border.top.color =</span> <span class="st">"transparent"</span>,</span>
@@ -638,24 +660,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">flag_URL =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="lcosakaboy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zqssdihnpz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-#lcosakaboy table {
+#zqssdihnpz table {
   font-family: Chivo, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lcosakaboy thead, #lcosakaboy tbody, #lcosakaboy tfoot, #lcosakaboy tr, #lcosakaboy td, #lcosakaboy th {
+#zqssdihnpz thead, #zqssdihnpz tbody, #zqssdihnpz tfoot, #zqssdihnpz tr, #zqssdihnpz td, #zqssdihnpz th {
   border-style: none;
 }
 
-#lcosakaboy p {
+#zqssdihnpz p {
   margin: 0;
   padding: 0;
 }
 
-#lcosakaboy .gt_table {
+#zqssdihnpz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -681,12 +703,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_caption {
+#zqssdihnpz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lcosakaboy .gt_title {
+#zqssdihnpz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -698,7 +720,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#lcosakaboy .gt_subtitle {
+#zqssdihnpz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -710,7 +732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#lcosakaboy .gt_heading {
+#zqssdihnpz .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -722,13 +744,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_bottom_border {
+#zqssdihnpz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_col_headings {
+#zqssdihnpz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -743,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_col_heading {
+#zqssdihnpz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -763,7 +785,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#lcosakaboy .gt_column_spanner_outer {
+#zqssdihnpz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -775,15 +797,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#lcosakaboy .gt_column_spanner_outer:first-child {
+#zqssdihnpz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lcosakaboy .gt_column_spanner_outer:last-child {
+#zqssdihnpz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lcosakaboy .gt_column_spanner {
+#zqssdihnpz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -795,11 +817,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#lcosakaboy .gt_spanner_row {
+#zqssdihnpz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lcosakaboy .gt_group_heading {
+#zqssdihnpz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -825,7 +847,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#lcosakaboy .gt_empty_group_heading {
+#zqssdihnpz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -840,15 +862,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#lcosakaboy .gt_from_md > :first-child {
+#zqssdihnpz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lcosakaboy .gt_from_md > :last-child {
+#zqssdihnpz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lcosakaboy .gt_row {
+#zqssdihnpz .gt_row {
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 5px;
@@ -867,7 +889,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#lcosakaboy .gt_stub {
+#zqssdihnpz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -880,7 +902,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#lcosakaboy .gt_stub_row_group {
+#zqssdihnpz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -894,15 +916,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#lcosakaboy .gt_row_group_first td {
+#zqssdihnpz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lcosakaboy .gt_row_group_first th {
+#zqssdihnpz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lcosakaboy .gt_summary_row {
+#zqssdihnpz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -912,16 +934,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#lcosakaboy .gt_first_summary_row {
+#zqssdihnpz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_first_summary_row.thick {
+#zqssdihnpz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lcosakaboy .gt_last_summary_row {
+#zqssdihnpz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -931,7 +953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_grand_summary_row {
+#zqssdihnpz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -941,7 +963,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#lcosakaboy .gt_first_grand_summary_row {
+#zqssdihnpz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -951,7 +973,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_last_grand_summary_row_top {
+#zqssdihnpz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -961,11 +983,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_striped {
+#zqssdihnpz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lcosakaboy .gt_table_body {
+#zqssdihnpz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -974,7 +996,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_footnotes {
+#zqssdihnpz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -988,7 +1010,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_footnote {
+#zqssdihnpz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -997,7 +1019,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#lcosakaboy .gt_sourcenotes {
+#zqssdihnpz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1011,7 +1033,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#lcosakaboy .gt_sourcenote {
+#zqssdihnpz .gt_sourcenote {
   font-size: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1019,63 +1041,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#lcosakaboy .gt_left {
+#zqssdihnpz .gt_left {
   text-align: left;
 }
 
-#lcosakaboy .gt_center {
+#zqssdihnpz .gt_center {
   text-align: center;
 }
 
-#lcosakaboy .gt_right {
+#zqssdihnpz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lcosakaboy .gt_font_normal {
+#zqssdihnpz .gt_font_normal {
   font-weight: normal;
 }
 
-#lcosakaboy .gt_font_bold {
+#zqssdihnpz .gt_font_bold {
   font-weight: bold;
 }
 
-#lcosakaboy .gt_font_italic {
+#zqssdihnpz .gt_font_italic {
   font-style: italic;
 }
 
-#lcosakaboy .gt_super {
+#zqssdihnpz .gt_super {
   font-size: 65%;
 }
 
-#lcosakaboy .gt_footnote_marks {
+#zqssdihnpz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lcosakaboy .gt_asterisk {
+#zqssdihnpz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lcosakaboy .gt_indent_1 {
+#zqssdihnpz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lcosakaboy .gt_indent_2 {
+#zqssdihnpz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lcosakaboy .gt_indent_3 {
+#zqssdihnpz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lcosakaboy .gt_indent_4 {
+#zqssdihnpz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lcosakaboy .gt_indent_5 {
+#zqssdihnpz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1103,52 +1125,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <tbody class="gt_table_body">
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Uzbekistan</td>
-<td headers="score_prop" class="gt_row gt_right">1.88</td>
+<td headers="score" class="gt_row gt_right">1.88</td>
 <td headers="exp_score" class="gt_row gt_right">0.33</td>
-<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #006400; color: #FFFFFF;">579.2</td></tr>
+<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #006400; color: #FFFFFF;">579.0</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Flag_of_New_Zealand.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">New Zealand</td>
-<td headers="score_prop" class="gt_row gt_right">2.65</td>
+<td headers="score" class="gt_row gt_right">2.65</td>
 <td headers="exp_score" class="gt_row gt_right">0.49</td>
-<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #216100; color: #FFFFFF;">539.3</td></tr>
+<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #216100; color: #FFFFFF;">539.0</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Hungary</td>
-<td headers="score_prop" class="gt_row gt_right">1.87</td>
+<td headers="score" class="gt_row gt_right">1.87</td>
 <td headers="exp_score" class="gt_row gt_right">0.42</td>
 <td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #415800; color: #FFFFFF;">443.8</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Flag_of_Georgia.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Georgia</td>
-<td headers="score_prop" class="gt_row gt_right">0.86</td>
+<td headers="score" class="gt_row gt_right">0.86</td>
 <td headers="exp_score" class="gt_row gt_right">0.27</td>
-<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #5B4C00; color: #FFFFFF;">320.7</td></tr>
+<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #5B4C00; color: #FFFFFF;">320.4</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Netherlands</td>
-<td headers="score_prop" class="gt_row gt_right">3.89</td>
+<td headers="score" class="gt_row gt_right">3.89</td>
 <td headers="exp_score" class="gt_row gt_right">1.26</td>
-<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #5D4A00; color: #FFFFFF;">308.1</td></tr>
+<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #5D4A00; color: #FFFFFF;">308.2</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Slovakia.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Slovakia</td>
-<td headers="score_prop" class="gt_row gt_right">0.02</td>
+<td headers="score" class="gt_row gt_right">0.02</td>
 <td headers="exp_score" class="gt_row gt_right">0.36</td>
-<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0200; color: #FFFFFF;">5.6</td></tr>
+<td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0200; color: #FFFFFF;">5.5</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">India</td>
-<td headers="score_prop" class="gt_row gt_right">0.17</td>
+<td headers="score" class="gt_row gt_right">0.17</td>
 <td headers="exp_score" class="gt_row gt_right">3.62</td>
 <td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0200; color: #FFFFFF;">4.7</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/6/65/Flag_of_Qatar.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Qatar</td>
-<td headers="score_prop" class="gt_row gt_right">0.02</td>
+<td headers="score" class="gt_row gt_right">0.02</td>
 <td headers="exp_score" class="gt_row gt_right">0.48</td>
 <td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0100; color: #FFFFFF;">4.2</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Peru.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Peru</td>
-<td headers="score_prop" class="gt_row gt_right">0.02</td>
+<td headers="score" class="gt_row gt_right">0.02</td>
 <td headers="exp_score" class="gt_row gt_right">0.49</td>
 <td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0100; color: #FFFFFF;">4.1</td></tr>
     <tr><td headers="flag_URL" class="gt_row gt_left"><img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" style="height:12px;"></td>
 <td headers="country" class="gt_row gt_left">Singapore</td>
-<td headers="score_prop" class="gt_row gt_right">0.02</td>
+<td headers="score" class="gt_row gt_right">0.02</td>
 <td headers="exp_score" class="gt_row gt_right">0.75</td>
 <td headers="score_diff_rel" class="gt_row gt_right" style="background-color: #8B0000; color: #FFFFFF;">2.7</td></tr>
   </tbody>
@@ -1168,13 +1190,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-conclusion-the-winners-board" class="level2">
 <h2 data-anchor-id="the-conclusion-the-winners-board">The Conclusion: The winners board</h2>
 <hr>
-<p>A simple model with national GDP is a fairly crude method to estimate Olympic performance. It doesn’t account for a countries level of development and how much of GDP is invested in sports. In the case of India, it also fails to consider whether the sports invested in (i.e.&nbsp;cricket) are included in the Olympics. However, it goes begin to account for a countries resources and funding that could go towards training Olympic athletes, and does seem to provide some (basic) predictive power. Adding more sophisticated data would be ideal, but finding this type of data for close to 100 countries is easier said than done. Mybe we can reconvene again in 4 years time to refine and improve our Olympic modelling.</p>
-<p><br></p>
+<p>A simple model with national GDP is a fairly crude method to estimate Olympic performance. It doesn’t account for a countries level of development and how much of GDP is invested in sports. In the case of India, it also fails to consider whether the sports invested in (i.e.&nbsp;cricket) are included in the Olympics. Some metric like the <a href="https://hdr.undp.org/data-center/human-development-index#/indicies/HDI">UNDP Human Development Index</a> might be one way to include more details about each country. Still, GDP does begin to account for a country’s availabe resources that could go towards training Olympic athletes, and does seem to provide some (basic) predictive power. Adding more sophisticated data would be ideal, but finding this type of data for close to 100 countries is easier said than done. Maybe we can reconvene again in 4 years time to refine and improve our Olympic modelling.</p>
+<p><br> <br></p>
+<hr>
 </section>
 <section id="appendix-assessing-our-single-olympic-score" class="level2">
 <h2 data-anchor-id="appendix-assessing-our-single-olympic-score">Appendix: Assessing our single Olympic Score</h2>
 <hr>
-<p>How does our weighted Olympics Score™ compare traditional medal tally ranks?</p>
+<p>How does our weighted Olympics Score™ compare to traditional medal tally ranks?</p>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
@@ -1194,7 +1217,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trad_rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Year), <span class="fu">desc</span>(score_prop)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Year), <span class="fu">desc</span>(score)) <span class="sc">|&gt;</span> </span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">score_rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
@@ -1215,7 +1238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">perc_Gold =</span> <span class="st">"Gold (%)"</span>,</span>
 <span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">perc_Silver =</span> <span class="st">"Silver (%)"</span>,</span>
 <span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">perc_Bronze =</span> <span class="st">"Bronze (%)"</span>,</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>             <span class="at">score_prop =</span> <span class="st">"Score"</span>,</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>             <span class="at">score =</span> <span class="st">"Score"</span>,</span>
 <span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>             <span class="at">trad_rank =</span> <span class="st">"Rank (traditional)"</span>,</span>
 <span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>             <span class="at">score_rank =</span> <span class="st">"Rank (score)"</span>,</span>
 <span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>             <span class="at">score_diff =</span> <span class="st">"Difference"</span>) <span class="sc">%&gt;%</span> </span>
@@ -1241,7 +1264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">c</span>(score_diff),</span>
 <span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> rank_change_palette) <span class="sc">%&gt;%</span></span>
-<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze, score_prop),</span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(perc_Gold, perc_Silver, perc_Bronze, score),</span>
 <span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_all_caps</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_font</span>(</span>
@@ -1254,7 +1277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(perc_Gold,</span>
 <span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>               perc_Silver,</span>
 <span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>               perc_Bronze,</span>
-<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>               score_prop) <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>               score) <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
 <span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.border.top.width =</span> <span class="fu">px</span>(<span class="dv">3</span>),</span>
 <span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.border.top.color =</span> <span class="st">"transparent"</span>,</span>
@@ -1279,24 +1302,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">flag_URL =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="snsczxprxm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nyfeepisib" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-#snsczxprxm table {
+#nyfeepisib table {
   font-family: Chivo, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#snsczxprxm thead, #snsczxprxm tbody, #snsczxprxm tfoot, #snsczxprxm tr, #snsczxprxm td, #snsczxprxm th {
+#nyfeepisib thead, #nyfeepisib tbody, #nyfeepisib tfoot, #nyfeepisib tr, #nyfeepisib td, #nyfeepisib th {
   border-style: none;
 }
 
-#snsczxprxm p {
+#nyfeepisib p {
   margin: 0;
   padding: 0;
 }
 
-#snsczxprxm .gt_table {
+#nyfeepisib .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1322,12 +1345,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_caption {
+#nyfeepisib .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#snsczxprxm .gt_title {
+#nyfeepisib .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1339,7 +1362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#snsczxprxm .gt_subtitle {
+#nyfeepisib .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1351,7 +1374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#snsczxprxm .gt_heading {
+#nyfeepisib .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -1363,13 +1386,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_bottom_border {
+#nyfeepisib .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_col_headings {
+#nyfeepisib .gt_col_headings {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -1384,7 +1407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_col_heading {
+#nyfeepisib .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1404,7 +1427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#snsczxprxm .gt_column_spanner_outer {
+#nyfeepisib .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1416,15 +1439,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#snsczxprxm .gt_column_spanner_outer:first-child {
+#nyfeepisib .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#snsczxprxm .gt_column_spanner_outer:last-child {
+#nyfeepisib .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#snsczxprxm .gt_column_spanner {
+#nyfeepisib .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1436,11 +1459,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#snsczxprxm .gt_spanner_row {
+#nyfeepisib .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#snsczxprxm .gt_group_heading {
+#nyfeepisib .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1466,7 +1489,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#snsczxprxm .gt_empty_group_heading {
+#nyfeepisib .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1481,15 +1504,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#snsczxprxm .gt_from_md > :first-child {
+#nyfeepisib .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#snsczxprxm .gt_from_md > :last-child {
+#nyfeepisib .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#snsczxprxm .gt_row {
+#nyfeepisib .gt_row {
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 5px;
@@ -1508,7 +1531,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#snsczxprxm .gt_stub {
+#nyfeepisib .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1521,7 +1544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#snsczxprxm .gt_stub_row_group {
+#nyfeepisib .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1535,15 +1558,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#snsczxprxm .gt_row_group_first td {
+#nyfeepisib .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#snsczxprxm .gt_row_group_first th {
+#nyfeepisib .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#snsczxprxm .gt_summary_row {
+#nyfeepisib .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1553,16 +1576,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#snsczxprxm .gt_first_summary_row {
+#nyfeepisib .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_first_summary_row.thick {
+#nyfeepisib .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#snsczxprxm .gt_last_summary_row {
+#nyfeepisib .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1572,7 +1595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_grand_summary_row {
+#nyfeepisib .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1582,7 +1605,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#snsczxprxm .gt_first_grand_summary_row {
+#nyfeepisib .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1592,7 +1615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_last_grand_summary_row_top {
+#nyfeepisib .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1602,11 +1625,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_striped {
+#nyfeepisib .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#snsczxprxm .gt_table_body {
+#nyfeepisib .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1615,7 +1638,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_footnotes {
+#nyfeepisib .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1629,7 +1652,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_footnote {
+#nyfeepisib .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1638,7 +1661,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#snsczxprxm .gt_sourcenotes {
+#nyfeepisib .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1652,7 +1675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#snsczxprxm .gt_sourcenote {
+#nyfeepisib .gt_sourcenote {
   font-size: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1660,63 +1683,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#snsczxprxm .gt_left {
+#nyfeepisib .gt_left {
   text-align: left;
 }
 
-#snsczxprxm .gt_center {
+#nyfeepisib .gt_center {
   text-align: center;
 }
 
-#snsczxprxm .gt_right {
+#nyfeepisib .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#snsczxprxm .gt_font_normal {
+#nyfeepisib .gt_font_normal {
   font-weight: normal;
 }
 
-#snsczxprxm .gt_font_bold {
+#nyfeepisib .gt_font_bold {
   font-weight: bold;
 }
 
-#snsczxprxm .gt_font_italic {
+#nyfeepisib .gt_font_italic {
   font-style: italic;
 }
 
-#snsczxprxm .gt_super {
+#nyfeepisib .gt_super {
   font-size: 65%;
 }
 
-#snsczxprxm .gt_footnote_marks {
+#nyfeepisib .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#snsczxprxm .gt_asterisk {
+#nyfeepisib .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#snsczxprxm .gt_indent_1 {
+#nyfeepisib .gt_indent_1 {
   text-indent: 5px;
 }
 
-#snsczxprxm .gt_indent_2 {
+#nyfeepisib .gt_indent_2 {
   text-indent: 10px;
 }
 
-#snsczxprxm .gt_indent_3 {
+#nyfeepisib .gt_indent_3 {
   text-indent: 15px;
 }
 
-#snsczxprxm .gt_indent_4 {
+#nyfeepisib .gt_indent_4 {
   text-indent: 20px;
 }
 
-#snsczxprxm .gt_indent_5 {
+#nyfeepisib .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1760,7 +1783,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.00</td>
 <td headers="perc_Silver" class="gt_row gt_right">2.00</td>
 <td headers="perc_Bronze" class="gt_row gt_right">1.84</td>
-<td headers="score_prop" class="gt_row gt_right">0.60</td>
+<td headers="score" class="gt_row gt_right">0.60</td>
 <td headers="trad_rank" class="gt_row gt_right">53</td>
 <td headers="score_rank" class="gt_row gt_right">32</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #006400; color: #FFFFFF;">21</td></tr>
@@ -1770,7 +1793,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.00</td>
 <td headers="perc_Silver" class="gt_row gt_right">2.00</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.92</td>
-<td headers="score_prop" class="gt_row gt_right">0.53</td>
+<td headers="score" class="gt_row gt_right">0.53</td>
 <td headers="trad_rank" class="gt_row gt_right">54</td>
 <td headers="score_rank" class="gt_row gt_right">36</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #49843C; color: #FFFFFF;">18</td></tr>
@@ -1780,7 +1803,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.00</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.00</td>
 <td headers="perc_Bronze" class="gt_row gt_right">1.70</td>
-<td headers="score_prop" class="gt_row gt_right">0.13</td>
+<td headers="score" class="gt_row gt_right">0.13</td>
 <td headers="trad_rank" class="gt_row gt_right">78</td>
 <td headers="score_rank" class="gt_row gt_right">61</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #5A8F4D; color: #FFFFFF;">17</td></tr>
@@ -1790,7 +1813,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.33</td>
 <td headers="perc_Silver" class="gt_row gt_right">2.29</td>
 <td headers="perc_Bronze" class="gt_row gt_right">2.78</td>
-<td headers="score_prop" class="gt_row gt_right">0.97</td>
+<td headers="score" class="gt_row gt_right">0.97</td>
 <td headers="trad_rank" class="gt_row gt_right">39</td>
 <td headers="score_rank" class="gt_row gt_right">25</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #8BB07F; color: #000000;">14</td></tr>
@@ -1800,7 +1823,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.66</td>
 <td headers="perc_Silver" class="gt_row gt_right">3.64</td>
 <td headers="perc_Bronze" class="gt_row gt_right">3.12</td>
-<td headers="score_prop" class="gt_row gt_right">1.54</td>
+<td headers="score" class="gt_row gt_right">1.54</td>
 <td headers="trad_rank" class="gt_row gt_right">28</td>
 <td headers="score_rank" class="gt_row gt_right">15</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #9CBB91; color: #000000;">13</td></tr>
@@ -1810,7 +1833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">1.48</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.37</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.34</td>
-<td headers="score_prop" class="gt_row gt_right">1.13</td>
+<td headers="score" class="gt_row gt_right">1.13</td>
 <td headers="trad_rank" class="gt_row gt_right">20</td>
 <td headers="score_rank" class="gt_row gt_right">25</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #A13523; color: #FFFFFF;">-5</td></tr>
@@ -1820,7 +1843,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">1.32</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.33</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.85</td>
-<td headers="score_prop" class="gt_row gt_right">1.06</td>
+<td headers="score" class="gt_row gt_right">1.06</td>
 <td headers="trad_rank" class="gt_row gt_right">17</td>
 <td headers="score_rank" class="gt_row gt_right">23</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #962113; color: #FFFFFF;">-6</td></tr>
@@ -1830,7 +1853,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">1.32</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.33</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.57</td>
-<td headers="score_prop" class="gt_row gt_right">1.04</td>
+<td headers="score" class="gt_row gt_right">1.04</td>
 <td headers="trad_rank" class="gt_row gt_right">18</td>
 <td headers="score_rank" class="gt_row gt_right">24</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #962113; color: #FFFFFF;">-6</td></tr>
@@ -1840,7 +1863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.98</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.33</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.56</td>
-<td headers="score_prop" class="gt_row gt_right">0.79</td>
+<td headers="score" class="gt_row gt_right">0.79</td>
 <td headers="trad_rank" class="gt_row gt_right">26</td>
 <td headers="score_rank" class="gt_row gt_right">33</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #8B0000; color: #FFFFFF;">-7</td></tr>
@@ -1850,7 +1873,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td headers="perc_Gold" class="gt_row gt_right">0.98</td>
 <td headers="perc_Silver" class="gt_row gt_right">0.33</td>
 <td headers="perc_Bronze" class="gt_row gt_right">0.00</td>
-<td headers="score_prop" class="gt_row gt_right">0.75</td>
+<td headers="score" class="gt_row gt_right">0.75</td>
 <td headers="trad_rank" class="gt_row gt_right">27</td>
 <td headers="score_rank" class="gt_row gt_right">34</td>
 <td headers="score_diff" class="gt_row gt_right" style="background-color: #8B0000; color: #FFFFFF;">-7</td></tr>
