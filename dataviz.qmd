@@ -5,6 +5,9 @@ listing:
     - title: Data Viz
       byline: Data visualizations portfolio, mostly in R.
       visuals:
+        - name: "Royal Marriages"
+          img: inst/img/dataviz/Week34_marriages.png
+          url: https://github.com/LiamDBailey/TidyTuesday/blob/07fb042f41f7dad8f3b2a8fccf3f5f4e71761fc7/plots/2024/Week34_marriages.png
         - name: "Ferris Wheels"
           img: inst/img/dataviz/TidyTuesday_2022_Week32.png
           url: https://github.com/LiamDBailey/TidyTuesday/blob/master/plots/2022/Week32.png
