@@ -8,3 +8,7 @@ div.quarto-title-banner{
     padding-bottom: 0;
     color: var(--text-colour);
   }
+  
+.fig.caption{
+   text-align: center;
+}
