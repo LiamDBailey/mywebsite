@@ -258,7 +258,7 @@ featureplot <- ggplot() +
           fill = "grey50", colour = "grey10") +
   theme_void()
 
-ggsave(featureplot, "./feature.png", dpi = 600, width = 7, height = 7)
+ggplot2::ggsave(plot = featureplot, filename = "./feature.png", dpi = 600, width = 7, height = 7)
 ```
 
 ### Near-side general perspective (or Vertical perspective)

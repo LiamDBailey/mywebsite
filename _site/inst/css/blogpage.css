@@ -9,6 +9,10 @@ div.quarto-title-banner{
     color: var(--text-colour);
   }
   
-.fig.caption{
+figcaption{
    text-align: center;
+}
+
+h1.title{
+  color: var(--text-colour);
 }
