@@ -380,3 +380,14 @@ plot.subtitle = element_text(family = "Chivo", hjust = 0.5, size = 7))
 
 ISS_plot + ISS_plot_tilt10
 ```
+
+</br>
+
+## The practical: An example using azimuthal projection
+
+---
+
+In the below graph, I used data from [TidyTuesday Week 34](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-08-20/readme.md) to plot a *network* of British marriages across Europe. In this case, we have a clear central focal point for our plot, the city of London. I used the Near-side general perspective to create a satellite view of London and European surroundings and added lines (estimated using greater circle geometry) to link London to the home city of each new consort. Check out the plot [here](https://github.com/LiamDBailey/TidyTuesday/blob/ae0dad3d735aef17870b473390f2a566a69883e2/plots/2024/Week34_marriages.png) or the code [here](https://github.com/LiamDBailey/TidyTuesday/blob/ae0dad3d735aef17870b473390f2a566a69883e2/R/2024/Week34.qmd).
+
+![International Marriages of the British Royal Family](../../inst/img/dataviz/Week34_marriages.png)
+
