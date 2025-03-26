@@ -1,0 +1,105 @@
+---
+title: "TEST"
+output:
+  html_document:
+    code_folding: show
+author: Liam D. Bailey
+date: '2025-03-23'
+description: "BLOG"
+categories: [R, Data viz, GIS]
+image: "feature.png"
+---
+
+## Introduction
+
+HERE IS INTRODUCTION TEXT!
+
+## Scrolly part!
+
+MORE TEXT
+
+<!-- Now we start the HTML code directly -->
+
+<section id="scrolly">
+<article>
+<div class="step" data-step="1" data-url="img/test.svg">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</div>
+<div class="step" data-step="2" data-url="img/test2.svg">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</div>
+<div class="step" data-step="3" data-url="img/test3.svg">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</div>
+<!-- <div class="step" data-step="4">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div> -->
+</article>
+
+<div class="sticky-thing">
+<div class="internal-buffer">
+<img src = "">
+<!-- <p>0</p> -->
+</div>
+</div>
+</section>
+
+```{=html}
+<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+<script src="https://unpkg.com/scrollama"></script>
+<script>
+// using d3 for convenience
+var main = document.querySelector("main");
+var scrolly = main.querySelector("#scrolly");
+var sticky = scrolly.querySelector(".sticky-thing");
+var article = scrolly.querySelector("article");
+var steps = article.querySelectorAll(".step");
+
+// initialize the scrollama
+var scroller = scrollama();
+
+// scrollama event handlers
+function handleStepEnter(response) {
+// response = { element, direction, index }
+var el = response.element;
+
+// remove is-active from all steps
+// then add is-active to this step
+steps.forEach(step => step.classList.remove('is-active'));
+el.classList.add('is-active');
+
+// update graphic based on step
+// sticky.querySelector("p").innerText = el.dataset.url;
+sticky.querySelector("img").src = el.dataset.url;
+}
+
+function init() {
+scroller
+.setup({
+step: "#scrolly article .step",
+offset: 0.75,
+// Set this to true if we want to see where the scroller is
+debug: false
+})
+.onStepEnter(handleStepEnter);
+
+// setup resize event
+window.addEventListener("resize", scroller.resize);
+}
+
+// kick things off
+init();
+</script>
+```
