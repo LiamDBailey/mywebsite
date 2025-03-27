@@ -1,0 +1,16 @@
+{
+    "steps": [
+        {
+            "step": "1",
+            "text": "What is the relationship between petal length and sepal length in iris flowers? We can see that there appears to be a positive relationship between these two variables: Flowers with a longer sepal also have longer petals."
+        },
+        {
+            "step": "2",
+            "text": "However, are we actually seeing a relationship between these flower characteristics? Or is there some other missing information in the data that we are not properly accounting for? Let's look at the species of each flower to understand if there's more to this story."
+        },
+        {
+            "step": "3",
+            "text": "In fact, we can see that our data consistent of three species: setosa, versicolor, and virginica. Each species appears to cluster together, suggesting that species is a key factor in determining flower characteristics. When we look at the relationship between sepal and petal length within each species, we see that there is little relationship between sepal and petal length."
+        }
+    ]
+} 

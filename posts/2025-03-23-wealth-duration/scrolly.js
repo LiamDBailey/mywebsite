@@ -5,43 +5,127 @@ const width = 400;
 const height = 400;
 const margin = {top: 50, right: 50, bottom: 50, left: 50};
 
+// Define variables
+let svg;
+let fill;
+
+// Define constants for scrolly behaviour
+const scroller = scrollama();
+const transitionDuration = 1000;
+const scrollOffset = 0.75;
+
 // Create the HTML wireframe
+const loadContent = async () => {
+  try {
+    const response = await fetch("data/copy.json");
+    const copy = await response.json();
 
-// Create a section element within which scrolly will work
-const new_section = d3.select("#scrolly-part")
-    .append("section")
-    .attr("id", "scrolly");
+    // Create a section element within which scrolly will work
+    const new_section = d3.select("#scrolly-part")
+      .append("section")
+      .attr("id", "scrolly");
 
-// Create the article element
-const new_article = new_section.append("article")
+    // Create the article element
+    const new_article = new_section.append("article")
 
-// First div
-new_article.append("div")
-    .attr("class", "step is-active")
-    .attr("data-step", "1")
-    .append("p")
-    .text("What is the relationship between petal length and sepal length in iris flowers? Should these two be related? On face value, there appears to be a strong positive correlation: Flowers with higher sepal length have higher petal length.");
+    copy.steps.forEach(step => {
+      new_article.append("div")
+        .attr("class", step.step === "1" ? "step is-active" : "step")
+        .attr("data-step", step.step)
+        .append("p")
+        .text(step.text)
+    });
+
+    new_section.append("div")
+      .attr("class", "sticky-thing")
+      // Create SVG element for D3 object in place of image
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
     
-// Second div
-new_article.append("div")
-    .attr("class", "step")
-    .attr("data-step", "2")
-    .append("p")
-    .text("However, are we seeing a relationship between these flower characteristics? Or is there some other missing information in the data that we are not properly accounting for?");
-    
-// Third div
-new_article.append("div")
-    .attr("class", "step")
-    .attr("data-step", "3")
-    .append("p")
-    .text("In fact, we can see that our data consistent of three species with different flowers! Within each species, we see very little relationship between sepal and petal length.");
+    // Store SVG reference
+    svg = new_section.select(".sticky-thing svg");
 
-new_section.append("div")
-    .attr("class", "sticky-thing")
-    // Create SVG element for D3 object in place of image
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
+    // Create D3 graph default
+    await d3.csv("data/iris.csv").then(data => {
+
+    const x = d3.scaleLinear()
+      .domain(d3.extent(data, d => +d.X))
+      .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+      .domain(d3.extent(data, d => +d.Y))
+      .range([height - margin.bottom, margin.top]);
+
+    // Create fill scale at top level
+    fill = d3.scaleOrdinal()
+      .domain(d3.map(data, d => d.Species))
+      .range(d3.schemeCategory10);
+    
+    // Calculate means for each species
+    const speciesMeans = d3.rollup(data,
+        values => ({
+            x: d3.mean(values, d => +d.X),
+            y: d3.mean(values, d => +d.Y)
+        }),
+        d => d.Species
+    )
+    
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y));
+    
+    // Add axis labels
+    svg.append("text")
+      .attr("x", width/2)
+      .attr("y", height - margin.bottom/3)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "12px")
+      .text("Sepal Length (mm)");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height/2)
+      .attr("y", margin.left/3)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "12px")
+      .text("Petal Length (mm)");
+
+    svg.selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("cx", d => x(+d.X))
+      .attr("cy", d => y(+d.Y))
+      .attr("r", 3)
+    
+    svg.selectAll(".species-label")
+      .data(speciesMeans)
+      .join("text")
+      .attr("class", "species-label")
+      .attr("x", d => x(d[1].x))
+      .attr("y", d => y(d[1].y))
+      .text(d => d[0])
+      .attr("text-anchor", "middle")
+      .attr("font-size", "20px")
+      .attr("font-weight", "bold")
+      .attr("opacity", 0);
+  
+    })
+      
+    // kick things off
+    init();
+
+  } catch (error) {
+    console.error("Error loading content:", error);
+    return null;
+  }
+}
+
+loadContent();
 
 // SCROLLY
 // using d3 for convenience
@@ -56,85 +140,8 @@ const article = scrolly.select("article");
 // Identify all the step objects inside the article
 const steps = article.selectAll(".step");
 
-// Also find the svg container for D3 graph
-const svg = d3.select("svg")
-
-// Create D3 graph default
-d3.csv("data/iris.csv").then(data => {
-
-  const x = d3.scaleLinear()
-    .domain(d3.extent(data, d => +d.X))
-    .range([margin.left, width - margin.right]);
-
-  const y = d3.scaleLinear()
-    .domain(d3.extent(data, d => +d.Y))
-    .range([height - margin.bottom, margin.top]);
-  
-  // Create colour scale for species
-  const fill = d3.scaleOrdinal()
-    .domain(d3.map(data, d => d.Species))
-    .range(d3.schemeCategory10);
-    
-  // Calculate means for each species
-  const speciesMeans = d3.rollup(data,
-        values => ({
-            x: d3.mean(values, d => +d.X),
-            y: d3.mean(values, d => +d.Y)
-        }),
-        d => d.Species
-    )
-    
-  svg.append("g")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x));
-
-  svg.append("g")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
-    
-  // Add axis labels
-  svg.append("text")
-    .attr("x", width/2)
-    .attr("y", height - margin.bottom/3)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "12px")
-    .text("Sepal Length (mm)");
-
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -height/2)
-    .attr("y", margin.left/3)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "12px")
-    .text("Petal Length (mm)");
-
-  svg.selectAll("circle")
-    .data(data)
-    .join("circle")
-    .attr("cx", d => x(+d.X))
-    .attr("cy", d => y(+d.Y))
-    .attr("r", 3)
-    
-  svg.selectAll(".species-label")
-    .data(speciesMeans)
-    .join("text")
-    .attr("class", "species-label")
-    .attr("x", d => x(d[1].x))
-    .attr("y", d => y(d[1].y))
-    .text(d => d[0])
-    .attr("text-anchor", "middle")
-    .attr("font-size", "20px")
-    .attr("font-weight", "bold")
-    .attr("opacity", 0);
-  
-})
-
-// initialize the scrollama
-const scroller = scrollama();
-
 // scrollama event handlers
 const handleStepEnter = (response) => {
-
 // response = { element, direction, index }
 
 // Extract separately the individual element
@@ -147,50 +154,40 @@ let el_data = response.element.dataset
 steps.classed("is-active", false)
 el.classed("is-active", true)
 
-// update graphic based on step
-sticky.select("img")
-  .attr("src", el_data.url);
-  
-if (el_data.step === "1"){
-  svg.selectAll("circle")
+// Handle transitions based on step
+// This is an array(?) of functions
+const transitions = {
+      "1": () => svg.selectAll("circle")
           .transition()
-          .duration(1000)
-          .attr("fill", "black")
-    
-} else if (el_data.step === "2"){
+          .duration(transitionDuration)
+          .attr("fill", "black"),
+      "2": () => {
+          svg.selectAll(".species-label")
+              .transition()
+              .duration(transitionDuration)
+              .attr("opacity", 0);
+          svg.selectAll("circle")
+              .transition()
+              .duration(transitionDuration)
+              .attr("fill", d => fill(d.Species));
+      },
+      "3": () => svg.selectAll(".species-label")
+          .transition()
+          .duration(transitionDuration)
+          .attr("opacity", 1)
+  };
 
-  d3.selectAll(".species-label")
-    .transition()
-    .duration(1000)
-    .attr("opacity", 0)
+  // Here, we index the array of functions with the step number
+  // ?.() will run the function IF the step number exists
+  transitions[el_data.step]?.();
 
-  d3.csv("data/iris.csv").then(data => {
-    
-  const fill = d3.scaleOrdinal()
-    .domain(d3.map(data, d => d.Species))
-    .range(d3.schemeCategory10);
-
-  svg.selectAll("circle")
-    .transition()
-    .duration(1000)
-    .attr("fill", d => fill(d.Species));
-})
-} else if (el_data.step === "3"){
-  
-  d3.selectAll(".species-label")
-    .transition()
-    .duration(1000)
-    .attr("opacity", 1)
-  
-}
-
-}
+};
 
 const init = () => {
 scroller
 .setup({
 step: "#scrolly article .step",
-offset: 0.75,
+offset: scrollOffset,
 // Set this to true if we want to see where the scroller is
 debug: false
 })
@@ -199,6 +196,3 @@ debug: false
 // setup resize event
 window.addEventListener("resize", scroller.resize);
 }
-
-// kick things off
-init();
