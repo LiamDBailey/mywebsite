@@ -22,6 +22,11 @@ HERE IS INTRODUCTION TEXT!
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
 
+// Define constants
+const width = 300;
+const height = 300;
+const margin = {top: 5, right: 5, bottom: 5, left: 5};
+
 // Try creating the HTML content myself
 var new_section = d3.select("#scrolly-part")
     .append("section")
@@ -53,37 +58,89 @@ new_article.append("div")
     .text("TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT ");
 
 // Create the scrolly architecture
-//    .append("div")
-//    .attr("class", "internal-buffer")
 new_section.append("div")
     .attr("class", "sticky-thing")
     .append("img")
     .attr("src", "img/test.svg")
     .attr("class", "sticky-image")
 
+new_section.append("div")
+    .attr("class", "sticky-thing")
+    // Create SVG element for D3 object in place of image
+     .append("svg")
+    .attr("class", "sticky-D3")
+    .attr("width", width)
+    .attr("height", height)
+    
+var svg = d3.select("svg")
+
+svg.attr("width", 0)
+    
+d3.csv("iris.csv").then(data => {
+
+  const x = d3.scaleLinear()
+    .domain(d3.extent(data, d => +d.X))
+    .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+    .domain(d3.extent(data, d => +d.Y))
+    .range([height - margin.bottom, margin.top]);
+    
+  const fill = d3.scaleOrdinal()
+    .domain(d3.map(data, d => d.Species))
+    .range(d3.schemeCategory10);
+    
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x));
+
+  svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+
+  svg.selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("cx", d => x(+d.X))
+    .attr("cy", d => y(+d.Y))
+    .attr("r", 3)
+    //.attr("fill", d => fill(d.Species));
+})
+
+// SCROLLY
 // using d3 for convenience
-var main = document.querySelector("main");
-var scrolly = main.querySelector("#scrolly");
-var sticky = scrolly.querySelector(".sticky-thing");
-var article = scrolly.querySelector("article");
-var steps = article.querySelectorAll(".step");
+
+// Select the object with class #scrolly
+var scrolly = d3.select("#scrolly");
+
+// Identify within this #scrolly object the sticky-thing and article
+var sticky = scrolly.select(".sticky-thing");
+var article = scrolly.select("article");
+
+// Identify all the step objects inside the article
+var steps = article.selectAll(".step");
 
 // initialize the scrollama
 var scroller = scrollama();
 
 // scrollama event handlers
 function handleStepEnter(response) {
+
 // response = { element, direction, index }
-var el = response.element;
+
+// Extract separately the individual element
+// and the nested data
+var el = d3.select(response.element);
+var el_data = response.element.dataset
 
 // remove is-active from all steps
 // then add is-active to this step
-steps.forEach(step => step.classList.remove('is-active'));
-el.classList.add('is-active');
+steps.classed("is-active", false)
+el.classed("is-active", true)
 
 // update graphic based on step
-// sticky.querySelector("p").innerText = el.dataset.url;
-sticky.querySelector("img").src = el.dataset.url;
+sticky.select("img")
+  .attr("src", el_data.url);
 }
 
 function init() {
@@ -103,5 +160,4 @@ window.addEventListener("resize", scroller.resize);
 // kick things off
 init();
 </script>
-
 ```
