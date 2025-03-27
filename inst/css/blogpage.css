@@ -79,27 +79,25 @@ article {
 }
 
 .step {
-  margin: 0rem 0rem 0rem 0rem;
-  /* background-color: #3b3b3b;
-  color: #fff; */
-  opacity: 0;
-  transition: all 1s ease-in-out 0.5s;
-}
-
-.step.is-active {
-  opacity: 1;
-  background-color: #e5e5e5;
-}
-
-.step:last-child {
-  margin-bottom: 0;
+  height: 50vh;
+  width: 100%;
 }
 
 .step p {
   text-align: center;
+  /* Margin will not be affected by element css (e.g. background colour) */
+  margin: 10rem 1rem;
+  /* The padding will be affected by css (e.g. background colour) */
   padding: 1rem;
+  opacity: 0;
+  transition: all 1s ease-in-out 0.5s;
 }
 
-.sticky-image {
-  transition: all 1s;
+.step.is-active p {
+  opacity: 1;
+  background-color: #e5e5e5;
 }
+
+/* .step:last-child {
+  margin-bottom: 0;
+} */

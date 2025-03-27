@@ -23,9 +23,9 @@ HERE IS INTRODUCTION TEXT!
 <script>
 
 // Define constants
-const width = 300;
-const height = 300;
-const margin = {top: 5, right: 5, bottom: 5, left: 5};
+const width = 400;
+const height = 400;
+const margin = {top: 50, right: 50, bottom: 50, left: 50};
 
 // Try creating the HTML content myself
 var new_section = d3.select("#scrolly-part")
@@ -39,7 +39,7 @@ new_article.append("div")
     .attr("data-step", "1")
     .attr("data-url", "img/test.svg")
     .append("p")
-    .text("TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT ");
+    .text("What is the relationship between petal length and sepal length in iris flowers? Should these two be related? On face value, there appears to be a strong positive correlation: Flowers with higher sepal length have higher petal length.");
     
 // Second div
 new_article.append("div")
@@ -47,7 +47,7 @@ new_article.append("div")
     .attr("data-step", "2")
     .attr("data-url", "img/test2.svg")
     .append("p")
-    .text("TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT ");
+    .text("However, are we seeing a relationship between these flower characteristics? Or is there some other missing information in the data that we are not properly accounting for?");
     
 // Third div
 new_article.append("div")
@@ -55,7 +55,7 @@ new_article.append("div")
     .attr("data-step", "3")
     .attr("data-url", "img/test3.svg")
     .append("p")
-    .text("TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT ");
+    .text("In fact, we can see that our data consistent of three species with different flowers! Within each species, we see very little relationship between sepal and petal length.");
 
 // Create the scrolly architecture
 <!-- new_section.append("div") -->
@@ -67,7 +67,7 @@ new_article.append("div")
 new_section.append("div")
     .attr("class", "sticky-thing")
     // Create SVG element for D3 object in place of image
-     .append("svg")
+    .append("svg")
     .attr("class", "sticky-D3")
     .attr("width", width)
     .attr("height", height)
@@ -104,6 +104,15 @@ d3.csv("iris.csv").then(data => {
     .domain(d3.map(data, d => d.Species))
     .range(d3.schemeCategory10);
     
+  // Calculate means for each species
+  const speciesMeans = d3.rollup(data,
+        values => ({
+            x: d3.mean(values, d => +d.X),
+            y: d3.mean(values, d => +d.Y)
+        }),
+        d => d.Species
+    )
+    
   svg.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(d3.axisBottom(x));
@@ -111,6 +120,22 @@ d3.csv("iris.csv").then(data => {
   svg.append("g")
     .attr("transform", `translate(${margin.left},0)`)
     .call(d3.axisLeft(y));
+    
+  // Add axis labels
+  svg.append("text")
+    .attr("x", width/2)
+    .attr("y", height - margin.bottom/3)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .text("Sepal Length (mm)");
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height/2)
+    .attr("y", margin.left/3)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .text("Petal Length (mm)");
 
   svg.selectAll("circle")
     .data(data)
@@ -119,6 +144,18 @@ d3.csv("iris.csv").then(data => {
     .attr("cy", d => y(+d.Y))
     .attr("r", 3)
     //.attr("fill", d => fill(d.Species));
+    
+  svg.selectAll(".species-label")
+    .data(speciesMeans)
+    .join("text")
+    .attr("class", "species-label")
+    .attr("x", d => x(d[1].x))
+    .attr("y", d => y(d[1].y))
+    .text(d => d[0])
+    .attr("text-anchor", "middle")
+    .attr("font-size", "15px")
+    .attr("font-weight", "bold")
+    .attr("opacity", 0);
   
 })
 
@@ -149,7 +186,14 @@ if (el_data.step === "1"){
           .transition()
           .duration(1000)
           .attr("fill", "black")
+    
 } else if (el_data.step === "2"){
+
+  d3.selectAll(".species-label")
+    .transition()
+    .duration(1000)
+    .attr("opacity", 0)
+
   d3.csv("iris.csv").then(data => {
     
   const fill = d3.scaleOrdinal()
@@ -162,10 +206,12 @@ if (el_data.step === "1"){
     .attr("fill", d => fill(d.Species));
 })
 } else if (el_data.step === "3"){
-  svg.selectAll("circle")
-          .transition()
-          .duration(1000)
-          .attr("fill", "green")
+  
+  d3.selectAll(".species-label")
+    .transition()
+    .duration(1000)
+    .attr("opacity", 1)
+  
 }
 
 }
