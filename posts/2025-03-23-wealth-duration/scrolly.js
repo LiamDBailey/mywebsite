@@ -1,24 +1,38 @@
 // Define constants
 
 // Define the layout of the SVG
-const width = 400;
-const height = 400;
-const margin = {top: 50, right: 50, bottom: 50, left: 50};
+const DIMENSIONS = {
+  width: 400,
+  height: 400,
+  margin: {top: 50, right: 50, bottom: 50, left: 50}
+}
 
-// Define variables
+// Define scrollama settings
+const scroller = scrollama();
+const SCROLL_SETTINGS = {
+  scrollOffset: 0.75,
+  debug: false,
+  transitionDuration: 1000
+}
+
+// Define re-used variables
+// These are used when creating D3 object and scrolly interactivity
+// So they should be defined at the top level
 let svg;
 let fill;
-
-// Define constants for scrolly behaviour
-const scroller = scrollama();
-const transitionDuration = 1000;
-const scrollOffset = 0.75;
 
 // Create the HTML wireframe
 const loadContent = async () => {
   try {
-    const response = await fetch("data/copy.json");
-    const copy = await response.json();
+
+    // Load all data in parallel
+    // copy contains the text for each step
+    const [copy, data] = await Promise.all([
+      fetch("data/copy.json")
+        // When the fetch completes, parse JSON
+        .then(res => res.json()),
+      d3.csv("data/iris.csv")
+    ])
 
     // Create a section element within which scrolly will work
     const new_section = d3.select("#scrolly-part")
@@ -40,22 +54,20 @@ const loadContent = async () => {
       .attr("class", "sticky-thing")
       // Create SVG element for D3 object in place of image
       .append("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .attr("width", DIMENSIONS.width)
+      .attr("height", DIMENSIONS.height)
     
     // Store SVG reference
     svg = new_section.select(".sticky-thing svg");
 
     // Create D3 graph default
-    await d3.csv("data/iris.csv").then(data => {
-
     const x = d3.scaleLinear()
       .domain(d3.extent(data, d => +d.X))
-      .range([margin.left, width - margin.right]);
+      .range([DIMENSIONS.margin.left, DIMENSIONS.width - DIMENSIONS.margin.right]);
 
     const y = d3.scaleLinear()
       .domain(d3.extent(data, d => +d.Y))
-      .range([height - margin.bottom, margin.top]);
+      .range([DIMENSIONS.height - DIMENSIONS.margin.bottom, DIMENSIONS.margin.top]);
 
     // Create fill scale at top level
     fill = d3.scaleOrdinal()
@@ -72,25 +84,25 @@ const loadContent = async () => {
     )
     
     svg.append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .attr("transform", `translate(0,${DIMENSIONS.height - DIMENSIONS.margin.bottom})`)
       .call(d3.axisBottom(x));
 
     svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
+      .attr("transform", `translate(${DIMENSIONS.margin.left},0)`)
       .call(d3.axisLeft(y));
     
     // Add axis labels
     svg.append("text")
-      .attr("x", width/2)
-      .attr("y", height - margin.bottom/3)
+      .attr("x", DIMENSIONS.width/2)
+      .attr("y", DIMENSIONS.height - DIMENSIONS.margin.bottom/3)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .text("Sepal Length (mm)");
 
     svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -height/2)
-      .attr("y", margin.left/3)
+      .attr("x", -DIMENSIONS.height/2)
+      .attr("y", DIMENSIONS.margin.left/3)
       .attr("text-anchor", "middle")
       .attr("font-size", "12px")
       .text("Petal Length (mm)");
@@ -113,8 +125,6 @@ const loadContent = async () => {
       .attr("font-size", "20px")
       .attr("font-weight", "bold")
       .attr("opacity", 0);
-  
-    })
       
     // kick things off
     init();
@@ -159,21 +169,21 @@ el.classed("is-active", true)
 const transitions = {
       "1": () => svg.selectAll("circle")
           .transition()
-          .duration(transitionDuration)
+          .duration(SCROLL_SETTINGS.transitionDuration)
           .attr("fill", "black"),
       "2": () => {
           svg.selectAll(".species-label")
               .transition()
-              .duration(transitionDuration)
+              .duration(SCROLL_SETTINGS.transitionDuration)
               .attr("opacity", 0);
           svg.selectAll("circle")
               .transition()
-              .duration(transitionDuration)
+              .duration(SCROLL_SETTINGS.transitionDuration)
               .attr("fill", d => fill(d.Species));
       },
       "3": () => svg.selectAll(".species-label")
           .transition()
-          .duration(transitionDuration)
+          .duration(SCROLL_SETTINGS.transitionDuration)
           .attr("opacity", 1)
   };
 
@@ -187,9 +197,9 @@ const init = () => {
 scroller
 .setup({
 step: "#scrolly article .step",
-offset: scrollOffset,
+offset: SCROLL_SETTINGS.scrollOffset,
 // Set this to true if we want to see where the scroller is
-debug: false
+debug: SCROLL_SETTINGS.debug
 })
 .onStepEnter(handleStepEnter);
 
