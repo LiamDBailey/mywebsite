@@ -40,6 +40,7 @@ h2, h3, h4, h5, h6 {
 
 p {
   color: var(--text-colour);
+  font-family: var(--main-font);
 }
 
 /* Text inside header is flush to sides */
@@ -117,11 +118,6 @@ h2, .h2 {
 
 h1, h2, h3 {
   text-transform: uppercase;
-}
-
-/* Defaults for all p... (redundant because of body call below?) */
-p {
-  font-family: var(--main-font);
 }
 
 body {

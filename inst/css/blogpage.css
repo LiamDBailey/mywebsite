@@ -3,17 +3,17 @@
     margin-top: 20px;
   }
 
-div.quarto-title-banner{
+div.quarto-title-banner {
     padding-top: 1em;
     padding-bottom: 0;
     color: var(--text-colour);
   }
   
-figcaption{
+figcaption {
    text-align: center;
 }
 
-h1.title{
+h1.title {
   color: var(--text-colour);
 }
 
@@ -25,7 +25,6 @@ we want to make this stand-alone for single blogs!!*/
   display: -ms-flexbox;
   display: flex;
   /* background-color: #f3f3f3; */
-  padding: 0rem;
 }
 
 #scrolly > * {
@@ -46,7 +45,8 @@ article {
   width: 100%;
   margin: 0;
   z-index: 0;
-  top: 0;
+  /* Adjust this to add buffer around the sticky image */
+  top: 100px;
   height: 75vh;
   /* Center everything inside */
     display: flex;
@@ -80,13 +80,15 @@ article {
 
 .step {
   margin: 0rem 0rem 0rem 0rem;
-  background-color: #3b3b3b;
-    color: #fff;
+  /* background-color: #3b3b3b;
+  color: #fff; */
+  opacity: 0;
+  transition: all 1s ease-in-out 0.5s;
 }
 
 .step.is-active {
-  background-color: goldenrod;
-  color: #3b3b3b;
+  opacity: 1;
+  background-color: #e5e5e5;
 }
 
 .step:last-child {
@@ -96,4 +98,8 @@ article {
 .step p {
   text-align: center;
   padding: 1rem;
+}
+
+.sticky-image {
+  transition: all 1s;
 }
