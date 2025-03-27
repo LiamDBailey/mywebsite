@@ -103,7 +103,7 @@ h1.quarto-title-banner {
 }
 
 /* Also unsure... */
-.quarto-margin-sidebar {
+#quarto-margin-sidebar {
   display: none;
 }
 

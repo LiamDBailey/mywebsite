@@ -1,19 +1,24 @@
 // Define constants
+
+// Define the layout of the SVG
 const width = 400;
 const height = 400;
 const margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-// Try creating the HTML content myself
-var new_section = d3.select("#scrolly-part")
+// Create the HTML wireframe
+
+// Create a section element within which scrolly will work
+const new_section = d3.select("#scrolly-part")
     .append("section")
     .attr("id", "scrolly");
-var new_article = new_section.append("article")
+
+// Create the article element
+const new_article = new_section.append("article")
 
 // First div
 new_article.append("div")
     .attr("class", "step is-active")
     .attr("data-step", "1")
-    .attr("data-url", "img/test.svg")
     .append("p")
     .text("What is the relationship between petal length and sepal length in iris flowers? Should these two be related? On face value, there appears to be a strong positive correlation: Flowers with higher sepal length have higher petal length.");
     
@@ -21,7 +26,6 @@ new_article.append("div")
 new_article.append("div")
     .attr("class", "step")
     .attr("data-step", "2")
-    .attr("data-url", "img/test2.svg")
     .append("p")
     .text("However, are we seeing a relationship between these flower characteristics? Or is there some other missing information in the data that we are not properly accounting for?");
     
@@ -29,22 +33,13 @@ new_article.append("div")
 new_article.append("div")
     .attr("class", "step")
     .attr("data-step", "3")
-    .attr("data-url", "img/test3.svg")
     .append("p")
     .text("In fact, we can see that our data consistent of three species with different flowers! Within each species, we see very little relationship between sepal and petal length.");
-
-// Create the scrolly architecture
-<!-- new_section.append("div") -->
-<!--     .attr("class", "sticky-thing") -->
-<!--     .append("img") -->
-<!--     .attr("src", "img/test.svg") -->
-<!--     .attr("class", "sticky-image") -->
 
 new_section.append("div")
     .attr("class", "sticky-thing")
     // Create SVG element for D3 object in place of image
     .append("svg")
-    .attr("class", "sticky-D3")
     .attr("width", width)
     .attr("height", height)
 
@@ -52,20 +47,20 @@ new_section.append("div")
 // using d3 for convenience
 
 // Select the object with class #scrolly
-var scrolly = d3.select("#scrolly");
+const scrolly = d3.select("#scrolly");
 
 // Identify within this #scrolly object the sticky-thing and article
-var sticky = scrolly.select(".sticky-thing");
-var article = scrolly.select("article");
+const sticky = scrolly.select(".sticky-thing");
+const article = scrolly.select("article");
 
 // Identify all the step objects inside the article
-var steps = article.selectAll(".step");
+const steps = article.selectAll(".step");
 
 // Also find the svg container for D3 graph
-var svg = d3.select("svg")
+const svg = d3.select("svg")
 
 // Create D3 graph default
-d3.csv("iris.csv").then(data => {
+d3.csv("data/iris.csv").then(data => {
 
   const x = d3.scaleLinear()
     .domain(d3.extent(data, d => +d.X))
@@ -119,7 +114,6 @@ d3.csv("iris.csv").then(data => {
     .attr("cx", d => x(+d.X))
     .attr("cy", d => y(+d.Y))
     .attr("r", 3)
-    //.attr("fill", d => fill(d.Species));
     
   svg.selectAll(".species-label")
     .data(speciesMeans)
@@ -129,24 +123,24 @@ d3.csv("iris.csv").then(data => {
     .attr("y", d => y(d[1].y))
     .text(d => d[0])
     .attr("text-anchor", "middle")
-    .attr("font-size", "15px")
+    .attr("font-size", "20px")
     .attr("font-weight", "bold")
     .attr("opacity", 0);
   
 })
 
 // initialize the scrollama
-var scroller = scrollama();
+const scroller = scrollama();
 
 // scrollama event handlers
-function handleStepEnter(response) {
+const handleStepEnter = (response) => {
 
 // response = { element, direction, index }
 
 // Extract separately the individual element
 // and the nested data
-var el = d3.select(response.element);
-var el_data = response.element.dataset
+let el = d3.select(response.element);
+let el_data = response.element.dataset
 
 // remove is-active from all steps
 // then add is-active to this step
@@ -170,7 +164,7 @@ if (el_data.step === "1"){
     .duration(1000)
     .attr("opacity", 0)
 
-  d3.csv("iris.csv").then(data => {
+  d3.csv("data/iris.csv").then(data => {
     
   const fill = d3.scaleOrdinal()
     .domain(d3.map(data, d => d.Species))
@@ -192,7 +186,7 @@ if (el_data.step === "1"){
 
 }
 
-function init() {
+const init = () => {
 scroller
 .setup({
 step: "#scrolly article .step",

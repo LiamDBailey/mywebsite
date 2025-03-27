@@ -1,13 +1,11 @@
 ---
 title: "TEST"
-output:
-  html:
-    theme: ["side_scrolly.css"]
 author: Liam D. Bailey
 date: '2025-03-23'
-description: "BLOG"
+description: "It's a test scrolly with D3!"
 categories: [R, Data viz, GIS]
 image: "feature.png"
+sidebar: false
 ---
 
 ## Introduction
@@ -17,6 +15,7 @@ Let's create a scrolly-telling story but build it within our Quarto blog. How do
 ## Scrolly part!
 
 ```{=html}
+<link rel="stylesheet" href="side_scrolly.css">
 <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
 <script src="https://unpkg.com/scrollama"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
