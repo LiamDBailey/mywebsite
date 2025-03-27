@@ -58,11 +58,11 @@ new_article.append("div")
     .text("TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT TEST TEXT ");
 
 // Create the scrolly architecture
-new_section.append("div")
-    .attr("class", "sticky-thing")
-    .append("img")
-    .attr("src", "img/test.svg")
-    .attr("class", "sticky-image")
+<!-- new_section.append("div") -->
+<!--     .attr("class", "sticky-thing") -->
+<!--     .append("img") -->
+<!--     .attr("src", "img/test.svg") -->
+<!--     .attr("class", "sticky-image") -->
 
 new_section.append("div")
     .attr("class", "sticky-thing")
@@ -71,11 +71,24 @@ new_section.append("div")
     .attr("class", "sticky-D3")
     .attr("width", width)
     .attr("height", height)
-    
+
+// SCROLLY
+// using d3 for convenience
+
+// Select the object with class #scrolly
+var scrolly = d3.select("#scrolly");
+
+// Identify within this #scrolly object the sticky-thing and article
+var sticky = scrolly.select(".sticky-thing");
+var article = scrolly.select("article");
+
+// Identify all the step objects inside the article
+var steps = article.selectAll(".step");
+
+// Also find the svg container for D3 graph
 var svg = d3.select("svg")
 
-svg.attr("width", 0)
-    
+// Create D3 graph default
 d3.csv("iris.csv").then(data => {
 
   const x = d3.scaleLinear()
@@ -85,7 +98,8 @@ d3.csv("iris.csv").then(data => {
   const y = d3.scaleLinear()
     .domain(d3.extent(data, d => +d.Y))
     .range([height - margin.bottom, margin.top]);
-    
+  
+  // Create colour scale for species
   const fill = d3.scaleOrdinal()
     .domain(d3.map(data, d => d.Species))
     .range(d3.schemeCategory10);
@@ -105,20 +119,8 @@ d3.csv("iris.csv").then(data => {
     .attr("cy", d => y(+d.Y))
     .attr("r", 3)
     //.attr("fill", d => fill(d.Species));
+  
 })
-
-// SCROLLY
-// using d3 for convenience
-
-// Select the object with class #scrolly
-var scrolly = d3.select("#scrolly");
-
-// Identify within this #scrolly object the sticky-thing and article
-var sticky = scrolly.select(".sticky-thing");
-var article = scrolly.select("article");
-
-// Identify all the step objects inside the article
-var steps = article.selectAll(".step");
 
 // initialize the scrollama
 var scroller = scrollama();
@@ -141,6 +143,31 @@ el.classed("is-active", true)
 // update graphic based on step
 sticky.select("img")
   .attr("src", el_data.url);
+  
+if (el_data.step === "1"){
+  svg.selectAll("circle")
+          .transition()
+          .duration(1000)
+          .attr("fill", "black")
+} else if (el_data.step === "2"){
+  d3.csv("iris.csv").then(data => {
+    
+  const fill = d3.scaleOrdinal()
+    .domain(d3.map(data, d => d.Species))
+    .range(d3.schemeCategory10);
+
+  svg.selectAll("circle")
+    .transition()
+    .duration(1000)
+    .attr("fill", d => fill(d.Species));
+})
+} else if (el_data.step === "3"){
+  svg.selectAll("circle")
+          .transition()
+          .duration(1000)
+          .attr("fill", "green")
+}
+
 }
 
 function init() {
