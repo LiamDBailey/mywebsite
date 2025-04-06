@@ -3,16 +3,16 @@
     margin-top: 20px;
   }
 
-div.quarto-title-banner{
+div.quarto-title-banner {
     padding-top: 1em;
     padding-bottom: 0;
     color: var(--text-colour);
   }
   
-figcaption{
+figcaption {
    text-align: center;
 }
 
-h1.title{
+h1.title {
   color: var(--text-colour);
 }

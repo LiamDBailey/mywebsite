@@ -246,7 +246,7 @@ ggplot() +
 ```
 
 ```{r}
-#|echo: false
+#| echo: false
 
 featureplot <- ggplot() +
   geom_sf(data = ocean_clip_ortho,

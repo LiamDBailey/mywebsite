@@ -1,11 +1,8 @@
 [
   {
-    "listing": "/dataviz.html",
-    "items": []
-  },
-  {
     "listing": "/blog.html",
     "items": [
+      "/posts/2025-03-28-scrollyqmd/index.html",
       "/posts/2024_08_31-azimuthalproj/index.html",
       "/posts/2024-08-16-olympics-part2/index.html",
       "/posts/2024-08-10-olympics-part1/index.html",
@@ -24,5 +21,9 @@
       "/posts/2020-12-02-building-maps-with-openstreetmap-content/index.html",
       "/posts/2020-11-27-making-beautiful-tables-with-gt/index.html"
     ]
+  },
+  {
+    "listing": "/dataviz.html",
+    "items": []
   }
 ]

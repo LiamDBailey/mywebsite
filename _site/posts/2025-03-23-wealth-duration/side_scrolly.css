@@ -1,0 +1,85 @@
+/* This is for side scrolling 
+we want to make this stand-alone for single blogs!!*/
+#scrolly {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  /* background-color: #f3f3f3; */
+}
+
+#scrolly > * {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+article {
+  position: relative;
+  padding: 0rem;
+  max-width: 50rem;
+}
+
+.sticky-thing {
+  position: -webkit-sticky;
+  position: sticky;
+  width: 100%;
+  margin: 0;
+  z-index: 0;
+  /* Adjust this to add buffer around the sticky image */
+  top: 100px;
+  height: 75vh;
+  /* Center everything inside */
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 10rem; */
+}
+
+.sticky-thing div {
+  position: -webkit-sticky;
+  position: sticky;
+  width: 100%;
+  margin: 0;
+  /* background-color: #8a8a8a; */
+    z-index: 0;
+  top: 0;
+  height: 75vh;
+  /* Center everything inside */
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20rem;
+}
+
+.sticky-thing p {
+  padding: 1rem;
+  font-size: 8rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.step {
+  height: 50vh;
+  width: 100%;
+}
+
+.step p {
+  text-align: center;
+  /* Margin will not be affected by element css (e.g. background colour) */
+  /* We need this margin so that the element sticks before the top of the page */
+  margin: 10rem 1rem;
+  /* The padding will be affected by css (e.g. background colour) */
+  padding: 1rem;
+  opacity: 0;
+  transition: all 0.75s ease-in-out 0.5s;
+}
+
+.step.is-active p {
+  opacity: 1;
+  background-color: #e5e5e5;
+}
+
+/* .step:last-child {
+  margin-bottom: 0;
+} */

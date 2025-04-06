@@ -12,7 +12,7 @@ div#quarto-content {
 }
 
 /* Not sure what this is for... */
-div#quarto-margin-sidebar {
+#quarto-margin-sidebar {
   display: none;
 }
 
