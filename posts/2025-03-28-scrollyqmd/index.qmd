@@ -6,120 +6,171 @@ output:
 author: Liam D. Bailey
 date: '2025-03-28'
 description: "Add interactive scrolling to your Quarto website"
-categories: [JS]
+categories: [JS, HTML, Scrollytelling]
 image: "feature.png"
 ---
 
 ## Introduction section
 
-For awhile I've wanted to use scrolly-telling to better present data visualisation. This is a very well established technique in data journalism and has been used in publications like [The New York Times](https://www.nytimes.com/interactive/2019/07/16/world/europe/notre-dame.html). This is all great in theory, but in practice I've already created my (static) website and blog using Quarto and so I had to work out how this could be nicely integrating into my blog. In this post I'll show how I incorporated interactive scrolling in a Quarto blog post using the `scrollama` JS library. Then, in future posts, I'll demonstrate how we can combine that with D3 to create scrolly-telling visuals.
+For awhile I've wanted to use scrollytelling to better present data visualisation. This is a very well established technique in data journalism and has been used in publications like [The New York Times](https://www.nytimes.com/interactive/2019/07/16/world/europe/notre-dame.html). This is all great in theory, but in practice I've already created my (static) website and blog using Quarto and so I had to work out how this could be nicely integrating into my blog. In this post I'll show how I incorporated interactive scrolling in a Quarto blog post using the `scrollama` JS library. Then, in future posts, I'll demonstrate how we can combine that with D3 to create scrollytelling visuals.
+
+::: {.callout-note}
+This is written with the expectation that you have a introductory understanding of HTML and JavaScript. If you need to learn more, something like [W3 schools](https://www.w3schools.com/html/html_intro.asp) can provide a nice basic introduction.
+:::
 
 ## Scrollama library
 
-To incorporate scrolly-telling we'll be using [scrollama.js](https://github.com/russellsamora/scrollama#scrollamajs), which was created by Russell Samora at The Pudding. The Pudding already has some beautiful examples of scrolly-telling to get inspired (see this [NBA article](https://pudding.cool/2024/10/nba-uniforms/)). This library uses intersection observer. This means that scroll events will be triggered when our page intersects with a particular HTML DOM element.
+To incorporate scrollytelling we'll be using [scrollama.js](https://github.com/russellsamora/scrollama#scrollamajs), which was created by Russell Samora at The Pudding. The Pudding already has some beautiful examples of scrollytelling to get inspired (see this [NBA article](https://pudding.cool/2024/10/nba-uniforms/)). This library uses intersection observer so that scroll events will be triggered when our page intersects with a particular HTML element.
 
-The most basic scrollama project will involve 3 steps:
+Obviously this will involve us working in JavaScript. For larger projects, I would suggest to use a separate .js file(s); however, to provide an easy, stand-alone example, this time we'll just add JS code inside our Quarto doc within a `<script>` HTML element.
 
-1. Load required libraries
+## Simple scrollama: Make our sections appear as we scroll
+
+You might have already noticed that each section on the page is fading in as you scroll. How do we achieve something like this with scrollama? The most basic scrollama project will involve 3 steps:
+
+1. Setup our workspace
 2. Define what happens on a scroll event
-3. Setup a scrollama object
+3. Setup and initialise a scrollama object
 
-Obviously this will involve us working in JavaScript. For larger projects, I would suggest to use a separate .js file(s); however, to provide an easy, stand-alone example, this time we'll just work add JS code inside our Quarto doc with a `<script>` HTML element.
+We'll work through each of these steps below and then bring it all together.
 
-## Load required libraries
+## Setup our workspace
 
-I use 3 libraries in this example:
+We will use 2 libraries in this example:
 
-- Intersection Observer, to detect when our page intersects with an HTML element.
-- Scrollama, to define what happens when an intersection occurs.
-- D3, to select and manipulate HTML DOM elements.
+- [scrollama.js](https://github.com/russellsamora/scrollama#scrollamajs), to define what happens when our page intersects with an HTML element.
+- [d3.js](https://d3js.org/), to select and manipulate HTML elements. **NOTE:** We could use vanilla JS for manipulating HTML elements, but we'll be using D3 for other tasks in the future.
 
-````
-<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+We can load each library easily by adding an HTML `<script>` element and specifying the source (URL) where these libraries are found. Both libraries are quite well developed and stable, so I expect these URLs to be suitable for awhile. If you're coming to this blog in the future you might need to check for newer versions and source URLs. Note also that there is a library for the same process using [React](https://github.com/jsonkao/react-scrollama), which might be more relevant in the future.
+
+```{.html}
 <script src="https://unpkg.com/scrollama"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
-````
+```
+
+In this simple example we want to make elements 'appear' as we scroll over them. This means that these objects need to be 'invisible' (i.e. opacity 0) to start. We can do this using D3. Don't worry if you don't understand all the D3 code right now, as we'll discuss this in future blog posts.
+
+```{.JavaScript}
+// Select all HTML elements with class 'level2'
+d3.selectAll(".level2")
+  // Select all children elements
+  .selectChildren()
+  // Make them 'invisible' with 0 opacity
+  .style("opacity", 0)
+```
+
+::: {.callout-tip}
+When we convert Quarto to HTML, each title is converted into a `<section>` HTML element with class 'levelX' where X is the level of header. In our example, we've used 2nd level headers (i.e. ## TITLE in Markdown) so each of our sections will have class 'level2'.
+:::
 
 ## Define what happens on a scroll event
 
-````
+Scrollama allows us to trigger a piece of JavaScript code when our page intersects with an HTML element, such as a `<h1>` title or `<p>` paragraph element. This code can be whatever you want, but often we'll want to change the attribute or style of the element that we intersect with. In our example, we'll be changing the opacity of each element we intersect with.
+
+The function we create should have an argument where information of the intersected event will occur. In our code below, we've called that argument `intersected`. Our `intersected` argument will include 3 pieces of information:
+
+- The HTML element being intersected with
+- The direction at which the intersection occurred (i.e. are we scrolling down or up when the intersection occurred?)
+- The index of the intersection event. You'll see when we setup our scrollama object that we specify which types of elements will be flagged
+
+In this simple example we're not using the `direction` or `index` information, we just focus on the intersected element. In the below code chunk, we take our *all* children elements within our intersected element and make it visible (i.e. opacity 1). We use `.transition()` and `.duration()` to make the transition smooth.
+
+```{.JavaScript}
 // Create scrollama event handlers
-// response = { element, direction, index }
-const handleStepEnter = (response) => {
-  let el = d3.select(response.element);
+// intersected = { element, direction, index }
+const handleStepEnter = (intersected) => {
   
-  el.selectAll("h2")
+  // Convert HTML element into a D3 selection object...
+  d3.select(intersected.element);
+    // Select ALL children elements within our intersected element...
+    .selectChildren()
+    // Specify that any changes to the object will take 1000 milliseconds (1 sec)
     .transition()
-    .duration(SCROLL_SETTINGS.transitionDuration)
+    .duration(1000)
+    // Change style to be fully visible
     .style("opacity", "1")
-  el.selectAll("p")
-    .transition()
-    .duration(SCROLL_SETTINGS.transitionDuration)
-    .style("opacity", "1")
+    
 };
-````
+```
 
-## Setup a scrollama object
+## Setup and initialise a scrollama object
 
-Once we've loaded the required libraries, we can setup our scrollama object. `scrollama()` will create a scrollama object, but we need to use the method `.setup()` to get it working. 
+We've now setup our workspace and created the function that will be triggered when we intersect with an element. Now we just need to setup our scrollama object and then initiliase it. The `scrollama().setup()` function has two basic arguments we should specify (see full documentation [here](https://github.com/russellsamora/scrollama?tab=readme-ov-file#api)):
 
-````
-// Create a function `init()` that setups a scrollama object
-const init = () => {
-  scrollama().setup({
-      // Define what objects will be observed
-      step: "#quarto-document-content .level2",
-      // Define how far from top of page we check for intersection
-      offset: 0.51,
-      // Set this to true if we want to see where the scroller is
-      debug: false
-    })
-    // Define what happens when we ENTER an element
-    .onStepEnter(handleStepEnter);
-}
-````
+- step: Define which elements will be monitored by intersection observer. In our case ".level2" ensures that we will check for intersection with all elements that have class '.level2' (i.e. every section starting with ## TITLE in Markdown).
+- offset (0-1): How far from the top of the viewport (i.e. page) should we check for intersection? 0 = top of page, 1 = bottom of page. In this case, we're triggering close to the bottom of the page so the reader doesn't have to scroll into the blank space.
 
-## New bit
+We then need to specify *when* the function we created above will be triggered. We have a few options, most relevant are `.onStepEnter()` (triggered when we start intersecting an element) and `.onStepExit()` (triggered when we stop intersecting an element). In our simple case we'll just trigger on enter.
 
-<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+```{.JavaScript}
+// Setup a scrollama object
+scrollama()
+  .setup({
+    // Specify which elements will trigger our events
+    step: ".level2",
+    // Specify how far from top of page triggers occur
+    offset: 0.85
+  })
+  // Specify when our function is triggered
+  .onStepEnter(handleStepEnter);
+```
+
+## Bringing it together
+
+So now we've completed all our steps. We've setup our workspace by loading our libraries and making all our sections invisible (opacity 0) to begin with. Next, we created a function `handleStepEnter()` that specifies that elements should become visible (opacity 1) when we intersect with them. Finally, we setup our `scrollama()` object to specify what type of elements will be triggered and when they will be triggered (entering or exiting). We can add all of this into a `<script>` element and put this all at the end of our Quarto document. Now each of our level 2 headers (## TITLE) will fade in as we scroll down. Interactive scrolling complete!
+
+```{.html}
 <script src="https://unpkg.com/scrollama"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
 
-// Define scrollama settings
-const SCROLL_SETTINGS = {
-  scrollOffset: 0.51,
-  debug: false,
-  transitionDuration: 500,
-  opacityOff: 0.25
-}
-
-// Adjust HTML elements before launching scrolly
-const loadContent = async () => {
-    const allLevel2 = d3.select("main").selectAll(".level2")
-    await allLevel2.selectChildren().style("opacity", SCROLL_SETTINGS.opacityOff);
-}
+// Make everything w/ low opacity to start
+d3.selectAll(".level2")
+  .selectChildren()
+  .style("opacity", 0)
 
 // Create scrollama event handlers
-// response = { element, direction, index }
-const handleStepEnter = (response) => {
-  let el = d3.select(response.element);
+// intersected = { element, direction, index }
+const handleStepEnter = (intersected) => {
+  let el = d3.select(intersected.element);
   el.selectChildren()
     .transition()
-    .duration(SCROLL_SETTINGS.transitionDuration)
+    .duration(1000)
     .style("opacity", "1")
 };
 
-const init = () => {
-  scrollama().setup({
+scrollama()
+    .setup({
       step: "#quarto-document-content .level2",
-      offset: SCROLL_SETTINGS.scrollOffset,
-      // Set this to true if we want to see where the scroller is
-      debug: SCROLL_SETTINGS.debug
+      offset: 0.85
     })
     .onStepEnter(handleStepEnter);
-}
+</script>
+```
 
-loadContent();
-init();
+<script src="https://unpkg.com/scrollama"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+
+// Make everything w/ low opacity to start
+d3.selectAll(".level2")
+  .selectChildren()
+  .style("opacity", 0)
+
+// Create scrollama event handlers
+// intersected = { element, direction, index }
+const handleStepEnter = (intersected) => {
+  let el = d3.select(intersected.element);
+  el.selectChildren()
+    .transition()
+    .duration(1000)
+    .style("opacity", "1")
+};
+
+scrollama()
+    .setup({
+      step: ".level2",
+      offset: 0.85
+    })
+    .onStepEnter(handleStepEnter);
 </script>
