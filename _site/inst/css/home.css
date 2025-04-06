@@ -244,11 +244,11 @@ font-family: var(--bs-body-font-family)
   /* Title can be expanded a bit now... */
   h3.author-title {
     text-align: center;
-    width:40%;
+    width: 50%;
     /* Specify auto-margins so it keeps it centred */
     margin: 0 auto;
     margin-bottom: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   /* Not sure what this is for */

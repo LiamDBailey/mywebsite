@@ -20,7 +20,7 @@ format:
   <!-- author-photo/name/title have custom styling in home.css -->
   <img class="author-photo" src="assets/profile.jpg" alt="photo of Liam Bailey"/>
   <h2 class="author-name">Dr. Liam D. Bailey</h2>
-  <h3 class="author-title">Freelance Data Scientist</h3>
+  <h3 class="author-title">Geospatial Analyst<br>(WWF Germany)</h3>
   <div class="social">
   <div class="cell">
   <!-- Twitter icon -->
@@ -60,9 +60,9 @@ I am an ecologist and data scientist with an interest in using data science tech
 
 My scientific work has focussed on measuring and understanding the impacts of environmental change on natural systems, particularly the impacts of climate change. I completed my Ph.D. at the Australian National University with <a href = "https://research.jcu.edu.au/portfolio/martijn.vandepol/">Dr. Martijn van de Pol</a> and <a href = "https://biology.anu.edu.au/research/research-groups/langmore-group-avian-evolutionary-and-behavioural-ecology">Dr. Naomi Langmore</a>, focussing on the impacts of increased flooding on the Eurasian oystercatcher (Haematopus ostralegus). Since then my work has included analysis of extreme heat impacts in semi-arid environments and advancing reproductive timing in European passerines.
 
-My scientific work has always involved data science, including programming in R, Python and SQL, statistical analyses, and GIS. In 2019 I officially branched out into the world of data science, first as lead developer for the <a href = "https://spibirds.org/en" target="_blank">SPI-Birds Network and Database</a> and then in a corporate setting with the language learning app Babbel.
+My work has always involved data science, including programming in R, Python and SQL, statistical analyses, and GIS. In 2019 I officially branched out into the world of data science, first as lead developer for the <a href = "https://spibirds.org/en" target="_blank">SPI-Birds Network and Database</a>, then in a corporate setting with the language learning app Babbel, and finally as a freelancer.
 
-I am now based in Berlin using my skills in data science and data visualization as a freelancer.
+I am now based in Berlin, combining my data science skills with my scientific background as a Geospatial Analyst for WWF Germany.
 
   <div class="activities">
     
