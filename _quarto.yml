@@ -16,8 +16,8 @@ website:
       - icon: github
         href: https://github.com/LiamDBailey
         target: _blank
-      - icon: twitter
-        href: https://twitter.com/ldbailey255
+      - icon: bluesky
+        href: https://bsky.app/profile/liamdbailey.bsky.social
         target: _blank
     collapse: false
     collapse-below: md

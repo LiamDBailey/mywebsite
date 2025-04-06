@@ -260,7 +260,7 @@ a.nav-link:hover:after {
   width: 70%;
 }
 
-/* Do this differently otherwise GH or Twitter logos disappear after click...*/
+/* Do this differently otherwise GH or Bluesky logos disappear after click...*/
 /* NO IDEA WHY! */
 /* -dark .navbar-nav .nav-link */
 .nav-item *:hover {
@@ -397,4 +397,15 @@ so that it all fills */
 
 .callout-body-container p{
   color: #24292e;
+}
+
+.bi-bluesky::before {
+    content: "";
+    background-color: currentColor;
+    -webkit-mask: url("../img/icons/bluesky.svg");
+    mask: url("../img/icons/bluesky.svg");
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    height: 18px;
+    width: 20px;
 }

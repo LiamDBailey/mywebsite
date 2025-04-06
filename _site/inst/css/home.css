@@ -58,7 +58,7 @@ h3.author-title {
 
 /*** LINKS AND FONTAWESOME ICONS ***/
 
-/* Icons (e.g. Twitter, GitHub) */
+/* Icons (e.g. Bluesky, GitHub) */
 /* This sets the colour and size */
 /* This doesn't differ between screen size so can be outside of @media */
 i.icon{
@@ -83,7 +83,7 @@ i.link:hover {
   color: var(--dark-accent-colour);
 }
 
-/* If the box containing social icons (e.g. Twitter) extends past x limits */
+/* If the box containing social icons (e.g. Bluesky) extends past x limits */
 /* The overflow will be hidden */
 .social .cell-output-display:not(.no-overflow-x) {
   overflow-x: hidden;
