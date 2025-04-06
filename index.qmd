@@ -23,10 +23,10 @@ format:
   <h3 class="author-title">Geospatial Analyst<br>(WWF Germany)</h3>
   <div class="social">
   <div class="cell">
-  <!-- Twitter icon -->
+  <!-- Bluesky icon -->
   <div class="cell-output-display">
-  <a href="https://twitter.com/ldbailey255">
-  <i class="icon link fa-brands fa-twitter fa-xl"></i>
+  <a href="https://bsky.app/profile/liamdbailey.bsky.social">
+  <i class="icon link fa-brands fa-bluesky fa-xl"></i>
   </a>
   </div>
   <!-- Google scholar icon -->
